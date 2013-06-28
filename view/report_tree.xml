@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!-- This file is part account_financial_statement module for Tryton.
+The COPYRIGHT file at the top level of this repository contains the full
+copyright notices and license terms. -->
+<tree string="Financial Statement Reports">
+    <field name="name"/>
+    <field name="company"/>
+    <field name="template"/>
+    <field name="current_fiscalyear"/>
+    <field name="previous_fiscalyear"/>
+    <field name="state"/>
+</tree>

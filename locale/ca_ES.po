@@ -1,0 +1,521 @@
+# 
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "error:account.financial.statement.report.line:"
+msgid "The code must be unique for this report."
+msgstr "El codi ha de ser únic per aquest informe."
+
+msgctxt "error:account.financial.statement.report.line:"
+msgid "unique_code"
+msgstr "Codi únic"
+
+msgctxt "error:account.financial.statement.template.line:"
+msgid "The code must be unique for this report."
+msgstr "El codi ha de ser únic per aquest informe."
+
+msgctxt "error:account.financial.statement.template.line:"
+msgid "unique_code"
+msgstr "Codi únic"
+
+msgctxt "field:account.financial.statement.report,calculation_date:"
+msgid "Calculation date"
+msgstr "Data de càlcul"
+
+msgctxt "field:account.financial.statement.report,company:"
+msgid "Company"
+msgstr "Empresa"
+
+msgctxt "field:account.financial.statement.report,create_date:"
+msgid "Create Date"
+msgstr "Data creació"
+
+msgctxt "field:account.financial.statement.report,create_uid:"
+msgid "Create User"
+msgstr "Usuari creació"
+
+msgctxt "field:account.financial.statement.report,current_fiscalyear:"
+msgid "Fiscal year 1"
+msgstr "Exercici físcal 1"
+
+msgctxt "field:account.financial.statement.report,current_periods:"
+msgid "Fiscal year 1 periods"
+msgstr "Períodes de l'exercici físcal 1"
+
+msgctxt "field:account.financial.statement.report,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:account.financial.statement.report,lines:"
+msgid "Lines"
+msgstr "Línies"
+
+msgctxt "field:account.financial.statement.report,name:"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "field:account.financial.statement.report,previous_fiscalyear:"
+msgid "Fiscal year 2"
+msgstr "Exercici fiscal 2"
+
+msgctxt "field:account.financial.statement.report,previous_periods:"
+msgid "Fiscal year 2 periods"
+msgstr "Períodes de l'exercici físcal 2"
+
+msgctxt "field:account.financial.statement.report,rec_name:"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "field:account.financial.statement.report,state:"
+msgid "State"
+msgstr "Estat"
+
+msgctxt "field:account.financial.statement.report,template:"
+msgid "Template"
+msgstr "Plantilla"
+
+msgctxt "field:account.financial.statement.report,write_date:"
+msgid "Write Date"
+msgstr "Data modificació"
+
+msgctxt "field:account.financial.statement.report,write_uid:"
+msgid "Write User"
+msgstr "Usuari modificació"
+
+msgctxt "field:account.financial.statement.report.line,calculation_date:"
+msgid "Calculation date"
+msgstr "Data de càlcul"
+
+msgctxt "field:account.financial.statement.report.line,childs:"
+msgid "Children"
+msgstr "Fills"
+
+msgctxt "field:account.financial.statement.report.line,code:"
+msgid "Code"
+msgstr "Codi"
+
+msgctxt "field:account.financial.statement.report.line,create_date:"
+msgid "Create Date"
+msgstr "Data creació"
+
+msgctxt "field:account.financial.statement.report.line,create_uid:"
+msgid "Create User"
+msgstr "Usuari creació"
+
+msgctxt "field:account.financial.statement.report.line,css_class:"
+msgid "CSS Class"
+msgstr "Classe css"
+
+msgctxt "field:account.financial.statement.report.line,current_value:"
+msgid "Current Value"
+msgstr "Valor actual"
+
+msgctxt "field:account.financial.statement.report.line,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:account.financial.statement.report.line,name:"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "field:account.financial.statement.report.line,notes:"
+msgid "Notes"
+msgstr "Notes"
+
+msgctxt "field:account.financial.statement.report.line,parent:"
+msgid "Parent"
+msgstr "Pare"
+
+msgctxt "field:account.financial.statement.report.line,previous_value:"
+msgid "Previous value"
+msgstr "Valor anterior"
+
+msgctxt "field:account.financial.statement.report.line,rec_name:"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "field:account.financial.statement.report.line,report:"
+msgid "Report"
+msgstr "Informe"
+
+msgctxt "field:account.financial.statement.report.line,sequence:"
+msgid "Sequence"
+msgstr "Seqüència"
+
+msgctxt "field:account.financial.statement.report.line,template_line:"
+msgid "Line template"
+msgstr "Línia de la plantilla"
+
+msgctxt "field:account.financial.statement.report.line,write_date:"
+msgid "Write Date"
+msgstr "Data modificació"
+
+msgctxt "field:account.financial.statement.report.line,write_uid:"
+msgid "Write User"
+msgstr "Usuari modificació"
+
+msgctxt "field:account.financial.statement.template,create_date:"
+msgid "Create Date"
+msgstr "Data creació"
+
+msgctxt "field:account.financial.statement.template,create_uid:"
+msgid "Create User"
+msgstr "Usuari creació"
+
+msgctxt "field:account.financial.statement.template,description:"
+msgid "Description"
+msgstr "Descripció"
+
+msgctxt "field:account.financial.statement.template,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:account.financial.statement.template,lines:"
+msgid "Lines"
+msgstr "Línies"
+
+msgctxt "field:account.financial.statement.template,mode:"
+msgid "Mode"
+msgstr "Mode"
+
+msgctxt "field:account.financial.statement.template,name:"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "field:account.financial.statement.template,rec_name:"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "field:account.financial.statement.template,report_xml:"
+msgid "Report design"
+msgstr "Diseny del informe"
+
+msgctxt "field:account.financial.statement.template,type:"
+msgid "Type"
+msgstr "Tipus"
+
+msgctxt "field:account.financial.statement.template,write_date:"
+msgid "Write Date"
+msgstr "Data modificació"
+
+msgctxt "field:account.financial.statement.template,write_uid:"
+msgid "Write User"
+msgstr "Usuari modificació"
+
+msgctxt "field:account.financial.statement.template.line,childs:"
+msgid "Children"
+msgstr "Fills"
+
+msgctxt "field:account.financial.statement.template.line,code:"
+msgid "Code"
+msgstr "Codi"
+
+msgctxt "field:account.financial.statement.template.line,create_date:"
+msgid "Create Date"
+msgstr "Data creació"
+
+msgctxt "field:account.financial.statement.template.line,create_uid:"
+msgid "Create User"
+msgstr "Usuari creació"
+
+msgctxt "field:account.financial.statement.template.line,css_class:"
+msgid "CSS Class"
+msgstr "Classe css"
+
+msgctxt "field:account.financial.statement.template.line,current_value:"
+msgid "Fiscal year 1 formula"
+msgstr "Fórmula de l'exercici físcal 1"
+
+msgctxt "field:account.financial.statement.template.line,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:account.financial.statement.template.line,name:"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "field:account.financial.statement.template.line,negate:"
+msgid "Negate"
+msgstr "Negació"
+
+msgctxt "field:account.financial.statement.template.line,parent:"
+msgid "Parent"
+msgstr "Pare"
+
+msgctxt "field:account.financial.statement.template.line,previous_value:"
+msgid "Fiscal year 2 formula"
+msgstr "Formula de l'exercici físcal 2"
+
+msgctxt "field:account.financial.statement.template.line,rec_name:"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "field:account.financial.statement.template.line,report:"
+msgid "Template"
+msgstr "Plantilla"
+
+msgctxt "field:account.financial.statement.template.line,sequence:"
+msgid "Sequence"
+msgstr "Seqüència"
+
+msgctxt "field:account.financial.statement.template.line,write_date:"
+msgid "Write Date"
+msgstr "Data modificació"
+
+msgctxt "field:account.financial.statement.template.line,write_uid:"
+msgid "Write User"
+msgstr "Usuari modificació"
+
+msgctxt ""
+"field:account_financial_statement-account_period_current,create_date:"
+msgid "Create Date"
+msgstr "Data creació"
+
+msgctxt "field:account_financial_statement-account_period_current,create_uid:"
+msgid "Create User"
+msgstr "Usuari creació"
+
+msgctxt "field:account_financial_statement-account_period_current,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:account_financial_statement-account_period_current,period:"
+msgid "Period"
+msgstr "Període"
+
+msgctxt "field:account_financial_statement-account_period_current,rec_name:"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "field:account_financial_statement-account_period_current,report:"
+msgid "Account Report"
+msgstr "Informe"
+
+msgctxt "field:account_financial_statement-account_period_current,write_date:"
+msgid "Write Date"
+msgstr "Data modificació"
+
+msgctxt "field:account_financial_statement-account_period_current,write_uid:"
+msgid "Write User"
+msgstr "Usuari modificació"
+
+msgctxt ""
+"field:account_financial_statement-account_period_previous,create_date:"
+msgid "Create Date"
+msgstr "Data creació"
+
+msgctxt ""
+"field:account_financial_statement-account_period_previous,create_uid:"
+msgid "Create User"
+msgstr "Usuari creació"
+
+msgctxt "field:account_financial_statement-account_period_previous,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:account_financial_statement-account_period_previous,period:"
+msgid "Period"
+msgstr "Període"
+
+msgctxt "field:account_financial_statement-account_period_previous,rec_name:"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "field:account_financial_statement-account_period_previous,report:"
+msgid "Account Report"
+msgstr "Informe"
+
+msgctxt ""
+"field:account_financial_statement-account_period_previous,write_date:"
+msgid "Write Date"
+msgstr "Data modificació"
+
+msgctxt "field:account_financial_statement-account_period_previous,write_uid:"
+msgid "Write User"
+msgstr "Usuari modificació"
+
+msgctxt "help:account.financial.statement.template.line,code:"
+msgid "Concept code, may be used on formulas to reference this line"
+msgstr ""
+"Codi del concepte. Es pot fer servir a les fòrmules per fer referència a "
+"aquesta línia."
+
+msgctxt "help:account.financial.statement.template.line,css_class:"
+msgid "Style-sheet class"
+msgstr "Clase de la fulla d'estils"
+
+msgctxt "help:account.financial.statement.template.line,current_value:"
+msgid ""
+"Value calculation formula: Depending on this formula the final value is calculated as follows:\n"
+"- Empy template value: sum of (this concept) children values.\n"
+"- Number with decimal point (\"10.2\"): that value (constant).\n"
+"- Account numbers separated by commas (\"430,431,(437)\"): Sum of the accounts (the sign of the  depends on the  mode). \n"
+"- Concept codes separated by \"+\" (\"11000+12000\"): Sum of those concepts values."
+msgstr ""
+"Formula de càlcul del valor: Depenent d'aquesta forma el valor final es calcula de la següent forma:\n"
+"- Valor buit: Suma dels valors dels fills d'aquest concepte.\n"
+"- Número amb punt decimal (\"10.2\"): Aquest valor (constant).\n"
+"- Números de comptes separats per comes (\"430,431,(437)\"): Suma del balanç de les comptes (el signe depen del mode). \n"
+"- Codis de conceptes separats per \"+\"(\"11000+12000\"): Suma dels valors d'aquests conceptes."
+
+msgctxt "help:account.financial.statement.template.line,name:"
+msgid "Concept name/description"
+msgstr "Nom del concepte/descripció."
+
+msgctxt "help:account.financial.statement.template.line,negate:"
+msgid "Negate the value (change the sign of the )"
+msgstr "Nega el valor (canvia el valor del signe)"
+
+msgctxt "help:account.financial.statement.template.line,previous_value:"
+msgid ""
+"Value calculation formula: Depending on this formula the final value is calculated as follows:\n"
+"- Empy template value: sum of (this concept) children values.\n"
+"- Number with decimal point (\"10.2\"): that value (constant).\n"
+"- Account numbers separated by commas (\"430,431,(437)\"): Sum of the accounts (the sign of the  depends on the  mode). \n"
+"- Concept codes separated by \"+\" (\"11000+12000\"): Sum of those concepts values."
+msgstr ""
+"Formula de càlcul del valor: Depenent d'aquesta forma el valor final es calcula de la següent forma:\n"
+"- Valor buit: Suma dels valors dels fills d'aquest concepte.\n"
+"- Número amb punt decimal (\"10.2\"): Aquest valor (constant).\n"
+"- Números de comptes separats per comes (\"430,431,(437)\"): Suma del balanç de les comptes (el signe depen del mode). \n"
+"- Codis de conceptes separats per \"+\"(\"11000+12000\"): Suma dels valors d'aquests conceptes."
+
+msgctxt "help:account.financial.statement.template.line,sequence:"
+msgid "Lines will be sorted/grouped by this field"
+msgstr "Les línes s'ordenaran/agruparan per aquest camp."
+
+msgctxt "model:account.financial.statement.report,name:"
+msgid "Financial Statement Report"
+msgstr "Informe de comptes anuals"
+
+msgctxt "model:account.financial.statement.report.line,name:"
+msgid "Financial Statement Report Line"
+msgstr "Línia d'informe de comptes anuals"
+
+msgctxt "model:account.financial.statement.template,name:"
+msgid "Financial Statement Template"
+msgstr "Plantilla de comptes anuals"
+
+msgctxt "model:account.financial.statement.template.line,name:"
+msgid "Financial Statement Template Line"
+msgstr "Linia de plantilla de comptes anuals"
+
+msgctxt "model:account_financial_statement-account_period_current,name:"
+msgid "Financial Statement Report - Current Periods"
+msgstr "Informe de comptes anuals - Periodes actuals"
+
+msgctxt "model:account_financial_statement-account_period_previous,name:"
+msgid "Financial Statement Report - Previous Periods"
+msgstr "Informe de comptes anuals - Periodes anteriors"
+
+msgctxt "model:ir.action,name:act_account_financial_statement"
+msgid "Financial Statement Report"
+msgstr "Informe de comptes anuals"
+
+msgctxt "model:ir.action,name:act_account_financial_statement_template"
+msgid "Account report templates"
+msgstr "Plantilles d'informe."
+
+msgctxt "model:ir.action,name:act_report_lines"
+msgid "Lines"
+msgstr "Línies"
+
+msgctxt "model:ir.ui.menu,name:menu_account_financial_statement_reports"
+msgid "Financial Statement Reports"
+msgstr "Informes de comptes anuals"
+
+msgctxt "model:ir.ui.menu,name:menu_account_financial_statement_templates"
+msgid "Financian Statement Templates"
+msgstr "Plantilles de comptes anuals"
+
+msgctxt "selection:account.financial.statement.report,state:"
+msgid "Canceled"
+msgstr "Cancel·lat"
+
+msgctxt "selection:account.financial.statement.report,state:"
+msgid "Done"
+msgstr "Realitzat"
+
+msgctxt "selection:account.financial.statement.report,state:"
+msgid "Draft"
+msgstr "Esborrany"
+
+msgctxt "selection:account.financial.statement.report,state:"
+msgid "Processed"
+msgstr "Processat"
+
+msgctxt "selection:account.financial.statement.report,state:"
+msgid "Processing"
+msgstr "Cálcul en curs"
+
+msgctxt "selection:account.financial.statement.report.line,css_class:"
+msgid "Default"
+msgstr "Per defecte"
+
+msgctxt "selection:account.financial.statement.report.line,css_class:"
+msgid "Level 1"
+msgstr "Nivell 1"
+
+msgctxt "selection:account.financial.statement.report.line,css_class:"
+msgid "Level 2"
+msgstr "Nivell 2"
+
+msgctxt "selection:account.financial.statement.report.line,css_class:"
+msgid "Level 3"
+msgstr "Nivell 3"
+
+msgctxt "selection:account.financial.statement.report.line,css_class:"
+msgid "Level 4"
+msgstr "Nivell 4"
+
+msgctxt "selection:account.financial.statement.report.line,css_class:"
+msgid "Level 5"
+msgstr "Nivell 5"
+
+msgctxt "selection:account.financial.statement.template,mode:"
+msgid "Credit-Debit"
+msgstr "Haver-Deure"
+
+msgctxt "selection:account.financial.statement.template,mode:"
+msgid "Credit-Debit, reversed with brakets"
+msgstr "Haver-Deure, invers si entre parèntesis."
+
+msgctxt "selection:account.financial.statement.template,mode:"
+msgid "Debit-Credit"
+msgstr "Deure-Haver"
+
+msgctxt "selection:account.financial.statement.template,mode:"
+msgid "Debit-Credit, reversed with brakets"
+msgstr "Deure-Haver, invers si entre parèntesis."
+
+msgctxt "selection:account.financial.statement.template,type:"
+msgid "System"
+msgstr "Sistema"
+
+msgctxt "selection:account.financial.statement.template,type:"
+msgid "User"
+msgstr "Usuari"
+
+msgctxt "selection:account.financial.statement.template.line,css_class:"
+msgid "Default"
+msgstr "Per defecte"
+
+msgctxt "selection:account.financial.statement.template.line,css_class:"
+msgid "Level 1"
+msgstr "Nivell 1"
+
+msgctxt "selection:account.financial.statement.template.line,css_class:"
+msgid "Level 2"
+msgstr "Nivell 2"
+
+msgctxt "selection:account.financial.statement.template.line,css_class:"
+msgid "Level 3"
+msgstr "Nivell 3"
+
+msgctxt "selection:account.financial.statement.template.line,css_class:"
+msgid "Level 4"
+msgstr "Nivell 4"
+
+msgctxt "selection:account.financial.statement.template.line,css_class:"
+msgid "Level 5"
+msgstr "Nivell 5"

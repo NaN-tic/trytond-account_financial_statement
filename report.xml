@@ -1,0 +1,188 @@
+<?xml version="1.0"?>
+<!-- This file is part of account_financial_statement module for Tryton.
+The COPYRIGHT file at the top level of this repository contains the full
+copyright notices and license terms. -->
+<tryton>
+    <data>
+        <record model="ir.ui.view" id="report_form">
+            <field name="model">account.financial.statement.report</field>
+            <field name="type">form</field>
+            <field name="name">report_form</field>
+        </record>
+        <record model="ir.ui.view" id="report_tree">
+            <field name="model">account.financial.statement.report</field>
+            <field name="type">tree</field>
+            <field name="name">report_tree</field>
+        </record>
+
+        <record model="ir.ui.view" id="report_line_form">
+            <field name="model">account.financial.statement.report.line</field>
+            <field name="type">form</field>
+            <field name="name">report_line_form</field>
+        </record>
+        <record model="ir.ui.view" id="report_line_tree">
+            <field name="model">account.financial.statement.report.line</field>
+            <field name="type">tree</field>
+            <field name="name">report_line_tree</field>
+        </record>
+        <record model="ir.ui.view" id="report_line_tree_parent">
+            <field name="model">account.financial.statement.report.line</field>
+            <field name="type">tree</field>
+            <field name="name">report_line_tree_parent</field>
+            <field name="field_childs">childs</field>
+        </record>
+
+        <record model="ir.action.act_window"
+             id="act_account_financial_statement">
+            <field name="name">Financial Statement Report</field>
+            <field name="res_model">account.financial.statement.report</field>
+        </record>
+
+        <record model="ir.action.act_window.view"
+             id="act_account_financial_statement_tree">
+            <field name="sequence" eval="10" />
+            <field name="view" ref="report_tree" />
+            <field name="act_window" ref="act_account_financial_statement" />
+        </record>
+
+        <record model="ir.action.act_window.view"
+             id="act_account_financial_statement_form">
+            <field name="sequence" eval="20" />
+            <field name="view" ref="report_form" />
+            <field name="act_window" ref="act_account_financial_statement" />
+        </record>
+
+        <record model="ir.action.act_window" id="act_report_lines">
+            <field name="name">Lines</field>
+            <field name="res_model">account.financial.statement.report.line</field>
+            <field name="domain">[('parent', '=', None), ('report', '=', Eval('active_id'))]</field>
+        </record>
+
+        <record model="ir.action.act_window.view"
+            id="act_report_lines_view1">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="report_line_tree_parent"/>
+            <field name="act_window" ref="act_report_lines"/>
+        </record>
+
+        <record model="ir.action.keyword" id="act_report_lines_keyword">
+            <field name="keyword">form_relate</field>
+            <field name="model">account.financial.statement.report,-1</field>
+            <field name="action" ref="act_report_lines"/>
+        </record>
+
+        <menuitem id="menu_account_financial_statement_reports"
+                name="Financial Statement Reports"
+                parent="account.menu_reporting"
+                action="act_account_financial_statement"/>
+
+        <record model="ir.ui.view" id="template_form">
+            <field name="model">account.financial.statement.template</field>
+            <field name="type">form</field>
+            <field name="name">template_form</field>
+        </record>
+        <record model="ir.ui.view" id="template_tree">
+            <field name="model">account.financial.statement.template</field>
+            <field name="type">tree</field>
+            <field name="name">template_tree</field>
+        </record>
+
+        <record model="ir.ui.view" id="template_line_form">
+            <field name="model">account.financial.statement.template.line</field>
+            <field name="type">form</field>
+            <field name="name">template_line_form</field>
+        </record>
+        <record model="ir.ui.view" id="report_template_line_tree">
+            <field name="model">account.financial.statement.template.line</field>
+            <field name="type">tree</field>
+            <field name="name">template_line_tree</field>
+        </record>
+
+        <record model="ir.action.act_window"
+            id="act_account_financial_statement_template">
+            <field name="name">Account report templates</field>
+            <field name="res_model">account.financial.statement.template</field>
+        </record>
+
+        <record model="ir.action.act_window.view"
+             id="act_account_financial_statement_template_tree">
+            <field name="sequence" eval="10" />
+            <field name="view" ref="template_tree" />
+            <field name="act_window" ref="act_account_financial_statement_template" />
+        </record>
+
+        <record model="ir.action.act_window.view"
+             id="act_account_financial_statement_template_form">
+            <field name="sequence" eval="20" />
+            <field name="view" ref="template_form" />
+            <field name="act_window" ref="act_account_financial_statement_template" />
+        </record>
+
+        <menuitem id="menu_account_financial_statement_templates"
+                name="Financial Statement Templates"
+                parent="account.menu_account_configuration"
+                action="act_account_financial_statement_template"
+                sequence="50"/>
+
+        <!-- Permisions -->
+        <record model="ir.model.access"
+             id="access_account_financial_statement_report">
+            <field name="model" search="[('model', '=', 'account.financial.statement.report')]"/>
+            <field name="group" ref="account.group_account_admin"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_delete" eval="True"/>
+        </record>
+
+        <record model="ir.model.access"
+             id="access_account_financial_statement_report_line">
+            <field name="model" search="[('model', '=', 'account.financial.statement.report.line')]"/>
+            <field name="group" ref="account.group_account_admin"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_delete" eval="True"/>
+        </record>
+
+        <record model="ir.model.access"
+             id="access_account_financial_statement_template">
+            <field name="model" search="[('model', '=', 'account.financial.statement.template')]"/>
+            <field name="group" ref="account.group_account_admin"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_delete" eval="True"/>
+        </record>
+
+        <record model="ir.model.access"
+             id="access_account_financial_statement_template_line">
+            <field name="model" search="[('model', '=', 'account.financial.statement.template.line')]"/>
+            <field name="group" ref="account.group_account_admin"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_delete" eval="True"/>
+        </record>
+
+        <record model="ir.model.button" id="financial_statement_calculate_button">
+            <field name="name">calculate</field>
+            <field name="model" search="[('model', '=', 'account.financial.statement.report')]"/>
+        </record>
+        <record model="ir.model.button-res.group"
+            id="financial_statement_calculate_button_group_account">
+            <field name="button" ref="financial_statement_calculate_button"/>
+            <field name="group" ref="account.group_account"/>
+        </record>
+
+        <record model="ir.model.button" id="financial_statement_draft_button">
+            <field name="name">draft</field>
+            <field name="model" search="[('model', '=', 'account.financial.statement.report')]"/>
+        </record>
+        <record model="ir.model.button-res.group"
+            id="financial_statement_draft_button_group_account">
+            <field name="button" ref="financial_statement_draft_button"/>
+            <field name="group" ref="account.group_account"/>
+        </record>
+    </data>
+</tryton>
