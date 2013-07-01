@@ -29,7 +29,7 @@ copyright notices and license terms. -->
             <field name="model">account.financial.statement.report.line</field>
             <field name="type">tree</field>
             <field name="name">report_line_tree_parent</field>
-            <field name="field_childs">childs</field>
+            <field name="field_childs">children</field>
         </record>
 
         <record model="ir.action.act_window"
