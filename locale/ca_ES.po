@@ -3,6 +3,10 @@ msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
 msgctxt "error:account.financial.statement.report.line:"
+msgid "Code line must be unique per report."
+msgstr "El codi de la linia ha de ser únic en l'informe."
+
+msgctxt "error:account.financial.statement.report.line:"
 msgid "The code must be unique for this report."
 msgstr "El codi ha de ser únic per aquest informe."
 
@@ -13,6 +17,10 @@ msgstr "Codi únic"
 msgctxt "error:account.financial.statement.template.line:"
 msgid "The code must be unique for this report."
 msgstr "El codi ha de ser únic per aquest informe."
+
+msgctxt "error:account.financial.statement.template.line:"
+msgid "The code must be unique for this template."
+msgstr "El codi ha de ser únic per aquesta plantilla."
 
 msgctxt "error:account.financial.statement.template.line:"
 msgid "unique_code"
@@ -85,6 +93,10 @@ msgstr "Usuari modificació"
 msgctxt "field:account.financial.statement.report.line,calculation_date:"
 msgid "Calculation date"
 msgstr "Data de càlcul"
+
+msgctxt "field:account.financial.statement.report.line,children:"
+msgid "Children"
+msgstr "Fills"
 
 msgctxt "field:account.financial.statement.report.line,childs:"
 msgid "Children"
@@ -202,6 +214,10 @@ msgctxt "field:account.financial.statement.template,write_uid:"
 msgid "Write User"
 msgstr "Usuari modificació"
 
+msgctxt "field:account.financial.statement.template.line,children:"
+msgid "Children"
+msgstr "Fills"
+
 msgctxt "field:account.financial.statement.template.line,childs:"
 msgid "Children"
 msgstr "Fills"
@@ -257,6 +273,10 @@ msgstr "Plantilla"
 msgctxt "field:account.financial.statement.template.line,sequence:"
 msgid "Sequence"
 msgstr "Seqüència"
+
+msgctxt "field:account.financial.statement.template.line,template:"
+msgid "Template"
+msgstr "Plantilla"
 
 msgctxt "field:account.financial.statement.template.line,write_date:"
 msgid "Write Date"
@@ -334,8 +354,12 @@ msgctxt "field:account_financial_statement-account_period_previous,write_uid:"
 msgid "Write User"
 msgstr "Usuari modificació"
 
+msgctxt "help:account.financial.statement.template,type:"
+msgid "System reports cannot be modified"
+msgstr "El sistema d'informes no es pot modificar"
+
 msgctxt "help:account.financial.statement.template.line,code:"
-msgid "Concept code, may be used on formulas to reference this line"
+msgid "Concept code, may be used in formulas to reference this line"
 msgstr ""
 "Codi del concepte. Es pot fer servir a les fòrmules per fer referència a "
 "aquesta línia."
@@ -414,7 +438,7 @@ msgstr "Informe de comptes anuals"
 
 msgctxt "model:ir.action,name:act_account_financial_statement_template"
 msgid "Account report templates"
-msgstr "Plantilles d'informe."
+msgstr "Informe de plantilles comptables"
 
 msgctxt "model:ir.action,name:act_report_lines"
 msgid "Lines"
@@ -425,8 +449,12 @@ msgid "Financial Statement Reports"
 msgstr "Informes de comptes anuals"
 
 msgctxt "model:ir.ui.menu,name:menu_account_financial_statement_templates"
-msgid "Financian Statement Templates"
+msgid "Financial Statement Templates"
 msgstr "Plantilles de comptes anuals"
+
+msgctxt "selection:account.financial.statement.report,state:"
+msgid "Calculated"
+msgstr "Calculat"
 
 msgctxt "selection:account.financial.statement.report,state:"
 msgid "Canceled"
