@@ -4,7 +4,7 @@ msgstr "Content-Type: text/plain; charset=utf-8\n"
 
 msgctxt "error:account.financial.statement.report.line:"
 msgid "Code line must be unique per report."
-msgstr "El codi de la linia ha de ser únic en l'informe."
+msgstr "El codi de la línia ha de ser únic en l'informe."
 
 msgctxt "error:account.financial.statement.report.line:"
 msgid "The code must be unique for this report."
@@ -44,11 +44,11 @@ msgstr "Usuari creació"
 
 msgctxt "field:account.financial.statement.report,current_fiscalyear:"
 msgid "Fiscal year 1"
-msgstr "Exercici físcal 1"
+msgstr "Exercici fiscal 1"
 
 msgctxt "field:account.financial.statement.report,current_periods:"
 msgid "Fiscal year 1 periods"
-msgstr "Períodes de l'exercici físcal 1"
+msgstr "Períodes de l'exercici fiscal 1"
 
 msgctxt "field:account.financial.statement.report,id:"
 msgid "ID"
@@ -68,7 +68,7 @@ msgstr "Exercici fiscal 2"
 
 msgctxt "field:account.financial.statement.report,previous_periods:"
 msgid "Fiscal year 2 periods"
-msgstr "Períodes de l'exercici físcal 2"
+msgstr "Períodes de l'exercici fiscal 2"
 
 msgctxt "field:account.financial.statement.report,rec_name:"
 msgid "Name"
@@ -200,7 +200,7 @@ msgstr "Nom"
 
 msgctxt "field:account.financial.statement.template,report_xml:"
 msgid "Report design"
-msgstr "Diseny del informe"
+msgstr "Diseny de l'informe"
 
 msgctxt "field:account.financial.statement.template,type:"
 msgid "Type"
@@ -240,7 +240,7 @@ msgstr "Classe css"
 
 msgctxt "field:account.financial.statement.template.line,current_value:"
 msgid "Fiscal year 1 formula"
-msgstr "Fórmula de l'exercici físcal 1"
+msgstr "Fórmula de l'exercici fiscal 1"
 
 msgctxt "field:account.financial.statement.template.line,id:"
 msgid "ID"
@@ -260,7 +260,7 @@ msgstr "Pare"
 
 msgctxt "field:account.financial.statement.template.line,previous_value:"
 msgid "Fiscal year 2 formula"
-msgstr "Formula de l'exercici físcal 2"
+msgstr "Fórmula de l'exercici fiscal 2"
 
 msgctxt "field:account.financial.statement.template.line,rec_name:"
 msgid "Name"
@@ -356,7 +356,7 @@ msgstr "Usuari modificació"
 
 msgctxt "help:account.financial.statement.template,type:"
 msgid "System reports cannot be modified"
-msgstr "El sistema d'informes no es pot modificar"
+msgstr "Els informes de sistema no es poden modificar."
 
 msgctxt "help:account.financial.statement.template.line,code:"
 msgid "Concept code, may be used in formulas to reference this line"
@@ -366,7 +366,7 @@ msgstr ""
 
 msgctxt "help:account.financial.statement.template.line,css_class:"
 msgid "Style-sheet class"
-msgstr "Clase de la fulla d'estils"
+msgstr "Classe del full d'estils."
 
 msgctxt "help:account.financial.statement.template.line,current_value:"
 msgid ""
@@ -376,10 +376,10 @@ msgid ""
 "- Account numbers separated by commas (\"430,431,(437)\"): Sum of the accounts (the sign of the  depends on the  mode). \n"
 "- Concept codes separated by \"+\" (\"11000+12000\"): Sum of those concepts values."
 msgstr ""
-"Formula de càlcul del valor: Depenent d'aquesta forma el valor final es calcula de la següent forma:\n"
+"Fórmula de càlcul del valor: Depenent d'aquesta fórmula el valor final es calcula de la següent forma:\n"
 "- Valor buit: Suma dels valors dels fills d'aquest concepte.\n"
 "- Número amb punt decimal (\"10.2\"): Aquest valor (constant).\n"
-"- Números de comptes separats per comes (\"430,431,(437)\"): Suma del balanç de les comptes (el signe depen del mode). \n"
+"- Números de comptes separats per comes (\"430,431,(437)\"): Suma del balanç dels comptes (el signe depen del mode). \n"
 "- Codis de conceptes separats per \"+\"(\"11000+12000\"): Suma dels valors d'aquests conceptes."
 
 msgctxt "help:account.financial.statement.template.line,name:"
@@ -388,7 +388,7 @@ msgstr "Nom del concepte/descripció."
 
 msgctxt "help:account.financial.statement.template.line,negate:"
 msgid "Negate the value (change the sign of the )"
-msgstr "Nega el valor (canvia el valor del signe)"
+msgstr "Nega el valor (canvia el valor del signe)."
 
 msgctxt "help:account.financial.statement.template.line,previous_value:"
 msgid ""
@@ -398,43 +398,43 @@ msgid ""
 "- Account numbers separated by commas (\"430,431,(437)\"): Sum of the accounts (the sign of the  depends on the  mode). \n"
 "- Concept codes separated by \"+\" (\"11000+12000\"): Sum of those concepts values."
 msgstr ""
-"Formula de càlcul del valor: Depenent d'aquesta forma el valor final es calcula de la següent forma:\n"
+"Fórmula de càlcul del valor: Depenent d'aquesta fórmula el valor final es calcula de la següent forma:\n"
 "- Valor buit: Suma dels valors dels fills d'aquest concepte.\n"
 "- Número amb punt decimal (\"10.2\"): Aquest valor (constant).\n"
-"- Números de comptes separats per comes (\"430,431,(437)\"): Suma del balanç de les comptes (el signe depen del mode). \n"
+"- Números de comptes separats per comes (\"430,431,(437)\"): Suma del balanç dels comptes (el signe depen del mode). \n"
 "- Codis de conceptes separats per \"+\"(\"11000+12000\"): Suma dels valors d'aquests conceptes."
 
 msgctxt "help:account.financial.statement.template.line,sequence:"
 msgid "Lines will be sorted/grouped by this field"
-msgstr "Les línes s'ordenaran/agruparan per aquest camp."
+msgstr "Les línies s'ordenaran/agruparan per aquest camp."
 
 msgctxt "model:account.financial.statement.report,name:"
 msgid "Financial Statement Report"
-msgstr "Informe de comptes anuals"
+msgstr "Informe de balanços comptables"
 
 msgctxt "model:account.financial.statement.report.line,name:"
 msgid "Financial Statement Report Line"
-msgstr "Línia d'informe de comptes anuals"
+msgstr "Línia d'informe de balanços comptables"
 
 msgctxt "model:account.financial.statement.template,name:"
 msgid "Financial Statement Template"
-msgstr "Plantilla de comptes anuals"
+msgstr "Plantilla de balanços comptables"
 
 msgctxt "model:account.financial.statement.template.line,name:"
 msgid "Financial Statement Template Line"
-msgstr "Linia de plantilla de comptes anuals"
+msgstr "Línia de plantilla de balanços comptables"
 
 msgctxt "model:account_financial_statement-account_period_current,name:"
 msgid "Financial Statement Report - Current Periods"
-msgstr "Informe de comptes anuals - Periodes actuals"
+msgstr "Informe de balanços comptables - Períodes actuals"
 
 msgctxt "model:account_financial_statement-account_period_previous,name:"
 msgid "Financial Statement Report - Previous Periods"
-msgstr "Informe de comptes anuals - Periodes anteriors"
+msgstr "Informe de balanços comptables - Períodes anteriors"
 
 msgctxt "model:ir.action,name:act_account_financial_statement"
 msgid "Financial Statement Report"
-msgstr "Informe de comptes anuals"
+msgstr "Informe de balanços comptables"
 
 msgctxt "model:ir.action,name:act_account_financial_statement_template"
 msgid "Account report templates"
@@ -446,11 +446,11 @@ msgstr "Línies"
 
 msgctxt "model:ir.ui.menu,name:menu_account_financial_statement_reports"
 msgid "Financial Statement Reports"
-msgstr "Informes de comptes anuals"
+msgstr "Informes de balanços comptables"
 
 msgctxt "model:ir.ui.menu,name:menu_account_financial_statement_templates"
 msgid "Financial Statement Templates"
-msgstr "Plantilles de comptes anuals"
+msgstr "Plantilles de balanços comptables"
 
 msgctxt "selection:account.financial.statement.report,state:"
 msgid "Calculated"
@@ -474,7 +474,7 @@ msgstr "Processat"
 
 msgctxt "selection:account.financial.statement.report,state:"
 msgid "Processing"
-msgstr "Cálcul en curs"
+msgstr "En procés"
 
 msgctxt "selection:account.financial.statement.report.line,css_class:"
 msgid "Default"
@@ -506,7 +506,7 @@ msgstr "Haver-Deure"
 
 msgctxt "selection:account.financial.statement.template,mode:"
 msgid "Credit-Debit, reversed with brakets"
-msgstr "Haver-Deure, invers si entre parèntesis."
+msgstr "Haver-Deure, invers si està entre parèntesis."
 
 msgctxt "selection:account.financial.statement.template,mode:"
 msgid "Debit-Credit"
@@ -514,7 +514,7 @@ msgstr "Deure-Haver"
 
 msgctxt "selection:account.financial.statement.template,mode:"
 msgid "Debit-Credit, reversed with brakets"
-msgstr "Deure-Haver, invers si entre parèntesis."
+msgstr "Deure-Haver, invers si està entre parèntesis."
 
 msgctxt "selection:account.financial.statement.template,type:"
 msgid "System"
