@@ -375,7 +375,7 @@ class ReportLine(ModelSQL, ModelView):
                         # We use credit-debit as default ,
                         # but for accounts in brackets we use debit-credit
                         if (not account_code.startswith('(')
-                                and account_code.endswith(')')):
+                                and not account_code.endswith(')')):
                             sign = Decimal('-1.0') * sign
                     # Strip the brackets (if there are brackets)
                     if (account_code.startswith('(')
