@@ -455,6 +455,7 @@ class Template(ModelSQL, ModelView):
             root_lines = [x for x in template.lines if not x.parent]
             Line.copy(root_lines, default={
                     'template': new_template.id,
+                    'children': None,
                     })
             new_templates.append(new_template)
         return new_templates
@@ -592,16 +593,11 @@ class TemplateLine(ModelSQL, ModelView):
     def copy(cls, records, default=None):
         if default is None:
             default = {}
-        copy_children = False
-        if not 'children' in default:
-            copy_children = True
-            default['children'] = None
         new_lines = []
         for record in records:
             new_line, = super(TemplateLine, cls).copy([record], default)
             new_lines.append(new_line)
-            if copy_children and record.children:
-                new_default = default.copy()
-                new_default['parent'] = new_line.id
-                cls.copy(record.children, default=new_default)
+            new_default = default.copy()
+            new_default['parent'] = new_line.id
+            cls.copy(record.children, default=new_default)
         return new_lines
