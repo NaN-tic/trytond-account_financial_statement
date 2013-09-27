@@ -4,6 +4,19 @@ The COPYRIGHT file at the top level of this repository contains the full
 copyright notices and license terms. -->
 <tryton>
     <data>
+
+    <!-- account.financial.statement.report.line.account -->
+        <record model="ir.ui.view" id="report_line_account_tree">
+            <field name="model">account.financial.statement.report.line.account</field>
+            <field name="type">tree</field>
+            <field name="name">report_line_account_tree</field>
+        </record>
+        <record model="ir.ui.view" id="report_line_account_form">
+            <field name="model">account.financial.statement.report.line.account</field>
+            <field name="type">form</field>
+            <field name="name">report_line_account_form</field>
+        </record>
+
         <record model="ir.ui.view" id="report_form">
             <field name="model">account.financial.statement.report</field>
             <field name="type">form</field>

@@ -17,6 +17,8 @@ copyright notices and license terms. -->
         <label name="previous_value"/>
         <field name="previous_value"/>
     </group>
+    <field name="current_line_accounts" colspan="2"/>
+    <field name="previous_line_accounts" colspan="2"/>
     <group id="style" string="Style" colspan="4">
         <label name="sequence" />
         <field name="sequence" />

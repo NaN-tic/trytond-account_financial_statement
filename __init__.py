@@ -11,6 +11,7 @@ def register():
         TemplateLine,
         Report,
         ReportLine,
+        ReportLineAccount,
         ReportCurrentPeriods,
         ReportPreviousPeriods,
         module='account_financial_statement', type_='model')

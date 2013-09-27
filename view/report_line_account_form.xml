@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!-- This file is part of account_financial_statement module for Tryton.
+The COPYRIGHT file at the top level of this repository contains the full
+copyright notices and license terms. -->
+<form string="Detail" col="4">
+    <label name="account"/>
+    <field name="account"/>
+    <label name="fiscal_year"/>
+    <field name="fiscal_year"/>
+    <label name="debit"/>
+    <field name="debit"/>
+    <label name="credit"/>
+    <field name="credit"/>
+    <label name="report_line"/>
+    <field name="report_line"/>
+</form>

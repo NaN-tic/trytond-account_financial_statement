@@ -6,10 +6,11 @@ from trytond.pool import Pool
 import re
 from datetime import datetime
 from decimal import Decimal
+from trytond.model.fields import many2one
 
 __all__ = [
     'Report', 'ReportCurrentPeriods',
-    'ReportPreviousPeriods', 'ReportLine',
+    'ReportPreviousPeriods', 'ReportLine', 'ReportLineAccount',
     'Template', 'TemplateLine',
     ]
 
@@ -60,15 +61,15 @@ class Report(Workflow, ModelSQL, ModelView):
         'period', 'Fiscal year 1 periods', states=_STATES, domain=[
             ('fiscalyear', '=', Eval('current_fiscalyear')),
             ], depends=_DEPENDS + ['current_fiscalyear'])
-    previous_fiscalyear = fields.Many2One('account.fiscalyear', 'Fiscal year 2',
-        select=True, states=_STATES, depends=_DEPENDS)
+    previous_fiscalyear = fields.Many2One('account.fiscalyear',
+        'Fiscal year 2', select=True, states=_STATES, depends=_DEPENDS)
     previous_periods = fields.Many2Many(
         'account_financial_statement-account_period_previous', 'report',
         'period', 'Fiscal year 2 periods', states=_STATES, domain=[
             ('fiscalyear', '=', Eval('previous_fiscalyear')),
             ], depends=_DEPENDS + ['previous_fiscalyear'])
-    lines = fields.One2Many('account.financial.statement.report.line', 'report',
-        'Lines', readonly=True)
+    lines = fields.One2Many('account.financial.statement.report.line',
+        'report', 'Lines', readonly=True)
 
     @classmethod
     def __setup__(cls):
@@ -124,7 +125,8 @@ class Report(Workflow, ModelSQL, ModelView):
     @ModelView.button
     @Workflow.transition('draft')
     def draft(cls, reports):
-        Line = Pool().get('account.financial.statement.report.line')
+        pool = Pool()
+        Line = pool.get('account.financial.statement.report.line')
         lines = []
         for report in reports:
             lines += report.lines
@@ -199,7 +201,27 @@ class ReportLine(ModelSQL, ModelView):
     # that's why it is a char
     sequence = fields.Char('Sequence')
     css_class = fields.Selection(CSS_CLASSES, 'CSS Class')
+    line_accounts = fields.One2Many(
+        'account.financial.statement.report.line.account',
+        'report_line', 'Line Accounts')
+    current_line_accounts = fields.Function(fields.One2Many(
+            'account.financial.statement.report.line.account', 'report_line',
+            'Current Detail'), 'get_line_accounts')
+    previous_line_accounts = fields.Function(fields.One2Many(
+            'account.financial.statement.report.line.account', 'report_line',
+            'Previous Detail'), 'get_line_accounts')
 
+    @classmethod
+    def get_line_accounts(cls, report_lines, names):
+        res = {}
+        for report_line in report_lines:
+            res['current_line_accounts'] = {report_line.id: [x.id
+                    for x in report_line.line_accounts
+                    if x.fiscal_year == 'current']}
+            res['previous_line_accounts'] = {report_line.id: [x.id
+                    for x in report_line.line_accounts
+                    if x.fiscal_year == 'previous']}
+        return res
 
     @classmethod
     def __setup__(cls):
@@ -263,7 +285,8 @@ class ReportLine(ModelSQL, ModelView):
                     # Empy template value => sum of the children, of this
                     # concept, values.
                     for child in self.children:
-                        if child.calculation_date != child.report.calculation_date:
+                        if (child.calculation_date 
+                                != child.report.calculation_date):
                             # Tell the child to refresh its values
                             child.refresh_values()
                         value += getattr(child, getvalue)
@@ -283,6 +306,8 @@ class ReportLine(ModelSQL, ModelView):
                         'fiscalyear': getattr(self.report, getfiscalyear).id,
                         'periods': [p.id for p in getattr(self.report,
                                 getperiods)],
+                        'period': fyear,
+                        'cumulate' : False,
                         }
                     mode = self.template_line.template.mode
                     with Transaction().set_context(ctx):
@@ -332,11 +357,17 @@ class ReportLine(ModelSQL, ModelView):
         given code, or the sum of those values for a set of accounts
         when the code is in the form "400,300,(323)"
 
-        Also the user may specify to use only the debit or credit of the account
-        instead of the balance by writing "debit(551)" or "credit(551)".
+        Also the user may specify to use only the debit or credit of the
+        account instead of the balance by writing "debit(551)" or
+        "credit(551)".
         """
-        Account = Pool().get('account.account')
+        context = Transaction().context
+        pool = Pool()
+        Account = pool.get('account.account')
+        ReportLineAccount = pool.get(
+            'account.financial.statement.report.line.account')
         res = Decimal('0.0')
+        vlist = []
         for account_code in re.findall('(-?\w*\(?[0-9a-zA-Z_]*\)?)', code):
             # Check if the code is valid (findall might return empty strings)
             if len(account_code) > 0:
@@ -392,15 +423,52 @@ class ReportLine(ModelSQL, ModelView):
                     accounts = Account.search([
                             ('code', 'like', '%s%%0' % account_code),
                             ])
-                if len(accounts) > 0:
-                    balance = accounts[0].balance
-                    if mode == 'debit' and balance > 0.0:
-                        res += balance * sign
-                    if mode == 'credit' and balance < 0.0:
-                        res += balance * sign
-                    if mode == 'balance':
-                        res += balance * sign
+                if accounts:
+                    accounts = Account.search([
+                            ('parent', 'child_of', [a.id for a in accounts]),
+                            ], query_string=False)
+                    credit_debit = Account.get_credit_debit(accounts,
+                            ['debit', 'credit'])
+                    for credit, debit in zip(credit_debit['credit'],
+                            credit_debit['debit']):
+                        balance = credit_debit['debit'][debit] - \
+                                credit_debit['credit'][credit]
+                        value = {
+                            'report_line': self,
+                            'fiscal_year': context.get('period'),
+                            'account': credit,
+                            }
+                        if mode == 'debit' and balance > 0.0 or \
+                                mode == 'credit' and balance < 0.0 or \
+                                mode == 'balance':
+                            res += balance * sign
+                            value['credit'] = credit_debit['credit'][credit]
+                            value['debit'] = credit_debit['debit'][debit]
+                        if value.get('credit') or value.get('debit'):
+                            vlist.append(value)
+        ReportLineAccount.create(vlist)
         return res
+
+
+class ReportLineAccount(ModelSQL, ModelView):
+    'Financial Statement Report Account'
+    __name__ = 'account.financial.statement.report.line.account'
+    report_line = fields.Many2One('account.financial.statement.report.line',
+        'Report Line', ondelete='CASCADE')
+    account = fields.Many2One('account.account', 'Account', required=True)
+    currency_digits = fields.Function(fields.Integer('Currency Digits'),
+        'get_currency_digits')
+    credit = fields.Numeric('Credit', digits=(16, Eval('currency_digits', 2)),
+        depends=['currency_digits'])
+    debit = fields.Numeric('Debit', digits=(16, Eval('currency_digits', 2)),
+        depends=['currency_digits'])
+    fiscal_year = fields.Selection([
+            ('current', 'Current'),
+            ('previous', 'Previous'),
+            ], 'Fiscal Year')
+
+    def get_currency_digits(self, name):
+        return self.account.currency_digits
 
 
 class Template(ModelSQL, ModelView):
