@@ -6,7 +6,6 @@ from trytond.pool import Pool
 import re
 from datetime import datetime
 from decimal import Decimal
-from trytond.model.fields import many2one
 
 __all__ = [
     'Report', 'ReportCurrentPeriods',
@@ -138,7 +137,6 @@ class Report(Workflow, ModelSQL, ModelView):
 
     @classmethod
     def copy(cls, reports, default=None):
-        Line = Pool().get('account.financial.statement.report.line')
         if default is None:
             default = {}
         default = default.copy()
