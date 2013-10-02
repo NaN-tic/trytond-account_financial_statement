@@ -14,9 +14,9 @@ import trytond.tests.test_tryton
 from trytond.tests.test_tryton import test_view, test_depends
 
 
-class AccountReportingTestCase(unittest.TestCase):
+class AccountFinancialStatementTestCase(unittest.TestCase):
     '''
-    Test AccountReporting module.
+    Test Account Financial Statement module.
     '''
 
     def setUp(self):
@@ -37,7 +37,8 @@ class AccountReportingTestCase(unittest.TestCase):
 
 def suite():
     suite = trytond.tests.test_tryton.suite()
-    suite.addTests(unittest.TestLoader().loadTestsFromTestCase(AccountReportingTestCase))
+    suite.addTests(unittest.TestLoader().loadTestsFromTestCase(
+        AccountFinancialStatementTestCase))
     return suite
 
 if __name__ == '__main__':
