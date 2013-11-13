@@ -286,7 +286,7 @@ class ReportLine(ModelSQL, ModelView):
                     # Empy template value => sum of the children, of this
                     # concept, values.
                     for child in self.children:
-                        if (child.calculation_date 
+                        if (child.calculation_date
                                 != child.report.calculation_date):
                             # Tell the child to refresh its values
                             child.refresh_values()
@@ -427,7 +427,7 @@ class ReportLine(ModelSQL, ModelView):
                 if accounts:
                     accounts = Account.search([
                             ('parent', 'child_of', [a.id for a in accounts]),
-                            ], query_string=False)
+                            ])
                     credit_debit = Account.get_credit_debit(accounts,
                             ['debit', 'credit'])
                     for credit, debit in zip(credit_debit['credit'],
