@@ -17,6 +17,25 @@ copyright notices and license terms. -->
             <field name="name">report_line_account_form</field>
         </record>
 
+        <record model="ir.action.act_window" id="act_report_line_account">
+            <field name="name">Line Detail Per Account</field>
+            <field name="res_model">account.financial.statement.report.line.account</field>
+        </record>
+
+        <record model="ir.action.act_window.view"
+            id="act_report_lines_account_view1">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="report_line_account_tree"/>
+            <field name="act_window" ref="act_report_line_account"/>
+        </record>
+
+        <record model="ir.action.act_window.view"
+            id="act_report_lines_account_view2">
+            <field name="sequence" eval="20"/>
+            <field name="view" ref="report_line_account_form"/>
+            <field name="act_window" ref="act_report_line_account"/>
+        </record>
+
         <record model="ir.ui.view" id="report_form">
             <field name="model">account.financial.statement.report</field>
             <field name="type">form</field>
@@ -82,6 +101,24 @@ copyright notices and license terms. -->
             <field name="keyword">form_relate</field>
             <field name="model">account.financial.statement.report,-1</field>
             <field name="action" ref="act_report_lines"/>
+        </record>
+
+
+        <record model="ir.ui.view" id="report_line_detail_start_form">
+            <field name="model">account.financial.statement.report.line.detail.start</field>
+            <field name="type">form</field>
+            <field name="name">report_detail_start_form</field>
+        </record>
+
+        <record model="ir.action.wizard" id="act_open_detail">
+            <field name="name">Line Detail</field>
+            <field name="wiz_name">account.financial.statement.report.line.detail</field>
+        </record>
+
+        <record model="ir.action.keyword" id="act_open_detail_keyword1">
+            <field name="keyword">form_relate</field>
+            <field name="model">account.financial.statement.report.line,-1</field>
+            <field name="action" ref="act_open_detail"/>
         </record>
 
         <menuitem id="menu_account_financial_statement_reports"
@@ -179,7 +216,7 @@ copyright notices and license terms. -->
         </record>
 
         <record model="ir.model.button" id="financial_statement_calculate_button">
-            <field name="name">calculate</field>
+            <field name="name">Calculate</field>
             <field name="model" search="[('model', '=', 'account.financial.statement.report')]"/>
         </record>
         <record model="ir.model.button-res.group"
@@ -189,7 +226,7 @@ copyright notices and license terms. -->
         </record>
 
         <record model="ir.model.button" id="financial_statement_draft_button">
-            <field name="name">draft</field>
+            <field name="name">Draft</field>
             <field name="model" search="[('model', '=', 'account.financial.statement.report')]"/>
         </record>
         <record model="ir.model.button-res.group"

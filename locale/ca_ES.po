@@ -7,16 +7,8 @@ msgid "Code line must be unique per report."
 msgstr "El codi de la línia ha de ser únic en l'informe."
 
 msgctxt "error:account.financial.statement.report.line:"
-msgid "The code must be unique for this report."
-msgstr "El codi ha de ser únic per aquest informe."
-
-msgctxt "error:account.financial.statement.report.line:"
 msgid "unique_code"
 msgstr "Codi únic"
-
-msgctxt "error:account.financial.statement.template.line:"
-msgid "The code must be unique for this report."
-msgstr "El codi ha de ser únic per aquest informe."
 
 msgctxt "error:account.financial.statement.template.line:"
 msgid "The code must be unique for this template."
@@ -98,10 +90,6 @@ msgctxt "field:account.financial.statement.report.line,children:"
 msgid "Children"
 msgstr "Fills"
 
-msgctxt "field:account.financial.statement.report.line,childs:"
-msgid "Children"
-msgstr "Fills"
-
 msgctxt "field:account.financial.statement.report.line,code:"
 msgid "Code"
 msgstr "Codi"
@@ -118,6 +106,10 @@ msgctxt "field:account.financial.statement.report.line,css_class:"
 msgid "CSS Class"
 msgstr "Classe css"
 
+msgctxt "field:account.financial.statement.report.line,current_line_accounts:"
+msgid "Current Detail"
+msgstr "Detall Actual"
+
 msgctxt "field:account.financial.statement.report.line,current_value:"
 msgid "Current Value"
 msgstr "Valor actual"
@@ -125,6 +117,10 @@ msgstr "Valor actual"
 msgctxt "field:account.financial.statement.report.line,id:"
 msgid "ID"
 msgstr "ID"
+
+msgctxt "field:account.financial.statement.report.line,line_accounts:"
+msgid "Line Accounts"
+msgstr "Comptes de la línia"
 
 msgctxt "field:account.financial.statement.report.line,name:"
 msgid "Name"
@@ -137,6 +133,11 @@ msgstr "Notes"
 msgctxt "field:account.financial.statement.report.line,parent:"
 msgid "Parent"
 msgstr "Pare"
+
+msgctxt ""
+"field:account.financial.statement.report.line,previous_line_accounts:"
+msgid "Previous Detail"
+msgstr "Detall anterior"
 
 msgctxt "field:account.financial.statement.report.line,previous_value:"
 msgid "Previous value"
@@ -165,6 +166,68 @@ msgstr "Data modificació"
 msgctxt "field:account.financial.statement.report.line,write_uid:"
 msgid "Write User"
 msgstr "Usuari modificació"
+
+msgctxt "field:account.financial.statement.report.line.account,account:"
+msgid "Account"
+msgstr "Compte"
+
+msgctxt "field:account.financial.statement.report.line.account,create_date:"
+msgid "Create Date"
+msgstr "Data creació"
+
+msgctxt "field:account.financial.statement.report.line.account,create_uid:"
+msgid "Create User"
+msgstr "Usuari creació"
+
+msgctxt "field:account.financial.statement.report.line.account,credit:"
+msgid "Credit"
+msgstr "Crédit"
+
+msgctxt ""
+"field:account.financial.statement.report.line.account,currency_digits:"
+msgid "Currency Digits"
+msgstr "Dígits de la moneda"
+
+msgctxt "field:account.financial.statement.report.line.account,debit:"
+msgid "Debit"
+msgstr "Debit"
+
+msgctxt "field:account.financial.statement.report.line.account,fiscal_year:"
+msgid "Fiscal Year"
+msgstr "Període fiscal"
+
+msgctxt "field:account.financial.statement.report.line.account,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:account.financial.statement.report.line.account,rec_name:"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "field:account.financial.statement.report.line.account,report_line:"
+msgid "Report Line"
+msgstr "Línia d'informe"
+
+msgctxt "field:account.financial.statement.report.line.account,write_date:"
+msgid "Write Date"
+msgstr "Data modificació"
+
+msgctxt "field:account.financial.statement.report.line.account,write_uid:"
+msgid "Write User"
+msgstr "Usuari modificació"
+
+msgctxt "field:account.financial.statement.report.line.detail.start,detail:"
+msgid "Detail Level"
+msgstr "Nivell de detall"
+
+msgctxt ""
+"field:account.financial.statement.report.line.detail.start,fiscalyear:"
+msgid "Fiscal Year"
+msgstr "Període fiscal"
+
+msgctxt "field:account.financial.statement.report.line.detail.start,id:"
+msgid "ID"
+msgstr "ID"
 
 msgctxt "field:account.financial.statement.template,create_date:"
 msgid "Create Date"
@@ -218,10 +281,6 @@ msgctxt "field:account.financial.statement.template.line,children:"
 msgid "Children"
 msgstr "Fills"
 
-msgctxt "field:account.financial.statement.template.line,childs:"
-msgid "Children"
-msgstr "Fills"
-
 msgctxt "field:account.financial.statement.template.line,code:"
 msgid "Code"
 msgstr "Codi"
@@ -265,10 +324,6 @@ msgstr "Fórmula de l'exercici fiscal 2"
 msgctxt "field:account.financial.statement.template.line,rec_name:"
 msgid "Name"
 msgstr "Nom"
-
-msgctxt "field:account.financial.statement.template.line,report:"
-msgid "Template"
-msgstr "Plantilla"
 
 msgctxt "field:account.financial.statement.template.line,sequence:"
 msgid "Sequence"
@@ -416,6 +471,14 @@ msgctxt "model:account.financial.statement.report.line,name:"
 msgid "Financial Statement Report Line"
 msgstr "Línia d'informe de balanços comptables"
 
+msgctxt "model:account.financial.statement.report.line.account,name:"
+msgid "Financial Statement Report Account"
+msgstr "Compte de informe de comptes anuals"
+
+msgctxt "model:account.financial.statement.report.line.detail.start,name:"
+msgid "Financial Statement Report Account Line Detail Start"
+msgstr "Detall de lína de balanç contable"
+
 msgctxt "model:account.financial.statement.template,name:"
 msgid "Financial Statement Template"
 msgstr "Plantilla de balanços comptables"
@@ -440,6 +503,14 @@ msgctxt "model:ir.action,name:act_account_financial_statement_template"
 msgid "Account report templates"
 msgstr "Informe de plantilles comptables"
 
+msgctxt "model:ir.action,name:act_open_detail"
+msgid "Open Detail"
+msgstr "Obrir detall"
+
+msgctxt "model:ir.action,name:act_report_line_account"
+msgid "Line Detail Per Account"
+msgstr "Detall de línia per compte"
+
 msgctxt "model:ir.action,name:act_report_lines"
 msgid "Lines"
 msgstr "Línies"
@@ -457,24 +528,8 @@ msgid "Calculated"
 msgstr "Calculat"
 
 msgctxt "selection:account.financial.statement.report,state:"
-msgid "Canceled"
-msgstr "Cancel·lat"
-
-msgctxt "selection:account.financial.statement.report,state:"
-msgid "Done"
-msgstr "Realitzat"
-
-msgctxt "selection:account.financial.statement.report,state:"
 msgid "Draft"
 msgstr "Esborrany"
-
-msgctxt "selection:account.financial.statement.report,state:"
-msgid "Processed"
-msgstr "Processat"
-
-msgctxt "selection:account.financial.statement.report,state:"
-msgid "Processing"
-msgstr "En procés"
 
 msgctxt "selection:account.financial.statement.report.line,css_class:"
 msgid "Default"
@@ -499,6 +554,36 @@ msgstr "Nivell 4"
 msgctxt "selection:account.financial.statement.report.line,css_class:"
 msgid "Level 5"
 msgstr "Nivell 5"
+
+msgctxt ""
+"selection:account.financial.statement.report.line.account,fiscal_year:"
+msgid "Current"
+msgstr "Actual"
+
+msgctxt ""
+"selection:account.financial.statement.report.line.account,fiscal_year:"
+msgid "Previous"
+msgstr "Anterior"
+
+msgctxt ""
+"selection:account.financial.statement.report.line.detail.start,detail:"
+msgid "Account"
+msgstr "Compte"
+
+msgctxt ""
+"selection:account.financial.statement.report.line.detail.start,detail:"
+msgid "Move"
+msgstr "Apunt"
+
+msgctxt ""
+"selection:account.financial.statement.report.line.detail.start,fiscalyear:"
+msgid "Current"
+msgstr "Actual"
+
+msgctxt ""
+"selection:account.financial.statement.report.line.detail.start,fiscalyear:"
+msgid "Previous"
+msgstr "Anterior"
 
 msgctxt "selection:account.financial.statement.template,mode:"
 msgid "Credit-Debit"
@@ -547,3 +632,105 @@ msgstr "Nivell 4"
 msgctxt "selection:account.financial.statement.template.line,css_class:"
 msgid "Level 5"
 msgstr "Nivell 5"
+
+msgctxt "view:account.financial.statement.report.line.account:"
+msgid "Detail"
+msgstr "Detall"
+
+msgctxt "view:account.financial.statement.report.line.account:"
+msgid "Fiscal Year Details"
+msgstr "Detalls del període fiscal"
+
+msgctxt "view:account.financial.statement.report.line.detail.start:"
+msgid "Open Line Detail"
+msgstr "Obre detall de línia"
+
+msgctxt "view:account.financial.statement.report.line:"
+msgid "Report Line"
+msgstr "Línia d'informe"
+
+msgctxt "view:account.financial.statement.report.line:"
+msgid "Report lines"
+msgstr "Línies d'informe"
+
+msgctxt "view:account.financial.statement.report.line:"
+msgid "Style"
+msgstr "Estil"
+
+msgctxt "view:account.financial.statement.report.line:"
+msgid "Values"
+msgstr "Valors"
+
+msgctxt "view:account.financial.statement.report:"
+msgid "Calculate"
+msgstr "Calcula"
+
+msgctxt "view:account.financial.statement.report:"
+msgid "Configuration"
+msgstr "Configuració"
+
+msgctxt "view:account.financial.statement.report:"
+msgid "Draft"
+msgstr "Esborrany"
+
+msgctxt "view:account.financial.statement.report:"
+msgid "Financial Statement Report"
+msgstr "Informe de balanços comptables"
+
+msgctxt "view:account.financial.statement.report:"
+msgid "Financial Statement Reports"
+msgstr "Informes de balanços comptables"
+
+msgctxt "view:account.financial.statement.report:"
+msgid "Lines"
+msgstr "Línies"
+
+msgctxt "view:account.financial.statement.report:"
+msgid "Period 1"
+msgstr "Primer període"
+
+msgctxt "view:account.financial.statement.report:"
+msgid "Period 2"
+msgstr "Segon període"
+
+msgctxt "view:account.financial.statement.report:"
+msgid "State"
+msgstr "Estat"
+
+msgctxt "view:account.financial.statement.template.line:"
+msgid "Financial Statement Template Line"
+msgstr "Línia de plantilla de balanços comptables"
+
+msgctxt "view:account.financial.statement.template.line:"
+msgid "Style"
+msgstr "Estil"
+
+msgctxt "view:account.financial.statement.template.line:"
+msgid "Template lines"
+msgstr "Línies de plantilla"
+
+msgctxt "view:account.financial.statement.template:"
+msgid "Financial Statement Template"
+msgstr "Plantilla de balanços comptables"
+
+msgctxt "view:account.financial.statement.template:"
+msgid "Information"
+msgstr "Informació"
+
+msgctxt "view:account.financial.statement.template:"
+msgid "Lines"
+msgstr "Línies"
+
+msgctxt "view:account.financial.statement.template:"
+msgid "Template"
+msgstr "Plantilla"
+
+msgctxt ""
+"wizard_button:account.financial.statement.report.line.detail,start,end:"
+msgid "Cancel"
+msgstr "Cancel·la"
+
+msgctxt ""
+"wizard_button:account.financial.statement.report.line.detail,start,select:"
+msgid "Ok"
+msgstr "Accepta"

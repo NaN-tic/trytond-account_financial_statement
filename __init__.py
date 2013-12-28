@@ -12,6 +12,10 @@ def register():
         Report,
         ReportLine,
         ReportLineAccount,
+        ReportLineDetailStart,
         ReportCurrentPeriods,
         ReportPreviousPeriods,
         module='account_financial_statement', type_='model')
+    Pool.register(
+        ReportLineDetail,
+        module='account_financial_statement', type_='wizard')

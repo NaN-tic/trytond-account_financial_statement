@@ -2,8 +2,10 @@
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
 from trytond.model import ModelView, ModelSQL, Workflow, fields
+from trytond.wizard import Wizard, StateView, StateAction, StateTransition, \
+    Button
 from trytond.transaction import Transaction
-from trytond.pyson import Eval
+from trytond.pyson import Eval, PYSONEncoder
 from trytond.pool import Pool
 
 import re
@@ -13,7 +15,7 @@ from decimal import Decimal
 __all__ = [
     'Report', 'ReportCurrentPeriods',
     'ReportPreviousPeriods', 'ReportLine', 'ReportLineAccount',
-    'Template', 'TemplateLine',
+    'Template', 'TemplateLine', 'ReportLineDetailStart', 'ReportLineDetail',
     ]
 
 CSS_CLASSES = [
@@ -308,7 +310,7 @@ class ReportLine(ModelSQL, ModelView):
                         'periods': [p.id for p in getattr(self.report,
                                 getperiods)],
                         'period': fyear,
-                        'cumulate' : False,
+                        'cumulate': False,
                         }
                     mode = self.template_line.template.mode
                     with Transaction().set_context(ctx):
@@ -463,6 +465,9 @@ class ReportLineAccount(ModelSQL, ModelView):
         depends=['currency_digits'])
     debit = fields.Numeric('Debit', digits=(16, Eval('currency_digits', 2)),
         depends=['currency_digits'])
+    balance = fields.Function(fields.Numeric('Balance',
+            digits=(16, Eval('currency_digits', 2)),
+            depends=['currency_digits']), 'get_balance')
     fiscal_year = fields.Selection([
             ('current', 'Current'),
             ('previous', 'Previous'),
@@ -470,6 +475,75 @@ class ReportLineAccount(ModelSQL, ModelView):
 
     def get_currency_digits(self, name):
         return self.account.currency_digits
+
+    def get_balance(self, name):
+        if self.report_line.report.template.mode[0:5] == 'debit':
+            return self.debit - self.credit
+        else:
+            return self.credit - self.debit
+
+
+class ReportLineDetailStart(ModelView):
+    'Financial Statement Report Account Line Detail Start'
+    __name__ = 'account.financial.statement.report.line.detail.start'
+
+    detail = fields.Selection([
+            ('account', 'Account'),
+            ('move', 'Move'),
+            ], 'Detail Level', required=True)
+    fiscalyear = fields.Selection([
+            ('current', 'Current'),
+            ('previous', 'Previous'),
+            ], 'Fiscal Year', required=True)
+
+    @staticmethod
+    def default_detail():
+        return 'account'
+
+    @staticmethod
+    def default_fiscalyear():
+        return 'current'
+
+
+class ReportLineDetail(Wizard):
+    'Financial Statement Report Account Line Detail'
+    __name__ = 'account.financial.statement.report.line.detail'
+
+    start = StateView('account.financial.statement.report.line.detail.start',
+        'account_financial_statement.report_line_detail_start_form', [
+            Button('Cancel', 'end', 'tryton-cancel'),
+            Button('Ok', 'select', 'tryton-go-next', default=True),
+            ])
+    select = StateTransition()
+    account = StateAction('account_financial_statement.act_report_line_account')
+    move = StateAction('account.act_move_line_form')
+
+    def transition_select(self):
+        return self.start.detail
+
+    def do_account(self, action):
+        action['pyson_domain'] = PYSONEncoder().encode([
+                ('report_line', '=', Transaction().context['active_id']),
+                ('fiscal_year', '=', self.start.fiscalyear),
+                ])
+        return action, {}
+
+    def do_move(self, action):
+        pool = Pool()
+        Line = pool.get('account.financial.statement.report.line')
+
+        line = Line(Transaction().context['active_id'])
+        periods = []
+        if self.start.fiscalyear == 'current':
+            periods = [p.id for p in line.report.current_periods]
+        else:
+            periods = [p.id for p in line.report.previous_periods]
+
+        action['pyson_domain'] = PYSONEncoder().encode([
+                ('account', 'in', [l.account.id for l in line.line_accounts]),
+                ('period', 'in', periods),
+                ])
+        return action, {}
 
 
 class Template(ModelSQL, ModelView):

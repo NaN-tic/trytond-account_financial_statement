@@ -3,8 +3,8 @@
 The COPYRIGHT file at the top level of this repository contains the full
 copyright notices and license terms. -->
 <tree string="Fiscal Year Details">
-    <field name="report_line"/>
     <field name="account"/>
     <field name="debit"/>
     <field name="credit"/>
+    <field name="balance"/>
 </tree>
