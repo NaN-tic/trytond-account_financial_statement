@@ -10,4 +10,5 @@ copyright notices and license terms. -->
     <field name="parent"/>
     <field name="current_value"/>
     <field name="previous_value"/>
+    <button name="open_details" string="Open Details"/>
 </tree>

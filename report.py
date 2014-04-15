@@ -237,6 +237,9 @@ class ReportLine(ModelSQL, ModelView):
         cls._error_messages.update({
                 'unique_code': 'Code line must be unique per report.',
                 })
+        cls._buttons.update({
+                'open_details': {},
+                })
 
     @staticmethod
     def default_css_class():
@@ -451,6 +454,11 @@ class ReportLine(ModelSQL, ModelView):
                             vlist.append(value)
         ReportLineAccount.create(vlist)
         return res
+
+    @classmethod
+    @ModelView.button_action('account_financial_statement.act_open_detail')
+    def open_details(cls, lines):
+        pass
 
 
 class ReportLineAccount(ModelSQL, ModelView):

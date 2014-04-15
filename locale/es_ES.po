@@ -171,6 +171,11 @@ msgctxt "field:account.financial.statement.report.line.account,account:"
 msgid "Account"
 msgstr "Cuenta"
 
+#, fuzzy
+msgctxt "field:account.financial.statement.report.line.account,balance:"
+msgid "Balance"
+msgstr "Saldo"
+
 msgctxt "field:account.financial.statement.report.line.account,create_date:"
 msgid "Create Date"
 msgstr "Fecha creación"
@@ -503,8 +508,9 @@ msgctxt "model:ir.action,name:act_account_financial_statement_template"
 msgid "Account report templates"
 msgstr "Informe de plantillas contables"
 
+#, fuzzy
 msgctxt "model:ir.action,name:act_open_detail"
-msgid "Open Detail"
+msgid "Line Detail"
 msgstr "Abrir detalle"
 
 msgctxt "model:ir.action,name:act_report_line_account"
@@ -644,6 +650,10 @@ msgstr "Detalle período fiscal"
 msgctxt "view:account.financial.statement.report.line.detail.start:"
 msgid "Open Line Detail"
 msgstr "Abrir detalle de linea"
+
+msgctxt "view:account.financial.statement.report.line:"
+msgid "Open Details"
+msgstr "Abrir detalles"
 
 msgctxt "view:account.financial.statement.report.line:"
 msgid "Report Line"
