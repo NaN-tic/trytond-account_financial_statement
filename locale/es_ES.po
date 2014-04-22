@@ -171,7 +171,6 @@ msgctxt "field:account.financial.statement.report.line.account,account:"
 msgid "Account"
 msgstr "Cuenta"
 
-#, fuzzy
 msgctxt "field:account.financial.statement.report.line.account,balance:"
 msgid "Balance"
 msgstr "Saldo"
@@ -508,7 +507,6 @@ msgctxt "model:ir.action,name:act_account_financial_statement_template"
 msgid "Account report templates"
 msgstr "Informe de plantillas contables"
 
-#, fuzzy
 msgctxt "model:ir.action,name:act_open_detail"
 msgid "Line Detail"
 msgstr "Abrir detalle"
