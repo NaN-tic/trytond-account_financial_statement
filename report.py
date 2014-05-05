@@ -433,27 +433,31 @@ class ReportLine(ModelSQL, ModelView):
                     accounts = Account.search([
                             ('parent', 'child_of', [a.id for a in accounts]),
                             ])
-                    credit_debit = Account.get_credit_debit(accounts,
-                            ['debit', 'credit'])
-                    for credit, debit in zip(credit_debit['credit'],
-                            credit_debit['debit']):
-                        balance = credit_debit['debit'][debit] - \
-                                credit_debit['credit'][credit]
+                    credit_debit = self._get_credit_debit(accounts)
+                    for account in credit_debit['credit']:
+                        balance = credit_debit['debit'][account] - \
+                                credit_debit['credit'][account]
                         value = {
                             'report_line': self,
                             'fiscal_year': context.get('period'),
-                            'account': credit,
+                            'account': account,
                             }
                         if mode == 'debit' and balance > 0.0 or \
                                 mode == 'credit' and balance < 0.0 or \
                                 mode == 'balance':
                             res += balance * sign
-                            value['credit'] = credit_debit['credit'][credit]
-                            value['debit'] = credit_debit['debit'][debit]
+                            value['credit'] = credit_debit['credit'][account]
+                            value['debit'] = credit_debit['debit'][account]
                         if value.get('credit') or value.get('debit'):
                             vlist.append(value)
         ReportLineAccount.create(vlist)
         return res
+
+    def _get_credit_debit(self, accounts):
+        'Returns the credit debit values for this accounts'
+        pool = Pool()
+        Account = pool.get('account.account')
+        return Account.get_credit_debit(accounts, ['debit', 'credit'])
 
     @classmethod
     @ModelView.button_action('account_financial_statement.act_open_detail')
@@ -523,15 +527,21 @@ class ReportLineDetail(Wizard):
             Button('Ok', 'select', 'tryton-go-next', default=True),
             ])
     select = StateTransition()
-    account = StateAction('account_financial_statement.act_report_line_account')
+    account = StateAction(
+        'account_financial_statement.act_report_line_account')
     move = StateAction('account.act_move_line_form')
 
     def transition_select(self):
         return self.start.detail
 
     def do_account(self, action):
+        pool = Pool()
+        Line = pool.get('account.financial.statement.report.line')
+        lines = Line.search([
+                ('parent', 'child_of', Transaction().context['active_id']),
+                ])
         action['pyson_domain'] = PYSONEncoder().encode([
-                ('report_line', '=', Transaction().context['active_id']),
+                ('report_line', 'in', [l.id for l in lines]),
                 ('fiscal_year', '=', self.start.fiscalyear),
                 ])
         return action, {}
@@ -539,18 +549,36 @@ class ReportLineDetail(Wizard):
     def do_move(self, action):
         pool = Pool()
         Line = pool.get('account.financial.statement.report.line')
+        LineAccount = pool.get(
+            'account.financial.statement.report.line.account')
 
         line = Line(Transaction().context['active_id'])
+        report = line.report
+
+        lines = Line.search([
+                ('parent', 'child_of', line.id),
+                ])
+        accounts = list(set(l.account.id for l in LineAccount.search([
+                        ('report_line', 'in', lines)
+                        ])))
+
         periods = []
         if self.start.fiscalyear == 'current':
-            periods = [p.id for p in line.report.current_periods]
+            periods = [p.id for p in report.current_periods]
+            fiscalyear = report.current_fiscalyear
         else:
-            periods = [p.id for p in line.report.previous_periods]
+            periods = [p.id for p in report.previous_periods]
+            fiscalyear = report.previous_fiscalyear
 
-        action['pyson_domain'] = PYSONEncoder().encode([
-                ('account', 'in', [l.account.id for l in line.line_accounts]),
-                ('period', 'in', periods),
-                ])
+        domain = [
+            ('account', 'in', accounts),
+            ('period.fiscalyear', '=', fiscalyear.id),
+            ]
+
+        if periods:
+            domain.append(('period', 'in', periods))
+
+        action['pyson_domain'] = PYSONEncoder().encode(domain)
         return action, {}
 
 
