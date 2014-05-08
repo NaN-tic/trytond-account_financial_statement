@@ -711,6 +711,8 @@ class TemplateLine(ModelSQL, ModelView):
         return [('name',) + clause[1:]]
 
     def _get_line(self):
+        pool = Pool()
+        ReportLine = pool.get('account.financial.statement.report.line')
         return ReportLine(
             code=self.code,
             name=self.name,
