@@ -313,7 +313,7 @@ class ReportLine(ModelSQL, ModelView):
                         'periods': [p.id for p in getattr(self.report,
                                 getperiods)],
                         'period': fyear,
-                        'cumulate': False,
+                        'cumulate': True,
                         }
                     mode = self.template_line.template.mode
                     with Transaction().set_context(ctx):
