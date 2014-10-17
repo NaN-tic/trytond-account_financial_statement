@@ -313,7 +313,7 @@ class ReportLine(ModelSQL, ModelView):
                         'periods': [p.id for p in getattr(self.report,
                                 getperiods)],
                         'period': fyear,
-                        'cumulate': True,
+                        'cumulate': self.template_line.template.cumulate,
                         }
                     mode = self.template_line.template.mode
                     with Transaction().set_context(ctx):
@@ -608,6 +608,7 @@ class Template(ModelSQL, ModelView):
             ('credit-debit', 'Credit-Debit'),
             ('credit-debit-reversed', 'Credit-Debit, reversed with brakets')
             ], 'Mode')
+    cumulate = fields.Boolean('Cumulate Balances')
 
     @staticmethod
     def default_type():
@@ -616,6 +617,10 @@ class Template(ModelSQL, ModelView):
     @staticmethod
     def default_mode():
         return 'debit-credit'
+
+    @staticmethod
+    def default_cumulate():
+        return False
 
     @classmethod
     def copy(cls, templates, default=None):

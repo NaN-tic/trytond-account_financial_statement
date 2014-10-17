@@ -241,6 +241,10 @@ msgctxt "field:account.financial.statement.template,create_uid:"
 msgid "Create User"
 msgstr "Usuario creación"
 
+msgctxt "field:account.financial.statement.template,cumulate:"
+msgid "Cumulate Balances"
+msgstr "Acumula balances"
+
 msgctxt "field:account.financial.statement.template,description:"
 msgid "Description"
 msgstr "Descripcion"

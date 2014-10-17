@@ -1,14 +1,8 @@
 #!/usr/bin/env python
-#This file is part account_financial_statement module for Tryton.
-#The COPYRIGHT file at the top level of this repository contains
-#the full copyright notices and license terms.
-import sys
-import os
-DIR = os.path.abspath(os.path.normpath(os.path.join(__file__,
-    '..', '..', '..', '..', '..', 'trytond')))
-if os.path.isdir(DIR):
-    sys.path.insert(0, os.path.dirname(DIR))
-
+# This file is part account_financial_statement module for Tryton.
+# The COPYRIGHT file at the top level of this repository contains
+# the full copyright notices and license terms.
+import datetime
 import unittest
 import trytond.tests.test_tryton
 from decimal import Decimal
@@ -40,6 +34,7 @@ class AccountFinancialStatementTestCase(unittest.TestCase):
             'account.financial.statement.template.line')
         self.report = POOL.get('account.financial.statement.report')
         self.report_line = POOL.get('account.financial.statement.report.line')
+        self.sequence = POOL.get('ir.sequence')
 
     def test0005views(self):
         '''
@@ -53,8 +48,9 @@ class AccountFinancialStatementTestCase(unittest.TestCase):
         '''
         test_depends()
 
-    def create_moves(self):
-        fiscalyear, = self.fiscalyear.search([])
+    def create_moves(self, fiscalyear=None):
+        if not fiscalyear:
+            fiscalyear, = self.fiscalyear.search([])
         period = fiscalyear.periods[0]
         last_period = fiscalyear.periods[-1]
         journal_revenue, = self.journal.search([
@@ -88,23 +84,29 @@ class AccountFinancialStatementTestCase(unittest.TestCase):
                     'kind': 'view',
                     'parent': chart.id,
                     }])
-        #Create some parties
-        customer1, customer2, supplier1, supplier2 = self.party.create([{
-                        'name': 'customer1',
-                    }, {
-                        'name': 'customer2',
-                    }, {
-                        'name': 'supplier1',
-                    }, {
-                        'name': 'supplier2',
-                    }])
-        self.party_address.create([{
-                        'active': True,
-                        'party': customer1.id,
-                    }, {
-                        'active': True,
-                        'party': supplier1.id,
-                    }])
+        # Create some parties
+        if self.party.search([('name', '=', 'customer1')]):
+            customer1, = self.party.search([('name', '=', 'customer1')])
+            customer2, = self.party.search([('name', '=', 'customer2')])
+            supplier1, = self.party.search([('name', '=', 'supplier1')])
+            supplier2, = self.party.search([('name', '=', 'supplier2')])
+        else:
+            customer1, customer2, supplier1, supplier2 = self.party.create([{
+                            'name': 'customer1',
+                        }, {
+                            'name': 'customer2',
+                        }, {
+                            'name': 'supplier1',
+                        }, {
+                            'name': 'supplier2',
+                        }])
+            self.party_address.create([{
+                            'active': True,
+                            'party': customer1.id,
+                        }, {
+                            'active': True,
+                            'party': supplier1.id,
+                        }])
         # Create some moves
         vlist = [
             {
@@ -222,7 +224,7 @@ class AccountFinancialStatementTestCase(unittest.TestCase):
                                 )],
                         }])
             results = template.lines[0]
-            #This must be created manually otherwise template is not set.
+            # This must be created manually otherwise template is not set.
             self.template_line.create([{
                             'code': '01',
                             'name': 'Expense',
@@ -303,12 +305,145 @@ class AccountFinancialStatementTestCase(unittest.TestCase):
                 self.assertEqual(current, line.current_value)
                 self.assertEqual(previous, line.previous_value)
 
+    def test0020_fiscalyear_not_closed(self):
+        with Transaction().start(DB_NAME, USER, context=CONTEXT):
+            fiscalyear, = self.fiscalyear.search([])
+            next_sequence, = self.sequence.create([{
+                        'name': 'Next Year',
+                        'code': 'account.move',
+                        'company': fiscalyear.company.id,
+                        }])
+            next_fiscalyear, = self.fiscalyear.copy([fiscalyear],
+                default={
+                    'name': 'Next fiscalyear',
+                    'start_date': fiscalyear.end_date + datetime.timedelta(1),
+                    'end_date': fiscalyear.end_date + datetime.timedelta(360),
+                    'post_move_sequence': next_sequence.id,
+                    'periods': None,
+                    })
+            self.fiscalyear.create_period([next_fiscalyear])
+            self.create_moves(fiscalyear)
+            self.create_moves(next_fiscalyear)
+            template_balance, template_income = self.template.create([{
+                        'name': 'Template Balance Report',
+                        'mode': 'credit-debit',
+                        'cumulate': True,
+                        'lines': [('create', [{
+                                        'code': '0',
+                                        'name': 'Results',
+                                        }]
+                                )],
+                        }, {
+                        'name': 'Template Income Report',
+                        'mode': 'credit-debit',
+                        'cumulate': False,
+                        'lines': [('create', [{
+                                        'code': '0',
+                                        'name': 'Results',
+                                        }]
+                                )],
+                        }])
+
+            results_line = template_balance.lines[0]
+            # This must be created manually otherwise template is not set.
+            self.template_line.create([{
+                            'code': '01',
+                            'name': 'Expense',
+                            'current_value': '6',
+                            'previous_value': '6',
+                            'parent': results_line.id,
+                            'template': template_balance.id,
+                            }, {
+                            'code': '02',
+                            'name': 'Revenue',
+                            'current_value': '7',
+                            'previous_value': '7',
+                            'parent': results_line.id,
+                            'template': template_balance.id,
+                            }, {
+                            'code': '03',
+                            'name': 'Payable',
+                            'current_value': '41',
+                            'previous_value': '41',
+                            'parent': results_line.id,
+                            'template': template_balance.id,
+                            }, {
+                            'code': '04',
+                            'name': 'Receivable',
+                            'current_value': '43',
+                            'previous_value': '43',
+                            'parent': results_line.id,
+                            'template': template_balance.id,
+                            }])
+
+            results_line = template_income.lines[0]
+            # This must be created manually otherwise template is not set.
+            self.template_line.create([{
+                            'code': '01',
+                            'name': 'Expense',
+                            'current_value': '6',
+                            'previous_value': '6',
+                            'parent': results_line.id,
+                            'template': template_income.id,
+                            }, {
+                            'code': '02',
+                            'name': 'Revenue',
+                            'current_value': '7',
+                            'previous_value': '7',
+                            'parent': results_line.id,
+                            'template': template_income.id,
+                            }])
+
+            report_balance, = self.report.create([{
+                        'name': 'Test report',
+                        'template': template_balance.id,
+                        'current_fiscalyear': next_fiscalyear,
+                        'previous_fiscalyear': fiscalyear,
+                        }])
+            self.assertEqual(report_balance.state, 'draft')
+            self.report.calculate([report_balance])
+            self.assertEqual(report_balance.state, 'calculated')
+            self.assertEqual(len(report_balance.lines), 5)
+
+            results_balance = {
+                '0': (Decimal('0.0'), Decimal('0.0')),
+                '01': (Decimal('-260.0'), Decimal('-130.0')),
+                '02': (Decimal('1200.0'), Decimal('600.0')),
+                '03': (Decimal('260.0'), Decimal('130.0')),
+                '04': (Decimal('-1200.0'), Decimal('-600.0')),
+                }
+            for line in report_balance.lines:
+                current, previous = results_balance[line.code]
+                self.assertEqual(current, line.current_value)
+                self.assertEqual(previous, line.previous_value)
+
+            report_income, = self.report.create([{
+                        'name': 'Test report',
+                        'template': template_income.id,
+                        'current_fiscalyear': next_fiscalyear,
+                        'previous_fiscalyear': fiscalyear,
+                        }])
+            self.assertEqual(report_income.state, 'draft')
+            self.report.calculate([report_income])
+            self.assertEqual(report_income.state, 'calculated')
+            self.assertEqual(len(report_income.lines), 3)
+
+            results_income = {
+                '0': (Decimal('470.0'), Decimal('470.0')),
+                '01': (Decimal('-130.0'), Decimal('-130.0')),
+                '02': (Decimal('600.0'), Decimal('600.0')),
+                }
+            for line in report_income.lines:
+                current, previous = results_income[line.code]
+                self.assertEqual(current, line.current_value)
+                self.assertEqual(previous, line.previous_value)
+
 
 def suite():
     suite = trytond.tests.test_tryton.suite()
     from trytond.modules.account.tests import test_account
     for test in test_account.suite():
-        #Skip doctest
+        # Skip doctest
         class_name = test.__class__.__name__
         if test not in suite and class_name != 'DocFileCase':
             suite.addTest(test)
