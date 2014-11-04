@@ -12,9 +12,7 @@ from trytond.transaction import Transaction
 
 
 class AccountFinancialStatementTestCase(unittest.TestCase):
-    '''
-    Test Account Financial Statement module.
-    '''
+    'Test Account Financial Statement module'
 
     def setUp(self):
         trytond.tests.test_tryton.install_module('account_financial_statement')
@@ -37,15 +35,11 @@ class AccountFinancialStatementTestCase(unittest.TestCase):
         self.sequence = POOL.get('ir.sequence')
 
     def test0005views(self):
-        '''
-        Test views.
-        '''
+        'Test views'
         test_view('account_financial_statement')
 
     def test0006depends(self):
-        '''
-        Test depends.
-        '''
+        'Test depends'
         test_depends()
 
     def create_moves(self, fiscalyear=None):
@@ -178,6 +172,7 @@ class AccountFinancialStatementTestCase(unittest.TestCase):
                                 'account': expense.id,
                                 'debit': Decimal(50),
                                 }, {
+                                'party': supplier2.id,
                                 'account': payable.id,
                                 'credit': Decimal(50),
                                 }]),
@@ -192,6 +187,7 @@ class AccountFinancialStatementTestCase(unittest.TestCase):
                                 'account': revenue.id,
                                 'credit': Decimal(300),
                                 }, {
+                                'party': customer2.id,
                                 'account': receivable.id,
                                 'debit': Decimal(300),
                                 }]),
@@ -450,6 +446,3 @@ def suite():
     suite.addTests(unittest.TestLoader().loadTestsFromTestCase(
         AccountFinancialStatementTestCase))
     return suite
-
-if __name__ == '__main__':
-    unittest.TextTestRunner(verbosity=2).run(suite())
