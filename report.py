@@ -196,9 +196,9 @@ class ReportLine(ModelSQL, ModelView):
     template_line = fields.Many2One('account.financial.statement.template.line',
         'Line template', ondelete='SET NULL')
     parent = fields.Many2One('account.financial.statement.report.line',
-        'Parent', ondelete='CASCADE')
+        'Parent', domain=[('report', '=', Eval('report'))], ondelete='CASCADE')
     children = fields.One2Many('account.financial.statement.report.line',
-        'parent', 'Children')
+        'parent', 'Children', domain=[('report', '=', Eval('report'))])
 
     # Order sequence, it's also used for grouping into sections,
     # that's why it is a char
@@ -252,12 +252,12 @@ class ReportLine(ModelSQL, ModelView):
 
     @classmethod
     def search_rec_name(cls, name, clause):
-        ids = map(int, cls.search([('code',) + clause[1:]], order=[]))
+        ids = map(int, cls.search([('code',) + tuple(clause[1:])], order=[]))
         if ids:
-            ids += map(int, cls.search([('name',) + clause[1:]],
+            ids += map(int, cls.search([('name',) + tuple(clause[1:])],
                     order=[]))
             return [('id', 'in', ids)]
-        return [('name',) + clause[1:]]
+        return [('name',) + tuple(clause[1:])]
 
     def refresh_values(self):
         """
@@ -708,12 +708,12 @@ class TemplateLine(ModelSQL, ModelView):
 
     @classmethod
     def search_rec_name(cls, name, clause):
-        ids = map(int, cls.search([('code',) + clause[1:]], order=[]))
+        ids = map(int, cls.search([('code',) + tuple(clause[1:])], order=[]))
         if ids:
-            ids += map(int, cls.search([('name',) + clause[1:]],
+            ids += map(int, cls.search([('name',) + tuple(clause[1:])],
                     order=[]))
             return [('id', 'in', ids)]
-        return [('name',) + clause[1:]]
+        return [('name',) + tuple(clause[1:])]
 
     def _get_line(self):
         pool = Pool()
