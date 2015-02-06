@@ -216,19 +216,19 @@ class ReportLine(ModelSQL, ModelView):
 
     @classmethod
     def get_line_accounts(cls, report_lines, names):
-        res = {}
+        result = {}
         for report_line in report_lines:
             if 'current_line_accounts' in names:
-                res.setdefault('current_line_accounts',
+                result.setdefault('current_line_accounts',
                     {})[report_line.id] = [x.id
                         for x in report_line.line_accounts
-                        if x.fiscal_year == report_line.report.current_fiscalyear]
+                        if x.fiscal_year == 'current']
             if 'previous_line_accounts' in names:
-                res.setdefault('previous_line_accounts',
+                result.setdefault('previous_line_accounts',
                     {})[report_line.id] = [x.id
                         for x in report_line.line_accounts
-                        if x.fiscal_year == report_line.report.previous_fiscalyear]
-        return res
+                        if x.fiscal_year == 'previous']
+        return result
 
     @classmethod
     def __setup__(cls):
