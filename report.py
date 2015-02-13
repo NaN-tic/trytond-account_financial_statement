@@ -196,9 +196,13 @@ class ReportLine(ModelSQL, ModelView):
     template_line = fields.Many2One('account.financial.statement.template.line',
         'Line template', ondelete='SET NULL')
     parent = fields.Many2One('account.financial.statement.report.line',
-        'Parent', domain=[('report', '=', Eval('report'))], ondelete='CASCADE')
+        'Parent', ondelete='CASCADE', domain=[
+            ('report', '=', Eval('report')),
+            ], depends=['report'])
     children = fields.One2Many('account.financial.statement.report.line',
-        'parent', 'Children', domain=[('report', '=', Eval('report'))])
+        'parent', 'Children', domain=[
+            ('report', '=', Eval('report')),
+            ], depends=['report'])
 
     # Order sequence, it's also used for grouping into sections,
     # that's why it is a char
