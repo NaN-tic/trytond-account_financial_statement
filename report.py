@@ -7,13 +7,14 @@ from trytond.wizard import Wizard, StateView, StateAction, StateTransition, \
 from trytond.transaction import Transaction
 from trytond.pyson import Eval, PYSONEncoder
 from trytond.pool import Pool
+from trytond.modules.jasper_reports.jasper import JasperReport
 
 import re
 from datetime import datetime
 from decimal import Decimal
 
 __all__ = [
-    'Report', 'ReportCurrentPeriods',
+    'Report', 'ReportJasper', 'ReportCurrentPeriods',
     'ReportPreviousPeriods', 'ReportLine', 'ReportLineAccount',
     'Template', 'TemplateLine', 'ReportLineDetailStart', 'ReportLineDetail',
     ]
@@ -150,6 +151,11 @@ class Report(Workflow, ModelSQL, ModelView):
         if not 'calculation_date' in default:
             default['calculation_date'] = None
         return super(Report, cls).copy(reports, default=default)
+
+
+class ReportJasper(JasperReport):
+    'Financial Statement Report'
+    __name__ = 'account.financial.statement.report'
 
 
 class ReportCurrentPeriods(ModelSQL):

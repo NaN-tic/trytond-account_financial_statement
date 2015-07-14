@@ -19,3 +19,6 @@ def register():
     Pool.register(
         ReportLineDetail,
         module='account_financial_statement', type_='wizard')
+    Pool.register(
+        ReportJasper,
+        module='account_financial_statement', type_='report')

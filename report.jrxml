@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="account_financial_statment" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="TRYTON_RELATIONS" value="[&apos;lines&apos;]"/>
+	<property name="ireport.zoom" value="1.9487171000000014"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="default">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{line-css_class}.equalsIgnoreCase("l1")]]></conditionExpression>
+			<style fontSize="10" isBold="true" isItalic="false" isUnderline="true"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{line-css_class}.equalsIgnoreCase("l2")]]></conditionExpression>
+			<style fontSize="10" isBold="false" isItalic="true" isUnderline="true"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{line-css_class}.equalsIgnoreCase("l3")]]></conditionExpression>
+			<style fontSize="10" isItalic="true"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{line-css_class}.equalsIgnoreCase("l4")]]></conditionExpression>
+			<style fontSize="9" isItalic="true"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{line-css_class}.equalsIgnoreCase("l5")]]></conditionExpression>
+			<style fontSize="8" isItalic="true"/>
+		</conditionalStyle>
+	</style>
+	<style name="title" fontSize="12" isBold="true" isItalic="true"/>
+	<style name="header" fontSize="10" isItalic="true"/>
+	<queryString language="xPath">
+		<![CDATA[]]>
+	</queryString>
+	<field name="report-rec_name" class="java.lang.String">
+		<fieldDescription><![CDATA[/data/record/rec_name-rec_name]]></fieldDescription>
+	</field>
+	<field name="lang-lang" class="java.lang.String">
+		<fieldDescription><![CDATA[/data/record/company-company/party-party/lang-lang/code-code]]></fieldDescription>
+	</field>
+	<field name="company-rec_name" class="java.lang.String">
+		<fieldDescription><![CDATA[/data/record/company-company/rec_name-rec_name]]></fieldDescription>
+	</field>
+	<field name="sequence-sequence" class="java.lang.String">
+		<fieldDescription><![CDATA[/data/record/lines-lines/sequence-sequence]]></fieldDescription>
+	</field>
+	<field name="line-rec_name" class="java.lang.String">
+		<fieldDescription><![CDATA[/data/record/lines-lines/rec_name-rec_name]]></fieldDescription>
+	</field>
+	<field name="line-current_value" class="java.lang.String">
+		<fieldDescription><![CDATA[/data/record/lines-lines/current_value-current_value]]></fieldDescription>
+	</field>
+	<field name="line-previous_value" class="java.lang.String">
+		<fieldDescription><![CDATA[/data/record/lines-lines/previous_value-previous_value]]></fieldDescription>
+	</field>
+	<field name="line-css_class" class="java.lang.String">
+		<fieldDescription><![CDATA[/data/record/lines-lines/css_class-css_class]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.String">
+		<fieldDescription><![CDATA[/data/record/id]]></fieldDescription>
+	</field>
+	<sortField name="sequence-sequence"/>
+	<variable name="L" class="java.util.Locale">
+		<variableExpression><![CDATA[$F{lang-lang} != null && $F{lang-lang}.length() == 5 ? new Locale($F{lang-lang}.substring(0,2)) : ( $F{lang-lang} != null && $F{lang-lang}.length() == 2 ? new Locale($F{lang-lang}.substring(0,2)) : 'en')]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{lang-lang} != null && $F{lang-lang}.length() == 5 ? new Locale($F{lang-lang}.substring(0,2)) : ( $F{lang-lang} != null && $F{lang-lang}.length() == 2 ? new Locale($F{lang-lang}.substring(0,2)) : 'en')]]></initialValueExpression>
+	</variable>
+	<group name="Lines" isStartNewPage="true" isResetPageNumber="true">
+		<groupExpression><![CDATA[$F{id}]]></groupExpression>
+		<groupHeader>
+			<band height="45">
+				<textField>
+					<reportElement style="header" x="0" y="16" width="303" height="18"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[tr($V{L},"Concept")]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="header" x="303" y="16" width="124" height="18"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[tr($V{L},"Current Value")]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="header" x="427" y="16" width="124" height="18"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[tr($V{L},"Previous Value")]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="33" width="551" height="1"/>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="42" splitType="Stretch">
+			<textField>
+				<reportElement style="title" x="0" y="10" width="242" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{report-rec_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="title" x="303" y="10" width="252" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{company-rec_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement style="default" x="0" y="0" width="303" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{line-rec_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="default" x="303" y="0" width="124" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{line-current_value}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="default" x="427" y="0" width="124" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{line-previous_value}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="32" splitType="Stretch">
+			<textField>
+				<reportElement x="242" y="6" width="21" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="6" width="24" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_COUNT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="263" y="6" width="16" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[/]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

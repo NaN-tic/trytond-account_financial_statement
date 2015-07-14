@@ -242,5 +242,19 @@ copyright notices and license terms. -->
             <field name="domain">[('company', 'in', [c.id for c in user.companies])]</field>
             <field name="rule_group" ref="rule_group_report"/>
         </record>
+
+        <!-- Reports -->
+        <record model="ir.action.report" id="action_report_pdf">
+            <field name="name">Account Financial Statement</field>
+            <field name="model">account.financial.statement.report</field>
+            <field name="report_name">account.financial.statement.report</field>
+            <field name="report">account_financial_statement/report.jrxml</field>
+            <field name="extension">pdf</field>
+        </record>
+        <record model="ir.action.keyword" id="report_pdf_keyword">
+            <field name="keyword">form_print</field>
+            <field name="model">account.financial.statement.report,-1</field>
+            <field name="action" ref="action_report_pdf"/>
+        </record>
     </data>
 </tryton>

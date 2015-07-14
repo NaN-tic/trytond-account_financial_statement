@@ -104,11 +104,11 @@ msgstr "Usuari creació"
 
 msgctxt "field:account.financial.statement.report.line,css_class:"
 msgid "CSS Class"
-msgstr "Classe css"
+msgstr "Classe CSS"
 
 msgctxt "field:account.financial.statement.report.line,current_line_accounts:"
 msgid "Current Detail"
-msgstr "Detall Actual"
+msgstr "Detall actual"
 
 msgctxt "field:account.financial.statement.report.line,current_value:"
 msgid "Current Value"
@@ -185,20 +185,20 @@ msgstr "Usuari creació"
 
 msgctxt "field:account.financial.statement.report.line.account,credit:"
 msgid "Credit"
-msgstr "Crédit"
+msgstr "Credit"
 
 msgctxt ""
 "field:account.financial.statement.report.line.account,currency_digits:"
 msgid "Currency Digits"
-msgstr "Dígits de la moneda"
+msgstr "Decimals de la moneda"
 
 msgctxt "field:account.financial.statement.report.line.account,debit:"
 msgid "Debit"
-msgstr "Debit"
+msgstr "Deure"
 
 msgctxt "field:account.financial.statement.report.line.account,fiscal_year:"
 msgid "Fiscal Year"
-msgstr "Període fiscal"
+msgstr "Exercici fiscal"
 
 msgctxt "field:account.financial.statement.report.line.account,id:"
 msgid "ID"
@@ -227,7 +227,7 @@ msgstr "Nivell de detall"
 msgctxt ""
 "field:account.financial.statement.report.line.detail.start,fiscalyear:"
 msgid "Fiscal Year"
-msgstr "Període fiscal"
+msgstr "Exercici fiscal"
 
 msgctxt "field:account.financial.statement.report.line.detail.start,id:"
 msgid "ID"
@@ -271,7 +271,7 @@ msgstr "Nom"
 
 msgctxt "field:account.financial.statement.template,report_xml:"
 msgid "Report design"
-msgstr "Diseny de l'informe"
+msgstr "Disseny de l'informe"
 
 msgctxt "field:account.financial.statement.template,type:"
 msgid "Type"
@@ -303,7 +303,7 @@ msgstr "Usuari creació"
 
 msgctxt "field:account.financial.statement.template.line,css_class:"
 msgid "CSS Class"
-msgstr "Classe css"
+msgstr "Classe CSS"
 
 msgctxt "field:account.financial.statement.template.line,current_value:"
 msgid "Fiscal year 1 formula"
@@ -424,7 +424,7 @@ msgstr "Els informes de sistema no es poden modificar."
 msgctxt "help:account.financial.statement.template.line,code:"
 msgid "Concept code, may be used in formulas to reference this line"
 msgstr ""
-"Codi del concepte. Es pot fer servir a les fòrmules per fer referència a "
+"Codi del concepte. Es pot fer servir a les fórmules per fer referència a "
 "aquesta línia."
 
 msgctxt "help:account.financial.statement.template.line,css_class:"
@@ -471,45 +471,58 @@ msgctxt "help:account.financial.statement.template.line,sequence:"
 msgid "Lines will be sorted/grouped by this field"
 msgstr "Les línies s'ordenaran/agruparan per aquest camp."
 
+msgctxt "jasper:account.financial.statement.report:"
+msgid "Concept"
+msgstr "Concepte"
+
+#, fuzzy
+msgctxt "jasper:account.financial.statement.report:"
+msgid "Current Value"
+msgstr "Valor actual"
+
+msgctxt "jasper:account.financial.statement.report:"
+msgid "Previous Value"
+msgstr "Valor anterior"
+
 msgctxt "model:account.financial.statement.report,name:"
 msgid "Financial Statement Report"
-msgstr "Informe de balanços comptables"
+msgstr "Informe de balanç comptable"
 
 msgctxt "model:account.financial.statement.report.line,name:"
 msgid "Financial Statement Report Line"
-msgstr "Línia d'informe de balanços comptables"
+msgstr "Línia d'informe de balanç comptable"
 
 msgctxt "model:account.financial.statement.report.line.account,name:"
 msgid "Financial Statement Report Account"
-msgstr "Compte de informe de comptes anuals"
+msgstr "Compte d'informe de balanç comptable"
 
 msgctxt "model:account.financial.statement.report.line.detail.start,name:"
 msgid "Financial Statement Report Account Line Detail Start"
-msgstr "Detall de lína de balanç contable"
+msgstr "Detall de lína de balanç comptable"
 
 msgctxt "model:account.financial.statement.template,name:"
 msgid "Financial Statement Template"
-msgstr "Plantilla de balanços comptables"
+msgstr "Plantilla de balanç comptable"
 
 msgctxt "model:account.financial.statement.template.line,name:"
 msgid "Financial Statement Template Line"
-msgstr "Línia de plantilla de balanços comptables"
+msgstr "Línia de plantilla de balanç comptable"
 
 msgctxt "model:account_financial_statement-account_period_current,name:"
 msgid "Financial Statement Report - Current Periods"
-msgstr "Informe de balanços comptables - Períodes actuals"
+msgstr "Informe de balanç comptable - Períodes actuals"
 
 msgctxt "model:account_financial_statement-account_period_previous,name:"
 msgid "Financial Statement Report - Previous Periods"
-msgstr "Informe de balanços comptables - Períodes anteriors"
+msgstr "Informe de balanç comptable - Períodes anteriors"
 
 msgctxt "model:ir.action,name:act_account_financial_statement"
 msgid "Financial Statement Report"
-msgstr "Informe de balanços comptables"
+msgstr "Informe de balanç comptable"
 
 msgctxt "model:ir.action,name:act_account_financial_statement_template"
 msgid "Account report templates"
-msgstr "Informe de plantilles comptables"
+msgstr "Plantilla de balanç comptable"
 
 msgctxt "model:ir.action,name:act_open_detail"
 msgid "Line Detail"
@@ -523,13 +536,17 @@ msgctxt "model:ir.action,name:act_report_lines"
 msgid "Lines"
 msgstr "Línies"
 
+msgctxt "model:ir.action,name:action_report_pdf"
+msgid "Account Financial Statement"
+msgstr "Informe de balanç comptable"
+
 msgctxt "model:ir.ui.menu,name:menu_account_financial_statement_reports"
 msgid "Financial Statement Reports"
-msgstr "Informes de balanços comptables"
+msgstr "Informes de balanç comptable"
 
 msgctxt "model:ir.ui.menu,name:menu_account_financial_statement_templates"
 msgid "Financial Statement Templates"
-msgstr "Plantilles de balanços comptables"
+msgstr "Plantilles de balanç comptable"
 
 msgctxt "selection:account.financial.statement.report,state:"
 msgid "Calculated"
@@ -647,7 +664,7 @@ msgstr "Detall"
 
 msgctxt "view:account.financial.statement.report.line.account:"
 msgid "Fiscal Year Details"
-msgstr "Detalls del període fiscal"
+msgstr "Detalls exercici fiscal"
 
 msgctxt "view:account.financial.statement.report.line.detail.start:"
 msgid "Open Line Detail"
@@ -687,11 +704,11 @@ msgstr "Esborrany"
 
 msgctxt "view:account.financial.statement.report:"
 msgid "Financial Statement Report"
-msgstr "Informe de balanços comptables"
+msgstr "Informe de balanç comptable"
 
 msgctxt "view:account.financial.statement.report:"
 msgid "Financial Statement Reports"
-msgstr "Informes de balanços comptables"
+msgstr "Informes de balanç comptable"
 
 msgctxt "view:account.financial.statement.report:"
 msgid "Lines"
@@ -711,7 +728,7 @@ msgstr "Estat"
 
 msgctxt "view:account.financial.statement.template.line:"
 msgid "Financial Statement Template Line"
-msgstr "Línia de plantilla de balanços comptables"
+msgstr "Línia de plantilla de balanç comptable"
 
 msgctxt "view:account.financial.statement.template.line:"
 msgid "Style"
@@ -723,7 +740,7 @@ msgstr "Línies de plantilla"
 
 msgctxt "view:account.financial.statement.template:"
 msgid "Financial Statement Template"
-msgstr "Plantilla de balanços comptables"
+msgstr "Plantilla de balanç comptable"
 
 msgctxt "view:account.financial.statement.template:"
 msgid "Information"
@@ -745,4 +762,4 @@ msgstr "Cancel·la"
 msgctxt ""
 "wizard_button:account.financial.statement.report.line.detail,start,select:"
 msgid "Ok"
-msgstr "Accepta"
+msgstr "D'acord"
