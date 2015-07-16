@@ -46,10 +46,10 @@
 	<field name="line-rec_name" class="java.lang.String">
 		<fieldDescription><![CDATA[/data/record/lines-lines/rec_name-rec_name]]></fieldDescription>
 	</field>
-	<field name="line-current_value" class="java.lang.String">
+	<field name="line-current_value" class="java.lang.Number">
 		<fieldDescription><![CDATA[/data/record/lines-lines/current_value-current_value]]></fieldDescription>
 	</field>
-	<field name="line-previous_value" class="java.lang.String">
+	<field name="line-previous_value" class="java.lang.Number">
 		<fieldDescription><![CDATA[/data/record/lines-lines/previous_value-previous_value]]></fieldDescription>
 	</field>
 	<field name="line-css_class" class="java.lang.String">
@@ -59,9 +59,9 @@
 		<fieldDescription><![CDATA[/data/record/id]]></fieldDescription>
 	</field>
 	<sortField name="sequence-sequence"/>
-	<variable name="L" class="java.util.Locale">
-		<variableExpression><![CDATA[$F{lang-lang} != null && $F{lang-lang}.length() == 5 ? new Locale($F{lang-lang}.substring(0,2)) : ( $F{lang-lang} != null && $F{lang-lang}.length() == 2 ? new Locale($F{lang-lang}.substring(0,2)) : 'en')]]></variableExpression>
-		<initialValueExpression><![CDATA[$F{lang-lang} != null && $F{lang-lang}.length() == 5 ? new Locale($F{lang-lang}.substring(0,2)) : ( $F{lang-lang} != null && $F{lang-lang}.length() == 2 ? new Locale($F{lang-lang}.substring(0,2)) : 'en')]]></initialValueExpression>
+	<variable name="L" class="java.util.Locale" resetType="Page">
+		<variableExpression><![CDATA[$F{lang-lang} != null && $F{lang-lang}.length() == 5 ? new Locale($F{lang-lang}) : ( $F{lang-lang} != null && $F{lang-lang}.length() == 2 ? new Locale($F{lang-lang}) : 'en_US')]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{lang-lang} != null && $F{lang-lang}.length() == 5 ? new Locale($F{lang-lang}) : ( $F{lang-lang} != null && $F{lang-lang}.length() == 2 ? new Locale($F{lang-lang}) : 'en_US' )]]></initialValueExpression>
 	</variable>
 	<group name="Lines" isStartNewPage="true" isResetPageNumber="true">
 		<groupExpression><![CDATA[$F{id}]]></groupExpression>
@@ -100,14 +100,14 @@
 	<pageHeader>
 		<band height="42" splitType="Stretch">
 			<textField>
-				<reportElement style="title" x="0" y="10" width="242" height="20"/>
+				<reportElement style="title" x="0" y="10" width="340" height="20"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{report-rec_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="title" x="303" y="10" width="252" height="20"/>
+				<reportElement style="title" x="343" y="10" width="212" height="20"/>
 				<textElement textAlignment="Right">
 					<font size="12"/>
 				</textElement>
@@ -125,13 +125,13 @@
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{line-rec_name}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement style="default" x="303" y="0" width="124" height="20"/>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="303" y="0" width="124" height="20"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{line-current_value}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement style="default" x="427" y="0" width="124" height="20"/>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="427" y="0" width="124" height="20"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{line-previous_value}]]></textFieldExpression>
 			</textField>
