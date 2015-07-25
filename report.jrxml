@@ -143,20 +143,10 @@
 	<pageFooter>
 		<band height="32" splitType="Stretch">
 			<textField>
-				<reportElement x="242" y="6" width="21" height="20"/>
+				<reportElement x="263" y="6" width="21" height="20"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="279" y="6" width="24" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_COUNT}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="263" y="6" width="16" height="20"/>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[/]]></text>
-			</staticText>
 		</band>
 	</pageFooter>
 	<summary>
