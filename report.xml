@@ -87,7 +87,9 @@ copyright notices and license terms. -->
         <record model="ir.action.act_window" id="act_report_lines">
             <field name="name">Lines</field>
             <field name="res_model">account.financial.statement.report.line</field>
-            <field name="domain">[('parent', '=', None), ('report', '=', Eval('active_id'))]</field>
+            <field name="domain"
+                eval="[('parent', '=', None), ('report', '=', Eval('active_id'))]"
+                pyson="1"/>
         </record>
 
         <record model="ir.action.act_window.view"
@@ -239,7 +241,9 @@ copyright notices and license terms. -->
             <field name="global_p" eval="True"/>
         </record>
         <record model="ir.rule" id="rule_report1">
-            <field name="domain">[('company', 'in', [c.id for c in user.companies])]</field>
+            <field name="domain"
+                eval="[('company', 'in', Eval('user', {}).get('companies', []))]"
+                pyson="1"/>
             <field name="rule_group" ref="rule_group_report"/>
         </record>
 
