@@ -475,7 +475,6 @@ msgctxt "jasper:account.financial.statement.report:"
 msgid "Concept"
 msgstr "Concepto"
 
-#, fuzzy
 msgctxt "jasper:account.financial.statement.report:"
 msgid "Current Value"
 msgstr "Valor actual"
