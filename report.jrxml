@@ -60,8 +60,8 @@
 	</field>
 	<sortField name="sequence-sequence"/>
 	<variable name="L" class="java.util.Locale" resetType="Page">
-		<variableExpression><![CDATA[$F{lang-lang} != null && $F{lang-lang}.length() == 5 ? new Locale($F{lang-lang}) : ( $F{lang-lang} != null && $F{lang-lang}.length() == 2 ? new Locale($F{lang-lang}) : 'en_US')]]></variableExpression>
-		<initialValueExpression><![CDATA[$F{lang-lang} != null && $F{lang-lang}.length() == 5 ? new Locale($F{lang-lang}) : ( $F{lang-lang} != null && $F{lang-lang}.length() == 2 ? new Locale($F{lang-lang}) : 'en_US' )]]></initialValueExpression>
+		<variableExpression><![CDATA[$F{lang-lang} != null && $F{lang-lang}.length() == 5 ? new Locale($F{lang-lang}) : ( $F{lang-lang} != null && $F{lang-lang}.length() == 2 ? new Locale($F{lang-lang}) :  $P{REPORT_LOCALE})]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{lang-lang} != null && $F{lang-lang}.length() == 5 ? new Locale($F{lang-lang}) : ( $F{lang-lang} != null && $F{lang-lang}.length() == 2 ? new Locale($F{lang-lang}) :  $P{REPORT_LOCALE} )]]></initialValueExpression>
 	</variable>
 	<group name="Lines" isStartNewPage="true" isResetPageNumber="true" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{id}]]></groupExpression>
