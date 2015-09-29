@@ -1,7 +1,7 @@
 # This file is part of account_financial_statement module for Tryton.
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
-from trytond.model import ModelView, ModelSQL, Workflow, fields
+from trytond.model import ModelView, ModelSQL, Workflow, fields, Unique
 from trytond.wizard import Wizard, StateView, StateAction, StateTransition, \
     Button
 from trytond.transaction import Transaction
@@ -243,14 +243,13 @@ class ReportLine(ModelSQL, ModelView):
     @classmethod
     def __setup__(cls):
         super(ReportLine, cls).__setup__()
+        t = cls.__table__()
         cls._order.insert(0, ('sequence', 'ASC'))
         cls._order.insert(1, ('code', 'ASC'))
         cls._sql_constraints += [
-            ('report_code_uniq', 'unique (report,code)', 'unique_code')
+            ('report_code_uniq', Unique(t, t.report, t.code),
+                'Code line must be unique per report.'),
             ]
-        cls._error_messages.update({
-                'unique_code': 'Code line must be unique per report.',
-                })
         cls._buttons.update({
                 'open_details': {},
                 })
@@ -698,14 +697,13 @@ class TemplateLine(ModelSQL, ModelView):
     @classmethod
     def __setup__(cls):
         super(TemplateLine, cls).__setup__()
+        t = cls.__table__()
         cls._order.insert(0, ('sequence', 'ASC'))
         cls._order.insert(1, ('code', 'ASC'))
         cls._sql_constraints += [
-            ('template_code_uniq', 'unique(template, code)', 'unique_code')
+            ('report_code_uniq', Unique(t, t.template, t.code),
+                'The code must be unique for this template.'),
             ]
-        cls._error_messages.update({
-                'unique_code': 'The code must be unique for this template.',
-                })
 
     @staticmethod
     def default_negate():
