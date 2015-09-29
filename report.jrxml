@@ -63,7 +63,7 @@
 		<variableExpression><![CDATA[$F{lang-lang} != null && $F{lang-lang}.length() == 5 ? new Locale($F{lang-lang}) : ( $F{lang-lang} != null && $F{lang-lang}.length() == 2 ? new Locale($F{lang-lang}) : 'en_US')]]></variableExpression>
 		<initialValueExpression><![CDATA[$F{lang-lang} != null && $F{lang-lang}.length() == 5 ? new Locale($F{lang-lang}) : ( $F{lang-lang} != null && $F{lang-lang}.length() == 2 ? new Locale($F{lang-lang}) : 'en_US' )]]></initialValueExpression>
 	</variable>
-	<group name="Lines" isStartNewPage="true" isResetPageNumber="true">
+	<group name="Lines" isStartNewPage="true" isResetPageNumber="true" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{id}]]></groupExpression>
 		<groupHeader>
 			<band height="45">
@@ -99,14 +99,14 @@
 	</title>
 	<pageHeader>
 		<band height="42" splitType="Stretch">
-			<textField>
+			<textField StretchWithOverflow="true">
 				<reportElement style="title" x="0" y="10" width="340" height="20"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{report-rec_name}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField StretchWithOverflow="true">
 				<reportElement style="title" x="343" y="10" width="212" height="20"/>
 				<textElement textAlignment="Right">
 					<font size="12"/>
