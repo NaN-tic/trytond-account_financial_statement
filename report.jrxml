@@ -99,14 +99,14 @@
 	</title>
 	<pageHeader>
 		<band height="42" splitType="Stretch">
-			<textField StretchWithOverflow="true">
+			<textField isStretchWithOverflow="true">
 				<reportElement style="title" x="0" y="10" width="340" height="20"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{report-rec_name}]]></textFieldExpression>
 			</textField>
-			<textField StretchWithOverflow="true">
+			<textField isStretchWithOverflow="true">
 				<reportElement style="title" x="343" y="10" width="212" height="20"/>
 				<textElement textAlignment="Right">
 					<font size="12"/>
