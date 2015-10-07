@@ -7,6 +7,7 @@ from trytond.wizard import Wizard, StateView, StateAction, StateTransition, \
 from trytond.transaction import Transaction
 from trytond.pyson import Eval, PYSONEncoder
 from trytond.pool import Pool
+from trytond import backend
 from trytond.modules.jasper_reports.jasper import JasperReport
 
 import re
@@ -481,6 +482,7 @@ class ReportLine(ModelSQL, ModelView):
 class ReportLineAccount(ModelSQL, ModelView):
     'Financial Statement Report Account'
     __name__ = 'account.financial.statement.report.line.account'
+    _table = 'account_financial_statement_rep_lin_acco'
     report_line = fields.Many2One('account.financial.statement.report.line',
         'Report Line', ondelete='CASCADE')
     account = fields.Many2One('account.account', 'Account', required=True)
@@ -497,6 +499,17 @@ class ReportLineAccount(ModelSQL, ModelView):
             ('current', 'Current'),
             ('previous', 'Previous'),
             ], 'Fiscal Year')
+
+    @classmethod
+    def __register__(cls, module_name):
+        TableHandler = backend.get('TableHandler')
+        cursor = Transaction().cursor
+
+        # Migration from 3.6: rename table
+        old_table = 'account_financial_statement_report_line_account'
+        new_table = 'account_financial_statement_rep_lin_acco'
+        if TableHandler.table_exist(cursor, old_table):
+            TableHandler.table_rename(cursor, old_table, new_table)
 
     def get_currency_digits(self, name):
         return self.account.currency_digits
