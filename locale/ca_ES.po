@@ -535,6 +535,10 @@ msgctxt "model:ir.action,name:act_report_lines"
 msgid "Lines"
 msgstr "Línies"
 
+msgctxt "model:ir.action,name:act_report_lines"
+msgid "Lines"
+msgstr "Línies"
+
 msgctxt "model:ir.action,name:action_report_pdf"
 msgid "Account Financial Statement"
 msgstr "Informe de balanç comptable"
