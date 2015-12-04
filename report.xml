@@ -180,6 +180,14 @@ copyright notices and license terms. -->
         <record model="ir.model.access"
              id="access_account_financial_statement_report">
             <field name="model" search="[('model', '=', 'account.financial.statement.report')]"/>
+            <field name="perm_read" eval="False"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+        <record model="ir.model.access"
+             id="access_account_financial_statement_report_admin">
+            <field name="model" search="[('model', '=', 'account.financial.statement.report')]"/>
             <field name="group" ref="account.group_account_admin"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
@@ -189,6 +197,14 @@ copyright notices and license terms. -->
 
         <record model="ir.model.access"
              id="access_account_financial_statement_report_line">
+            <field name="model" search="[('model', '=', 'account.financial.statement.report.line')]"/>
+            <field name="perm_read" eval="False"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+        <record model="ir.model.access"
+             id="access_account_financial_statement_report_line_admin">
             <field name="model" search="[('model', '=', 'account.financial.statement.report.line')]"/>
             <field name="group" ref="account.group_account_admin"/>
             <field name="perm_read" eval="True"/>
@@ -201,6 +217,14 @@ copyright notices and license terms. -->
              id="access_account_financial_statement_template">
             <field name="model" search="[('model', '=', 'account.financial.statement.template')]"/>
             <field name="group" ref="account.group_account_admin"/>
+            <field name="perm_read" eval="False"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+        <record model="ir.model.access"
+             id="access_account_financial_statement_template_admin">
+            <field name="model" search="[('model', '=', 'account.financial.statement.template')]"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
             <field name="perm_create" eval="True"/>
@@ -209,6 +233,14 @@ copyright notices and license terms. -->
 
         <record model="ir.model.access"
              id="access_account_financial_statement_template_line">
+            <field name="model" search="[('model', '=', 'account.financial.statement.template.line')]"/>
+            <field name="perm_read" eval="False"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+        <record model="ir.model.access"
+             id="access_account_financial_statement_template_line_admin">
             <field name="model" search="[('model', '=', 'account.financial.statement.template.line')]"/>
             <field name="group" ref="account.group_account_admin"/>
             <field name="perm_read" eval="True"/>
