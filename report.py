@@ -504,6 +504,7 @@ class ReportLineAccount(ModelSQL, ModelView):
     def __register__(cls, module_name):
         TableHandler = backend.get('TableHandler')
         cursor = Transaction().cursor
+        super(ReportLineAccount, cls).__register__(module_name)
 
         # Migration from 3.6: rename table
         old_table = 'account_financial_statement_report_line_account'
