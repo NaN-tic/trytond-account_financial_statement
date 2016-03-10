@@ -503,13 +503,12 @@ class ReportLineAccount(ModelSQL, ModelView):
     @classmethod
     def __register__(cls, module_name):
         TableHandler = backend.get('TableHandler')
-        cursor = Transaction().cursor
 
         # Migration from 3.6: rename table
         old_table = 'account_financial_statement_report_line_account'
         new_table = 'account_financial_statement_rep_lin_acco'
-        if TableHandler.table_exist(cursor, old_table):
-            TableHandler.table_rename(cursor, old_table, new_table)
+        if TableHandler.table_exist(old_table):
+            TableHandler.table_rename(old_table, new_table)
 
         super(ReportLineAccount, cls).__register__(module_name)
 
