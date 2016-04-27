@@ -66,6 +66,8 @@ class Report(Workflow, ModelSQL, ModelView):
         'period', 'Fiscal year 1 periods', states=_STATES, domain=[
             ('fiscalyear', '=', Eval('current_fiscalyear')),
             ], depends=_DEPENDS + ['current_fiscalyear'])
+    current_periods_list = fields.Function(fields.Char('Current Periods List'),
+        'get_periods')
     previous_fiscalyear = fields.Many2One('account.fiscalyear',
         'Fiscal year 2', select=True, states=_STATES, depends=_DEPENDS)
     previous_periods = fields.Many2Many(
@@ -73,6 +75,8 @@ class Report(Workflow, ModelSQL, ModelView):
         'period', 'Fiscal year 2 periods', states=_STATES, domain=[
             ('fiscalyear', '=', Eval('previous_fiscalyear')),
             ], depends=_DEPENDS + ['previous_fiscalyear'])
+    previous_periods_list = fields.Function(
+        fields.Char('Previous Periods List'), 'get_periods')
     lines = fields.One2Many('account.financial.statement.report.line',
         'report', 'Lines', readonly=True)
 
@@ -101,6 +105,20 @@ class Report(Workflow, ModelSQL, ModelView):
     @staticmethod
     def default_state():
         return 'draft'
+
+    @classmethod
+    def get_periods(cls, reports, names):
+        result = {}
+        for report in reports:
+            if 'current_periods_list' in names:
+                result.setdefault('current_periods_list',
+                    {})[report.id] = ", ".join([p.rec_name
+                        for p in report.current_periods])
+            if 'previous_periods_list' in names:
+                result.setdefault('previous_periods_list',
+                    {})[report.id] = ", ".join([p.rec_name
+                        for p in report.previous_periods])
+        return result
 
     @classmethod
     @ModelView.button
