@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="account_financial_statment" language="i18ngroovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="11c43566-2656-47b4-9c58-4003ff2bc2f9">
 	<property name="TRYTON_RELATIONS" value="[&apos;lines&apos;]"/>
 	<property name="ireport.zoom" value="1.9487171000000014"/>
-	<property name="ireport.x" value="19"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="default">
 		<conditionalStyle>
@@ -96,12 +96,16 @@
 					<textFieldExpression><![CDATA[tr($V{L},"Concept")]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement style="header" x="303" y="16" width="124" height="18" uuid="a635f81d-fcdb-4db8-af1f-a8da74a79db5"/>
+					<reportElement style="header" x="303" y="16" width="124" height="18" uuid="a635f81d-fcdb-4db8-af1f-a8da74a79db5">
+						<printWhenExpression><![CDATA[$F{current_fiscalyear} != null && $F{current_fiscalyear} != ""]]></printWhenExpression>
+					</reportElement>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[tr($V{L},"Current Value") + " (" + $F{current_fiscalyear} + "):"]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement style="header" x="427" y="16" width="124" height="18" uuid="433221ca-37ec-493f-883d-24ed5e0b504a"/>
+					<reportElement style="header" x="427" y="16" width="124" height="18" uuid="433221ca-37ec-493f-883d-24ed5e0b504a">
+						<printWhenExpression><![CDATA[$F{previous_fiscalyear} != null && $F{previous_fiscalyear} != ""]]></printWhenExpression>
+					</reportElement>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[tr($V{L},"Previous Value") + " (" + $F{previous_fiscalyear} + "):"]]></textFieldExpression>
 				</textField>
@@ -123,42 +127,50 @@
 	<pageHeader>
 		<band height="66" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
-				<reportElement style="title" x="0" y="10" width="340" height="20" uuid="eb352bab-b8e1-4b50-a709-c5d4e0e8684b"/>
+				<reportElement style="title" x="0" y="10" width="311" height="20" uuid="eb352bab-b8e1-4b50-a709-c5d4e0e8684b"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{report-rec_name}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement style="title" x="343" y="10" width="212" height="20" uuid="4cf08399-4731-4e1c-a47f-b32529ff951a"/>
+				<reportElement style="title" x="311" y="10" width="244" height="20" uuid="4cf08399-4731-4e1c-a47f-b32529ff951a"/>
 				<textElement textAlignment="Right">
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{company-rec_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="7" y="34" width="90" height="13" uuid="d6af1a0c-3053-45e9-86d9-a9c2e2578c64"/>
+				<reportElement x="7" y="34" width="90" height="13" uuid="d6af1a0c-3053-45e9-86d9-a9c2e2578c64">
+					<printWhenExpression><![CDATA[$F{current_fiscalyear} != null && $F{current_fiscalyear} != ""]]></printWhenExpression>
+				</reportElement>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[tr($V{L},"Current Value") + " (" + $F{current_fiscalyear} + "): "]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="7" y="47" width="90" height="13" uuid="0555dc34-1157-4741-ac3e-7e4931736c0a"/>
+				<reportElement x="7" y="47" width="90" height="13" uuid="0555dc34-1157-4741-ac3e-7e4931736c0a">
+					<printWhenExpression><![CDATA[$F{previous_fiscalyear} != null && $F{previous_fiscalyear} != ""]]></printWhenExpression>
+				</reportElement>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[tr($V{L},"Previous Value") + " (" + $F{previous_fiscalyear} + "): "]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="97" y="34" width="214" height="13" uuid="4f7dca28-fa79-4ad9-b7c9-e45b2a80bda5"/>
+				<reportElement x="97" y="34" width="214" height="13" uuid="4f7dca28-fa79-4ad9-b7c9-e45b2a80bda5">
+					<printWhenExpression><![CDATA[$F{current_fiscalyear} != null && $F{current_fiscalyear} != ""]]></printWhenExpression>
+				</reportElement>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new SimpleDateFormat("dd'-'MM'-'yyyy").format($F{current_periods_start_date}) + "  /  " + new SimpleDateFormat("dd'-'MM'-'yyyy").format($F{current_periods_end_date})]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="97" y="47" width="214" height="13" uuid="f4eff261-c0c7-4b5e-8671-8b7f64ce3cb6"/>
+				<reportElement x="97" y="47" width="214" height="13" uuid="f4eff261-c0c7-4b5e-8671-8b7f64ce3cb6">
+					<printWhenExpression><![CDATA[$F{previous_fiscalyear} != null && $F{previous_fiscalyear} != ""]]></printWhenExpression>
+				</reportElement>
 				<textElement>
 					<font size="8"/>
 				</textElement>
@@ -176,12 +188,16 @@
 				<textFieldExpression><![CDATA[$F{line-rec_name}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
-				<reportElement x="303" y="0" width="124" height="20" uuid="91c60a2a-4526-4e95-b0b2-455e95aa6193"/>
+				<reportElement x="303" y="0" width="124" height="20" uuid="91c60a2a-4526-4e95-b0b2-455e95aa6193">
+					<printWhenExpression><![CDATA[$F{current_fiscalyear} != null && $F{current_fiscalyear} != ""]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{line-current_value}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
-				<reportElement x="427" y="0" width="124" height="20" uuid="452a915b-ea8b-4fb9-8109-1aecb23f3f62"/>
+				<reportElement x="427" y="0" width="124" height="20" uuid="452a915b-ea8b-4fb9-8109-1aecb23f3f62">
+					<printWhenExpression><![CDATA[$F{previous_fiscalyear} != null && $F{previous_fiscalyear} != ""]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{line-previous_value}]]></textFieldExpression>
 			</textField>
