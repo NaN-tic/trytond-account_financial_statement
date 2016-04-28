@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="account_financial_statment" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="11c43566-2656-47b4-9c58-4003ff2bc2f9">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="account_financial_statment" language="i18ngroovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="11c43566-2656-47b4-9c58-4003ff2bc2f9">
 	<property name="TRYTON_RELATIONS" value="[&apos;lines&apos;]"/>
 	<property name="ireport.zoom" value="1.9487171000000014"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="19"/>
 	<property name="ireport.y" value="0"/>
 	<style name="default">
 		<conditionalStyle>
@@ -64,11 +64,23 @@
 	<field name="previous_fiscalyear" class="java.lang.String">
 		<fieldDescription><![CDATA[/data/record/previous_fiscalyear/rec_name]]></fieldDescription>
 	</field>
-	<field name="current_periods" class="java.lang.String">
+	<field name="current_periods_list" class="java.lang.String">
 		<fieldDescription><![CDATA[/data/record/current_periods_list]]></fieldDescription>
 	</field>
-	<field name="previous_periods" class="java.lang.String">
+	<field name="previous_periods_list" class="java.lang.String">
 		<fieldDescription><![CDATA[/data/record/previous_periods_list]]></fieldDescription>
+	</field>
+	<field name="current_periods_start_date" class="java.util.Date">
+		<fieldDescription><![CDATA[/data/record/current_periods_start_date]]></fieldDescription>
+	</field>
+	<field name="current_periods_end_date" class="java.util.Date">
+		<fieldDescription><![CDATA[/data/record/current_periods_end_date]]></fieldDescription>
+	</field>
+	<field name="previous_periods_start_date" class="java.util.Date">
+		<fieldDescription><![CDATA[/data/record/previous_periods_start_date]]></fieldDescription>
+	</field>
+	<field name="previous_periods_end_date" class="java.util.Date">
+		<fieldDescription><![CDATA[/data/record/previous_periods_end_date]]></fieldDescription>
 	</field>
 	<sortField name="sequence-sequence"/>
 	<variable name="L" class="java.util.Locale" resetType="Page">
@@ -86,12 +98,12 @@
 				<textField isBlankWhenNull="true">
 					<reportElement style="header" x="303" y="16" width="124" height="18" uuid="a635f81d-fcdb-4db8-af1f-a8da74a79db5"/>
 					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[tr($V{L},"Current Value") + ": (" + $F{current_fiscalyear} + ")"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[tr($V{L},"Current Value") + " (" + $F{current_fiscalyear} + "):"]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement style="header" x="427" y="16" width="124" height="18" uuid="433221ca-37ec-493f-883d-24ed5e0b504a"/>
 					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[tr($V{L},"Previous Value") + ": (" + $F{previous_fiscalyear} + ")"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[tr($V{L},"Previous Value") + " (" + $F{previous_fiscalyear} + "):"]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement x="0" y="33" width="551" height="1" uuid="3b8efa9c-da3e-412b-9753-84d6c756fb29"/>
@@ -125,32 +137,32 @@
 				<textFieldExpression><![CDATA[$F{company-rec_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="4" y="34" width="80" height="13" uuid="d6af1a0c-3053-45e9-86d9-a9c2e2578c64"/>
+				<reportElement x="7" y="34" width="90" height="13" uuid="d6af1a0c-3053-45e9-86d9-a9c2e2578c64"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[tr($V{L},"Current Value") + ": (" + $F{current_fiscalyear} + "): "]]></textFieldExpression>
+				<textFieldExpression><![CDATA[tr($V{L},"Current Value") + " (" + $F{current_fiscalyear} + "): "]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="4" y="47" width="80" height="13" uuid="0555dc34-1157-4741-ac3e-7e4931736c0a"/>
+				<reportElement x="7" y="47" width="90" height="13" uuid="0555dc34-1157-4741-ac3e-7e4931736c0a"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[tr($V{L},"Previous Value") + ": (" + $F{previous_fiscalyear} + "): "]]></textFieldExpression>
+				<textFieldExpression><![CDATA[tr($V{L},"Previous Value") + " (" + $F{previous_fiscalyear} + "): "]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="84" y="34" width="465" height="13" isPrintWhenDetailOverflows="true" uuid="bcf01a03-3ab0-43cf-b174-946307790e7f"/>
+			<textField pattern="">
+				<reportElement x="97" y="34" width="214" height="13" uuid="4f7dca28-fa79-4ad9-b7c9-e45b2a80bda5"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{current_periods}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd'-'MM'-'yyyy").format($F{current_periods_start_date}) + "  /  " + new SimpleDateFormat("dd'-'MM'-'yyyy").format($F{current_periods_end_date})]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="84" y="47" width="465" height="13" isPrintWhenDetailOverflows="true" uuid="715fbccf-1c23-4b0f-ad7a-b40617599e3c"/>
+			<textField pattern="">
+				<reportElement x="97" y="47" width="214" height="13" uuid="f4eff261-c0c7-4b5e-8671-8b7f64ce3cb6"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{previous_periods}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd'-'MM'-'yyyy").format($F{previous_periods_start_date}) + "  /  " + new SimpleDateFormat("dd'-'MM'-'yyyy").format($F{previous_periods_end_date})]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
