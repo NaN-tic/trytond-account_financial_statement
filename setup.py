@@ -10,7 +10,9 @@ import ConfigParser
 
 MODULE = 'account_financial_statement'
 PREFIX = 'trytonspain'
-MODULE2PREFIX = {}
+MODULE2PREFIX = {
+    'jasper_reports': 'trytonspain',
+    }
 
 
 def read(fname):
