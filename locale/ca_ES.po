@@ -1,4 +1,4 @@
-# 
+#
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
@@ -6,17 +6,9 @@ msgctxt "error:account.financial.statement.report.line:"
 msgid "Code line must be unique per report."
 msgstr "El codi de la línia ha de ser únic en l'informe."
 
-msgctxt "error:account.financial.statement.report.line:"
-msgid "unique_code"
-msgstr "Codi únic"
-
 msgctxt "error:account.financial.statement.template.line:"
 msgid "The code must be unique for this template."
 msgstr "El codi ha de ser únic per aquesta plantilla."
-
-msgctxt "error:account.financial.statement.template.line:"
-msgid "unique_code"
-msgstr "Codi únic"
 
 msgctxt "field:account.financial.statement.report,calculation_date:"
 msgid "Calculation date"
@@ -42,6 +34,18 @@ msgctxt "field:account.financial.statement.report,current_periods:"
 msgid "Fiscal year 1 periods"
 msgstr "Períodes de l'exercici fiscal 1"
 
+msgctxt "field:account.financial.statement.report,current_periods_end_date:"
+msgid "Current Periods Dates"
+msgstr "Dates períodes actual"
+
+msgctxt "field:account.financial.statement.report,current_periods_list:"
+msgid "Current Periods List"
+msgstr "LLista períodes actual"
+
+msgctxt "field:account.financial.statement.report,current_periods_start_date:"
+msgid ""
+msgstr ""
+
 msgctxt "field:account.financial.statement.report,id:"
 msgid "ID"
 msgstr "ID"
@@ -61,6 +65,19 @@ msgstr "Exercici fiscal 2"
 msgctxt "field:account.financial.statement.report,previous_periods:"
 msgid "Fiscal year 2 periods"
 msgstr "Períodes de l'exercici fiscal 2"
+
+msgctxt "field:account.financial.statement.report,previous_periods_end_date:"
+msgid "Previous Periods Dates"
+msgstr "Dates períodes previstos"
+
+msgctxt "field:account.financial.statement.report,previous_periods_list:"
+msgid "Previous Periods List"
+msgstr "Llista períodes previstos"
+
+msgctxt ""
+"field:account.financial.statement.report,previous_periods_start_date:"
+msgid "Previous Periods Dates"
+msgstr "Dates períodes previstos"
 
 msgctxt "field:account.financial.statement.report,rec_name:"
 msgid "Name"
