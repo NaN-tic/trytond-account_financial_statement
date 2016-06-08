@@ -292,5 +292,13 @@ copyright notices and license terms. -->
             <field name="model">account.financial.statement.report,-1</field>
             <field name="action" ref="action_report_pdf"/>
         </record>
+
+        <!-- Deactivate standard account reports -->
+        <record model="ir.ui.menu" id="account.menu_open_balance_sheet">
+            <field name="active" eval="False"/>
+        </record>
+        <record model="ir.ui.menu" id="account.menu_open_income_statement">
+            <field name="active" eval="False"/>
+        </record>
     </data>
 </tryton>
