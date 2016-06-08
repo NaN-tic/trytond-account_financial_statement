@@ -11,7 +11,7 @@ from trytond import backend
 from trytond.modules.jasper_reports.jasper import JasperReport
 
 import re
-from datetime import datetime
+from datetime import datetime, date
 from decimal import Decimal
 
 __all__ = [
@@ -67,6 +67,12 @@ class Report(Workflow, ModelSQL, ModelView):
         'period', 'Fiscal year 1 periods', states=_STATES, domain=[
             ('fiscalyear', '=', Eval('current_fiscalyear')),
             ], depends=_DEPENDS + ['current_fiscalyear'])
+    current_periods_list = fields.Function(fields.Char('Current Periods List'),
+        'get_periods')
+    current_periods_start_date = fields.Function(
+        fields.Char('Current Periods Dates'), 'get_dates')
+    current_periods_end_date = fields.Function(
+        fields.Char('Current Periods Dates'), 'get_dates')
     previous_fiscalyear = fields.Many2One('account.fiscalyear',
         'Fiscal year 2', select=True, states=_STATES, depends=_DEPENDS)
     previous_periods = fields.Many2Many(
@@ -74,6 +80,12 @@ class Report(Workflow, ModelSQL, ModelView):
         'period', 'Fiscal year 2 periods', states=_STATES, domain=[
             ('fiscalyear', '=', Eval('previous_fiscalyear')),
             ], depends=_DEPENDS + ['previous_fiscalyear'])
+    previous_periods_list = fields.Function(
+        fields.Char('Previous Periods List'), 'get_periods')
+    previous_periods_start_date = fields.Function(
+        fields.Char('Previous Periods Dates'), 'get_dates')
+    previous_periods_end_date = fields.Function(
+        fields.Char('Previous Periods Dates'), 'get_dates')
     lines = fields.One2Many('account.financial.statement.report.line',
         'report', 'Lines', readonly=True)
 
@@ -102,6 +114,56 @@ class Report(Workflow, ModelSQL, ModelView):
     @staticmethod
     def default_state():
         return 'draft'
+
+    @classmethod
+    def get_periods(cls, reports, names):
+        result = {}
+        for report in reports:
+            if 'current_periods_list' in names:
+                result.setdefault('current_periods_list',
+                    {})[report.id] = ", ".join([p.rec_name
+                        for p in report.current_periods])
+            if 'previous_periods_list' in names:
+                result.setdefault('previous_periods_list',
+                    {})[report.id] = ", ".join([p.rec_name
+                        for p in report.previous_periods])
+        return result
+
+    @classmethod
+    def get_dates(cls, reports, names):
+        result = {}
+        for report in reports:
+            if 'current_periods_start_date' in names:
+                start = date.today()
+                for period in report.current_periods:
+                    if start > period.start_date:
+                        start = period.start_date
+                result.setdefault('current_periods_start_date',
+                    {})[report.id] = datetime.combine(start,
+                    datetime.min.time())
+            if 'current_periods_end_date' in names:
+                end = report.current_periods[0].end_date
+                for period in report.current_periods:
+                    if end < period.end_date:
+                        end = period.end_date
+                result.setdefault('current_periods_end_date',
+                    {})[report.id] = datetime.combine(end, datetime.min.time())
+            if 'previous_periods_start_date' in names:
+                start = date.today()
+                for period in report.previous_periods:
+                    if start > period.start_date:
+                        start = period.start_date
+                result.setdefault('previous_periods_start_date',
+                    {})[report.id] = datetime.combine(start,
+                    datetime.min.time())
+            if 'previous_periods_end_date' in names:
+                end = report.previous_periods[0].end_date
+                for period in report.previous_periods:
+                    if end < period.end_date:
+                        end = period.end_date
+                result.setdefault('previous_periods_end_date',
+                    {})[report.id] = datetime.combine(end, datetime.min.time())
+        return result
 
     @classmethod
     @ModelView.button
