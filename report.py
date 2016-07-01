@@ -759,7 +759,7 @@ class Template(ModelSQL, ModelView):
         if default is None:
             default = {}
         default = default.copy()
-        if 'lines' in default:
+        if 'lines' not in default:
             default['lines'] = None
         new_templates = []
         for template in templates:
