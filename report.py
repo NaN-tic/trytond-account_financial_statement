@@ -5,7 +5,7 @@ from trytond.model import ModelView, ModelSQL, Workflow, fields, Unique
 from trytond.wizard import Wizard, StateView, StateAction, StateTransition, \
     Button
 from trytond.transaction import Transaction
-from trytond.pyson import Eval, PYSONEncoder
+from trytond.pyson import Eval, PYSONEncoder, Bool
 from trytond.pool import Pool
 from trytond import backend
 from trytond.modules.jasper_reports.jasper import JasperReport
@@ -44,16 +44,18 @@ _VALUE_FORMULA_HELP = ('Value calculation formula: Depending on this formula '
     '- Concept codes separated by "+" ("11000+12000"): Sum of those '
     'concepts values.')
 
+STATES = [
+    ('draft', 'Draft'),
+    ('calculated', 'Calculated'),
+    ]
+
 
 class Report(Workflow, ModelSQL, ModelView):
     'Financial Statement Report'
     __name__ = 'account.financial.statement.report'
 
     name = fields.Char('Name', required=True, select=True)
-    state = fields.Selection([
-            ('draft', 'Draft'),
-            ('calculated', 'Calculated'),
-            ], 'State', readonly=True)
+    state = fields.Selection(STATES, 'State', readonly=True)
     template = fields.Many2One('account.financial.statement.template',
         'Template', ondelete='SET NULL', required=True, select=True,
         states=_STATES, depends=_DEPENDS)
@@ -251,57 +253,65 @@ class ReportLine(ModelSQL, ModelView):
     formula of the linked template line.
     """
     __name__ = 'account.financial.statement.report.line'
+    _states = {
+        'readonly': Eval('report_state') != 'draft',
+        }
+    _depends = ['report_state']
 
-    name = fields.Char('Name', required=True, select=True)
+    name = fields.Char('Name', required=True, select=True, states=_states,
+        depends=_depends)
     report = fields.Many2One('account.financial.statement.report', 'Report',
-        required=True, ondelete='CASCADE')
+        required=True, ondelete='CASCADE',
+        states={
+            'readonly': _states['readonly'] & Bool(Eval('report')),
+            },
+        depends=_depends + ['report'])
     # Concept official code (as specified by normalized models,
     # will be used when printing)
-    code = fields.Char('Code', required=True, select=True)
+    code = fields.Char('Code', required=True, select=True, states=_states,
+        depends=_depends)
     notes = fields.Text('Notes')
-    current_value = fields.Numeric('Current Value', digits=(16, 2))
-    previous_value = fields.Numeric('Previous value', digits=(16, 2))
-    calculation_date = fields.DateTime('Calculation date')
-    template_line = fields.Many2One('account.financial.statement.template.line',
-        'Line template', ondelete='SET NULL')
+    current_value = fields.Numeric('Current Value', digits=(16, 2),
+        states=_states, depends=_depends)
+    previous_value = fields.Numeric('Previous value', digits=(16, 2),
+        states=_states, depends=_depends)
+    calculation_date = fields.DateTime('Calculation date', readonly=True)
+    template_line = fields.Many2One(
+        'account.financial.statement.template.line', 'Line template',
+        ondelete='SET NULL', states=_states, depends=_depends)
     parent = fields.Many2One('account.financial.statement.report.line',
-        'Parent', ondelete='CASCADE', domain=[
+        'Parent', ondelete='CASCADE',
+        domain=[
             ('report', '=', Eval('report')),
-            ], depends=['report'])
+            ],
+        states=_states, depends=_depends + ['report'])
     children = fields.One2Many('account.financial.statement.report.line',
-        'parent', 'Children', domain=[
+        'parent', 'Children',
+        domain=[
             ('report', '=', Eval('report')),
-            ], depends=['report'])
+            ],
+        states=_states, depends=_depends + ['report'])
 
     # Order sequence, it's also used for grouping into sections,
     # that's why it is a char
-    sequence = fields.Char('Sequence')
-    css_class = fields.Selection(CSS_CLASSES, 'CSS Class')
+    sequence = fields.Char('Sequence', states=_states, depends=_depends)
+    css_class = fields.Selection(CSS_CLASSES, 'CSS Class', states=_states,
+        depends=_depends)
     line_accounts = fields.One2Many(
         'account.financial.statement.report.line.account',
-        'report_line', 'Line Accounts')
+        'report_line', 'Line Accounts', states=_states, depends=_depends)
     current_line_accounts = fields.Function(fields.One2Many(
             'account.financial.statement.report.line.account', 'report_line',
-            'Current Detail'), 'get_line_accounts')
+            'Current Detail', states=_states, depends=_depends),
+        'get_line_accounts')
     previous_line_accounts = fields.Function(fields.One2Many(
             'account.financial.statement.report.line.account', 'report_line',
-            'Previous Detail'), 'get_line_accounts')
+            'Previous Detail', states=_states, depends=_depends),
+        'get_line_accounts')
+    report_state = fields.Function(fields.Selection(STATES, 'Report State'),
+        'on_change_with_report_state')
 
-    @classmethod
-    def get_line_accounts(cls, report_lines, names):
-        result = {}
-        for report_line in report_lines:
-            if 'current_line_accounts' in names:
-                result.setdefault('current_line_accounts',
-                    {})[report_line.id] = [x.id
-                        for x in report_line.line_accounts
-                        if x.fiscal_year == 'current']
-            if 'previous_line_accounts' in names:
-                result.setdefault('previous_line_accounts',
-                    {})[report_line.id] = [x.id
-                        for x in report_line.line_accounts
-                        if x.fiscal_year == 'previous']
-        return result
+    del _states, _depends
 
     @classmethod
     def __setup__(cls):
@@ -321,6 +331,11 @@ class ReportLine(ModelSQL, ModelView):
     def default_css_class():
         return 'default'
 
+    @fields.depends('report')
+    def on_change_with_report_state(self, name=None):
+        if self.report:
+            return self.report.state
+
     def get_rec_name(self, name):
         if self.code:
             return '[%s] %s' % (self.code, self.name)
@@ -334,6 +349,22 @@ class ReportLine(ModelSQL, ModelView):
                     order=[]))
             return [('id', 'in', ids)]
         return [('name',) + tuple(clause[1:])]
+
+    @classmethod
+    def get_line_accounts(cls, report_lines, names):
+        result = {}
+        for report_line in report_lines:
+            if 'current_line_accounts' in names:
+                result.setdefault('current_line_accounts',
+                    {})[report_line.id] = [x.id
+                        for x in report_line.line_accounts
+                        if x.fiscal_year == 'current']
+            if 'previous_line_accounts' in names:
+                result.setdefault('previous_line_accounts',
+                    {})[report_line.id] = [x.id
+                        for x in report_line.line_accounts
+                        if x.fiscal_year == 'previous']
+        return result
 
     def refresh_values(self):
         """
