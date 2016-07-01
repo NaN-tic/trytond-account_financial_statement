@@ -211,9 +211,9 @@ class Report(Workflow, ModelSQL, ModelView):
         if default is None:
             default = {}
         default = default.copy()
-        if not 'lines' in default:
+        if 'lines' not in default:
             default['lines'] = None
-        if not 'calculation_date' in default:
+        if 'calculation_date' not in default:
             default['calculation_date'] = None
         return super(Report, cls).copy(reports, default=default)
 
@@ -749,7 +749,7 @@ class Template(ModelSQL, ModelView):
         if default is None:
             default = {}
         default = default.copy()
-        if not 'lines' in default:
+        if 'lines' not in default:
             default['lines'] = None
         new_templates = []
         for template in templates:
