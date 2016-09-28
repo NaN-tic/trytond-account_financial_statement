@@ -153,16 +153,26 @@ class Report(Workflow, ModelSQL, ModelView):
                 for period in report.previous_periods:
                     if start > period.start_date:
                         start = period.start_date
+                if not report.previous_periods:
+                    d = None
+                else:
+                    d = datetime.combine(start, datetime.min.time())
                 result.setdefault('previous_periods_start_date',
-                    {})[report.id] = datetime.combine(start,
-                    datetime.min.time())
+                    {})[report.id] = d
             if 'previous_periods_end_date' in names:
-                end = report.previous_periods[0].end_date
+                end = None
+                if report.previous_periods:
+                    end = report.previous_periods[0].end_date
+
                 for period in report.previous_periods:
                     if end < period.end_date:
                         end = period.end_date
+                if report.previous_periods:
+                    d = datetime.combine(end, datetime.min.time())
+                else:
+                    d = None
                 result.setdefault('previous_periods_end_date',
-                    {})[report.id] = datetime.combine(end, datetime.min.time())
+                    {})[report.id] = d
         return result
 
     @classmethod
@@ -209,9 +219,9 @@ class Report(Workflow, ModelSQL, ModelView):
         if default is None:
             default = {}
         default = default.copy()
-        if not 'lines' in default:
+        if 'lines' not in default:
             default['lines'] = None
-        if not 'calculation_date' in default:
+        if 'calculation_date' not in default:
             default['calculation_date'] = None
         return super(Report, cls).copy(reports, default=default)
 
@@ -718,7 +728,7 @@ class Template(ModelSQL, ModelView):
         if default is None:
             default = {}
         default = default.copy()
-        if not 'lines' in default:
+        if 'lines' in default:
             default['lines'] = None
         new_templates = []
         for template in templates:
