@@ -155,16 +155,26 @@ class Report(Workflow, ModelSQL, ModelView):
                 for period in report.previous_periods:
                     if start > period.start_date:
                         start = period.start_date
+                if not report.previous_periods:
+                    d = None
+                else:
+                    d = datetime.combine(start, datetime.min.time())
                 result.setdefault('previous_periods_start_date',
-                    {})[report.id] = datetime.combine(start,
-                    datetime.min.time())
+                    {})[report.id] = d
             if 'previous_periods_end_date' in names:
-                end = report.previous_periods[0].end_date
+                end = None
+                if report.previous_periods:
+                    end = report.previous_periods[0].end_date
+
                 for period in report.previous_periods:
                     if end < period.end_date:
                         end = period.end_date
+                if report.previous_periods:
+                    d = datetime.combine(end, datetime.min.time())
+                else:
+                    d = None
                 result.setdefault('previous_periods_end_date',
-                    {})[report.id] = datetime.combine(end, datetime.min.time())
+                    {})[report.id] = d
         return result
 
     @classmethod
@@ -311,7 +321,21 @@ class ReportLine(ModelSQL, ModelView):
     report_state = fields.Function(fields.Selection(STATES, 'Report State'),
         'on_change_with_report_state')
 
-    del _states, _depends
+    @classmethod
+    def get_line_accounts(cls, report_lines, names):
+        result = {}
+        for report_line in report_lines:
+            if 'current_line_accounts' in names:
+                result.setdefault('current_line_accounts',
+                    {})[report_line.id] = [x.id
+                        for x in report_line.line_accounts
+                        if x.fiscal_year == 'current']
+            if 'previous_line_accounts' in names:
+                result.setdefault('previous_line_accounts',
+                    {})[report_line.id] = [x.id
+                        for x in report_line.line_accounts
+                        if x.fiscal_year == 'previous']
+        return result
 
     @classmethod
     def __setup__(cls):
@@ -331,11 +355,6 @@ class ReportLine(ModelSQL, ModelView):
     def default_css_class():
         return 'default'
 
-    @fields.depends('report')
-    def on_change_with_report_state(self, name=None):
-        if self.report:
-            return self.report.state
-
     def get_rec_name(self, name):
         if self.code:
             return '[%s] %s' % (self.code, self.name)
@@ -349,22 +368,6 @@ class ReportLine(ModelSQL, ModelView):
                     order=[]))
             return [('id', 'in', ids)]
         return [('name',) + tuple(clause[1:])]
-
-    @classmethod
-    def get_line_accounts(cls, report_lines, names):
-        result = {}
-        for report_line in report_lines:
-            if 'current_line_accounts' in names:
-                result.setdefault('current_line_accounts',
-                    {})[report_line.id] = [x.id
-                        for x in report_line.line_accounts
-                        if x.fiscal_year == 'current']
-            if 'previous_line_accounts' in names:
-                result.setdefault('previous_line_accounts',
-                    {})[report_line.id] = [x.id
-                        for x in report_line.line_accounts
-                        if x.fiscal_year == 'previous']
-        return result
 
     def refresh_values(self):
         """
