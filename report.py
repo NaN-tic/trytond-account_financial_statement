@@ -144,12 +144,19 @@ class Report(Workflow, ModelSQL, ModelView):
                     {})[report.id] = datetime.combine(start,
                     datetime.min.time())
             if 'current_periods_end_date' in names:
-                end = report.current_periods[0].end_date
+                end = None
+                if report.current_periods:
+                    end = report.current_periods[0].end_date
+
                 for period in report.current_periods:
                     if end < period.end_date:
                         end = period.end_date
+                if report.current_periods:
+                    d = datetime.combine(end, datetime.min.time())
+                else:
+                    d = None
                 result.setdefault('current_periods_end_date',
-                    {})[report.id] = datetime.combine(end, datetime.min.time())
+                    {})[report.id] = d
             if 'previous_periods_start_date' in names:
                 start = date.today()
                 for period in report.previous_periods:
