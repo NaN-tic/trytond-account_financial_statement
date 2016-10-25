@@ -174,7 +174,7 @@ copyright notices and license terms. -->
                 name="Financial Statement Templates"
                 parent="account.menu_account_configuration"
                 action="act_account_financial_statement_template"
-                sequence="50"/>
+                sequence="100"/>
 
         <!-- Permisions -->
         <record model="ir.model.access"
