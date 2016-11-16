@@ -20,11 +20,11 @@ msgstr "Empresa"
 
 msgctxt "field:account.financial.statement.report,create_date:"
 msgid "Create Date"
-msgstr "Data creació"
+msgstr "Data de creació"
 
 msgctxt "field:account.financial.statement.report,create_uid:"
 msgid "Create User"
-msgstr "Usuari creació"
+msgstr "Usuari de creació"
 
 msgctxt "field:account.financial.statement.report,current_fiscalyear:"
 msgid "Fiscal year 1"
@@ -93,11 +93,11 @@ msgstr "Plantilla"
 
 msgctxt "field:account.financial.statement.report,write_date:"
 msgid "Write Date"
-msgstr "Data modificació"
+msgstr "Data de modificació"
 
 msgctxt "field:account.financial.statement.report,write_uid:"
 msgid "Write User"
-msgstr "Usuari modificació"
+msgstr "Usuari de modificació"
 
 msgctxt "field:account.financial.statement.report.line,calculation_date:"
 msgid "Calculation date"
@@ -113,11 +113,11 @@ msgstr "Codi"
 
 msgctxt "field:account.financial.statement.report.line,create_date:"
 msgid "Create Date"
-msgstr "Data creació"
+msgstr "Data de creació"
 
 msgctxt "field:account.financial.statement.report.line,create_uid:"
 msgid "Create User"
-msgstr "Usuari creació"
+msgstr "Usuari de creació"
 
 msgctxt "field:account.financial.statement.report.line,css_class:"
 msgid "CSS Class"
@@ -178,11 +178,11 @@ msgstr "Línia de la plantilla"
 
 msgctxt "field:account.financial.statement.report.line,write_date:"
 msgid "Write Date"
-msgstr "Data modificació"
+msgstr "Data de modificació"
 
 msgctxt "field:account.financial.statement.report.line,write_uid:"
 msgid "Write User"
-msgstr "Usuari modificació"
+msgstr "Usuari de modificació"
 
 msgctxt "field:account.financial.statement.report.line.account,account:"
 msgid "Account"
@@ -194,11 +194,11 @@ msgstr "Saldo"
 
 msgctxt "field:account.financial.statement.report.line.account,create_date:"
 msgid "Create Date"
-msgstr "Data creació"
+msgstr "Data de creació"
 
 msgctxt "field:account.financial.statement.report.line.account,create_uid:"
 msgid "Create User"
-msgstr "Usuari creació"
+msgstr "Usuari de creació"
 
 msgctxt "field:account.financial.statement.report.line.account,credit:"
 msgid "Credit"
@@ -231,11 +231,11 @@ msgstr "Línia d'informe"
 
 msgctxt "field:account.financial.statement.report.line.account,write_date:"
 msgid "Write Date"
-msgstr "Data modificació"
+msgstr "Data de modificació"
 
 msgctxt "field:account.financial.statement.report.line.account,write_uid:"
 msgid "Write User"
-msgstr "Usuari modificació"
+msgstr "Usuari de modificació"
 
 msgctxt "field:account.financial.statement.report.line.detail.start,detail:"
 msgid "Detail Level"
@@ -252,11 +252,11 @@ msgstr "ID"
 
 msgctxt "field:account.financial.statement.template,create_date:"
 msgid "Create Date"
-msgstr "Data creació"
+msgstr "Data de creació"
 
 msgctxt "field:account.financial.statement.template,create_uid:"
 msgid "Create User"
-msgstr "Usuari creació"
+msgstr "Usuari de creació"
 
 msgctxt "field:account.financial.statement.template,cumulate:"
 msgid "Cumulate Balances"
@@ -296,11 +296,11 @@ msgstr "Tipus"
 
 msgctxt "field:account.financial.statement.template,write_date:"
 msgid "Write Date"
-msgstr "Data modificació"
+msgstr "Data de modificació"
 
 msgctxt "field:account.financial.statement.template,write_uid:"
 msgid "Write User"
-msgstr "Usuari modificació"
+msgstr "Usuari de modificació"
 
 msgctxt "field:account.financial.statement.template.line,children:"
 msgid "Children"
@@ -312,11 +312,11 @@ msgstr "Codi"
 
 msgctxt "field:account.financial.statement.template.line,create_date:"
 msgid "Create Date"
-msgstr "Data creació"
+msgstr "Data de creació"
 
 msgctxt "field:account.financial.statement.template.line,create_uid:"
 msgid "Create User"
-msgstr "Usuari creació"
+msgstr "Usuari de creació"
 
 msgctxt "field:account.financial.statement.template.line,css_class:"
 msgid "CSS Class"
@@ -360,20 +360,20 @@ msgstr "Plantilla"
 
 msgctxt "field:account.financial.statement.template.line,write_date:"
 msgid "Write Date"
-msgstr "Data modificació"
+msgstr "Data de modificació"
 
 msgctxt "field:account.financial.statement.template.line,write_uid:"
 msgid "Write User"
-msgstr "Usuari modificació"
+msgstr "Usuari de modificació"
 
 msgctxt ""
 "field:account_financial_statement-account_period_current,create_date:"
 msgid "Create Date"
-msgstr "Data creació"
+msgstr "Data de creació"
 
 msgctxt "field:account_financial_statement-account_period_current,create_uid:"
 msgid "Create User"
-msgstr "Usuari creació"
+msgstr "Usuari de creació"
 
 msgctxt "field:account_financial_statement-account_period_current,id:"
 msgid "ID"
@@ -393,21 +393,21 @@ msgstr "Informe"
 
 msgctxt "field:account_financial_statement-account_period_current,write_date:"
 msgid "Write Date"
-msgstr "Data modificació"
+msgstr "Data de modificació"
 
 msgctxt "field:account_financial_statement-account_period_current,write_uid:"
 msgid "Write User"
-msgstr "Usuari modificació"
+msgstr "Usuari de modificació"
 
 msgctxt ""
 "field:account_financial_statement-account_period_previous,create_date:"
 msgid "Create Date"
-msgstr "Data creació"
+msgstr "Data de creació"
 
 msgctxt ""
 "field:account_financial_statement-account_period_previous,create_uid:"
 msgid "Create User"
-msgstr "Usuari creació"
+msgstr "Usuari de creació"
 
 msgctxt "field:account_financial_statement-account_period_previous,id:"
 msgid "ID"
@@ -428,11 +428,11 @@ msgstr "Informe"
 msgctxt ""
 "field:account_financial_statement-account_period_previous,write_date:"
 msgid "Write Date"
-msgstr "Data modificació"
+msgstr "Data de modificació"
 
 msgctxt "field:account_financial_statement-account_period_previous,write_uid:"
 msgid "Write User"
-msgstr "Usuari modificació"
+msgstr "Usuari de modificació"
 
 msgctxt "help:account.financial.statement.template,type:"
 msgid "System reports cannot be modified"
