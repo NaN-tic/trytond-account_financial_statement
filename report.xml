@@ -274,7 +274,7 @@ copyright notices and license terms. -->
         </record>
         <record model="ir.rule" id="rule_report1">
             <field name="domain"
-                eval="[('company', 'in', Eval('user', {}).get('companies', []))]"
+                eval="[('company', '=', Eval('user', {}).get('company', -1))]"
                 pyson="1"/>
             <field name="rule_group" ref="rule_group_report"/>
         </record>
