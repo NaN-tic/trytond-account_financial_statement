@@ -239,7 +239,7 @@ copyright notices and license terms. -->
             <field name="global_p" eval="True"/>
         </record>
         <record model="ir.rule" id="rule_report1">
-            <field name="domain">[('company', 'in', [c.id for c in user.companies])]</field>
+            <field name="domain">[('company', '=', user.company.id if user.company else None)]</field>
             <field name="rule_group" ref="rule_group_report"/>
         </record>
 
