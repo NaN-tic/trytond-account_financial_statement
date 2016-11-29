@@ -327,6 +327,7 @@ class ReportLine(ModelSQL, ModelView):
         'get_line_accounts')
     report_state = fields.Function(fields.Selection(STATES, 'Report State'),
         'on_change_with_report_state')
+    del _states, _depends
 
     @classmethod
     def get_line_accounts(cls, report_lines, names):
@@ -357,6 +358,11 @@ class ReportLine(ModelSQL, ModelView):
         cls._buttons.update({
                 'open_details': {},
                 })
+
+    @fields.depends('report')
+    def on_change_with_report_state(self, name=None):
+        if self.report:
+            return self.report.state
 
     @staticmethod
     def default_css_class():
