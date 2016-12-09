@@ -40,7 +40,7 @@
 		<fieldDescription><![CDATA[/data/record/company-company/rec_name-rec_name]]></fieldDescription>
 	</field>
 	<field name="company-vat_number" class="java.lang.String">
-		<fieldDescription><![CDATA[/data/record/company/party/vat_number]]></fieldDescription>
+        <fieldDescription><![CDATA[/data/record/company/party/tax_identifier/code]]></fieldDescription>
 	</field>
 	<field name="sequence-sequence" class="java.lang.String">
 		<fieldDescription><![CDATA[/data/record/lines-lines/sequence-sequence]]></fieldDescription>
