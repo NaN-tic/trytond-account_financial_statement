@@ -136,52 +136,37 @@ class Report(Workflow, ModelSQL, ModelView):
         result = {}
         for report in reports:
             if 'current_periods_start_date' in names:
-                start = date.today()
-                for period in report.current_periods:
-                    if start > period.start_date:
-                        start = period.start_date
+                if report.current_periods:
+                    start = min(p.start_date for p in report.current_periods)
+                else:
+                    start = report.current_fiscalyear.start_date
                 result.setdefault('current_periods_start_date',
                     {})[report.id] = datetime.combine(start,
-                    datetime.min.time())
+                        datetime.min.time())
             if 'current_periods_end_date' in names:
-                end = None
                 if report.current_periods:
-                    end = report.current_periods[0].end_date
-
-                for period in report.current_periods:
-                    if end < period.end_date:
-                        end = period.end_date
-                if report.current_periods:
-                    d = datetime.combine(end, datetime.min.time())
+                    end = max(p.end_date for p in report.current_periods)
                 else:
-                    d = None
+                    end = report.current_fiscalyear.end_date
                 result.setdefault('current_periods_end_date',
-                    {})[report.id] = d
+                    {})[report.id] = datetime.combine(end,
+                        datetime.min.time())
             if 'previous_periods_start_date' in names:
-                start = date.today()
-                for period in report.previous_periods:
-                    if start > period.start_date:
-                        start = period.start_date
-                if not report.previous_periods:
-                    d = None
+                if report.previous_periods:
+                    start = min(p.start_date for p in report.previous_periods)
                 else:
-                    d = datetime.combine(start, datetime.min.time())
+                    start = report.previous_fiscalyear.start_date
                 result.setdefault('previous_periods_start_date',
-                    {})[report.id] = d
+                    {})[report.id] = datetime.combine(start,
+                        datetime.min.time())
             if 'previous_periods_end_date' in names:
-                end = None
                 if report.previous_periods:
-                    end = report.previous_periods[0].end_date
-
-                for period in report.previous_periods:
-                    if end < period.end_date:
-                        end = period.end_date
-                if report.previous_periods:
-                    d = datetime.combine(end, datetime.min.time())
+                    end = max(p.end_date for p in report.previous_periods)
                 else:
-                    d = None
+                    end = report.previous_fiscalyear.end_date
                 result.setdefault('previous_periods_end_date',
-                    {})[report.id] = d
+                    {})[report.id] = datetime.combine(end,
+                        datetime.min.time())
         return result
 
     @classmethod
