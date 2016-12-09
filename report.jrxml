@@ -105,14 +105,14 @@
 						<printWhenExpression><![CDATA[$F{current_fiscalyear} != null && $F{current_fiscalyear} != ""]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[tr($V{L},"Fiscal Year 1") + " (" + $F{current_fiscalyear} + "):"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[tr($V{L},"Current") + " (" + $F{current_fiscalyear} + "):"]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement style="header" x="427" y="10" width="124" height="18" uuid="433221ca-37ec-493f-883d-24ed5e0b504a">
 						<printWhenExpression><![CDATA[$F{previous_fiscalyear} != null && $F{previous_fiscalyear} != ""]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[tr($V{L},"Fiscal Year 2") + " (" + $F{previous_fiscalyear} + "):"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[tr($V{L},"Comparision") + " (" + $F{previous_fiscalyear} + "):"]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement x="0" y="27" width="551" height="1" uuid="3b8efa9c-da3e-412b-9753-84d6c756fb29"/>
@@ -152,7 +152,7 @@
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[tr($V{L},"Fiscal Year 1") + " (" + $F{current_fiscalyear} + "): " + new SimpleDateFormat("dd'-'MM'-'yyyy").format($F{current_periods_start_date}) + "  /  " + new SimpleDateFormat("dd'-'MM'-'yyyy").format($F{current_periods_end_date})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[tr($V{L},"Fiscal Year") + " (" + $F{current_fiscalyear} + "): " + new SimpleDateFormat("dd'-'MM'-'yyyy").format($F{current_periods_start_date}) + "  /  " + new SimpleDateFormat("dd'-'MM'-'yyyy").format($F{current_periods_end_date})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="10" y="48" width="350" height="10" uuid="0555dc34-1157-4741-ac3e-7e4931736c0a">
@@ -161,7 +161,7 @@
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[tr($V{L},"Fiscal Year 2") + " (" + $F{previous_fiscalyear} + "): " + new SimpleDateFormat("dd'-'MM'-'yyyy").format($F{previous_periods_start_date}) + "  /  " + new SimpleDateFormat("dd'-'MM'-'yyyy").format($F{previous_periods_end_date})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[tr($V{L},"Comparision Fiscal Year") + " (" + $F{previous_fiscalyear} + "): " + new SimpleDateFormat("dd'-'MM'-'yyyy").format($F{previous_periods_start_date}) + "  /  " + new SimpleDateFormat("dd'-'MM'-'yyyy").format($F{previous_periods_end_date})]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
 				<reportElement x="0" y="17" width="234" height="12" uuid="65dda01a-e420-4b9f-a02d-d494757d3987"/>

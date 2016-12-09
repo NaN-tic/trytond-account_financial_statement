@@ -1,6 +1,12 @@
 # This file is part of account_financial_statement module for Tryton.
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
+import re
+from datetime import datetime, date
+from decimal import Decimal
+
+from sql import Null
+
 from trytond.model import ModelView, ModelSQL, Workflow, fields, Unique
 from trytond.wizard import Wizard, StateView, StateAction, StateTransition, \
     Button
@@ -9,10 +15,6 @@ from trytond.pyson import Eval, PYSONEncoder, Bool
 from trytond.pool import Pool
 from trytond import backend
 from trytond.modules.jasper_reports.jasper import JasperReport
-
-import re
-from datetime import datetime, date
-from decimal import Decimal
 
 __all__ = [
     'Report', 'ReportJasper', 'ReportCurrentPeriods',
@@ -62,11 +64,11 @@ class Report(Workflow, ModelSQL, ModelView):
     calculation_date = fields.DateTime('Calculation date', readonly=True)
     company = fields.Many2One('company.company', 'Company', ondelete='CASCADE',
         readonly=True, required=True)
-    current_fiscalyear = fields.Many2One('account.fiscalyear', 'Fiscal year 1',
+    current_fiscalyear = fields.Many2One('account.fiscalyear', 'Fiscal year',
         select=True, required=True, states=_STATES, depends=_DEPENDS)
     current_periods = fields.Many2Many(
         'account_financial_statement-account_period_current', 'report',
-        'period', 'Fiscal year 1 periods', states=_STATES, domain=[
+        'period', 'Periods', states=_STATES, domain=[
             ('fiscalyear', '=', Eval('current_fiscalyear')),
             ], depends=_DEPENDS + ['current_fiscalyear'])
     current_periods_list = fields.Function(fields.Char('Current Periods List'),
@@ -75,19 +77,33 @@ class Report(Workflow, ModelSQL, ModelView):
         fields.Char('Current Periods Dates'), 'get_dates')
     current_periods_end_date = fields.Function(
         fields.Char('Current Periods Dates'), 'get_dates')
+    comparison = fields.Boolean('Comparison', states=_STATES,
+        depends=_DEPENDS)
     previous_fiscalyear = fields.Many2One('account.fiscalyear',
-        'Fiscal year 2', select=True, states=_STATES, depends=_DEPENDS)
+        'Comparison Fiscal Year', select=True,
+        states={
+            'readonly': _STATES['readonly'],
+            'invisible': ~Eval('comparison'),
+            'required': Eval('comparison', False),
+            },
+        depends=_DEPENDS + ['comparison'])
     previous_periods = fields.Many2Many(
         'account_financial_statement-account_period_previous', 'report',
-        'period', 'Fiscal year 2 periods', states=_STATES, domain=[
+        'period', 'Comparison Periods',
+        domain=[
             ('fiscalyear', '=', Eval('previous_fiscalyear')),
-            ], depends=_DEPENDS + ['previous_fiscalyear'])
+            ],
+        states={
+            'readonly': _STATES['readonly'],
+            'invisible': ~Eval('comparison'),
+            },
+        depends=_DEPENDS + ['comparison', 'previous_fiscalyear'])
     previous_periods_list = fields.Function(
-        fields.Char('Previous Periods List'), 'get_periods')
+        fields.Char('Comparison Periods List'), 'get_periods')
     previous_periods_start_date = fields.Function(
-        fields.Char('Previous Periods Dates'), 'get_dates')
+        fields.Char('Comparison Periods Dates'), 'get_dates')
     previous_periods_end_date = fields.Function(
-        fields.Char('Previous Periods Dates'), 'get_dates')
+        fields.Char('Comparison Periods Dates'), 'get_dates')
     lines = fields.One2Many('account.financial.statement.report.line',
         'report', 'Lines', readonly=True)
 
@@ -108,6 +124,22 @@ class Report(Workflow, ModelSQL, ModelView):
                     'invisible': Eval('state') != 'calculated',
                     },
                 })
+
+    @classmethod
+    def __register__(cls, module_name):
+        TableHandler = backend.get('TableHandler')
+        cursor = Transaction().connection.cursor()
+        table = TableHandler(cls, module_name)
+        sql_table = cls.__table__()
+
+        created_comparison = not table.column_exist('comparison')
+
+        super(Report, cls).__register__(module_name)
+
+        # Migration from 4.2: new comparison field
+        if created_comparison:
+            cursor.execute(*sql_table.update([sql_table.comparison], [True],
+                    where=sql_table.previous_fiscalyear != Null))
 
     @staticmethod
     def default_company():
@@ -290,8 +322,12 @@ class ReportLine(ModelSQL, ModelView):
     notes = fields.Text('Notes')
     current_value = fields.Numeric('Current Value', digits=(16, 2),
         states=_states, depends=_depends)
-    previous_value = fields.Numeric('Previous value', digits=(16, 2),
-        states=_states, depends=_depends)
+    previous_value = fields.Numeric('Comparison Value', digits=(16, 2),
+        states={
+            'readonly': _states['readonly'],
+            'invisible': ~Eval('comparison_report', False),
+            },
+        depends=_depends + ['comparison_report'])
     calculation_date = fields.DateTime('Calculation date', readonly=True)
     template_line = fields.Many2One(
         'account.financial.statement.template.line', 'Line template',
@@ -327,6 +363,8 @@ class ReportLine(ModelSQL, ModelView):
         'get_line_accounts')
     report_state = fields.Function(fields.Selection(STATES, 'Report State'),
         'on_change_with_report_state')
+    comparison_report = fields.Function(fields.Boolean('Comparison report'),
+        'on_change_with_comparison_report')
     del _states, _depends
 
     @classmethod
@@ -363,6 +401,11 @@ class ReportLine(ModelSQL, ModelView):
     def on_change_with_report_state(self, name=None):
         if self.report:
             return self.report.state
+
+    @fields.depends('report')
+    def on_change_with_comparison_report(self, name=None):
+        if self.report:
+            return self.report.comparison
 
     @staticmethod
     def default_css_class():
@@ -641,8 +684,13 @@ class ReportLineDetailStart(ModelView):
             ], 'Detail Level', required=True)
     fiscalyear = fields.Selection([
             ('current', 'Current'),
-            ('previous', 'Previous'),
-            ], 'Fiscal Year', required=True)
+            ('previous', 'Comparison'),
+            ], 'Fiscal Year', required=True,
+        states={
+            'invisible': ~Eval('comparison_report', False),
+        },
+        depends=['comparison_report'])
+    comparison_report = fields.Boolean('Comparison Report')
 
     @staticmethod
     def default_detail():
@@ -652,6 +700,16 @@ class ReportLineDetailStart(ModelView):
     def default_fiscalyear():
         return 'current'
 
+    @classmethod
+    def default_comparison_report(cls):
+        pool = Pool()
+        Lines = pool.get('account.financial.statement.report.line')
+        context = Transaction().context
+        if 'active_ids' in context:
+            lines = Lines.browse(context['active_ids'])
+            return lines[0].report.comparison
+        return False
+
 
 class ReportLineDetail(Wizard):
     'Financial Statement Report Account Line Detail'
@@ -660,7 +718,7 @@ class ReportLineDetail(Wizard):
     start = StateView('account.financial.statement.report.line.detail.start',
         'account_financial_statement.report_line_detail_start_form', [
             Button('Cancel', 'end', 'tryton-cancel'),
-            Button('Ok', 'select', 'tryton-go-next', default=True),
+            Button('Open', 'select', 'tryton-go-next', default=True),
             ])
     select = StateTransition()
     account = StateAction(
@@ -806,9 +864,9 @@ class TemplateLine(ModelSQL, ModelView):
     # Concept official name (will be used when printing)
     name = fields.Char('Name', required=True, select=True, translate=True,
         help='Concept name/description')
-    current_value = fields.Text('Fiscal year 1 formula',
+    current_value = fields.Text('Current formula',
         help=_VALUE_FORMULA_HELP)
-    previous_value = fields.Text('Fiscal year 2 formula',
+    previous_value = fields.Text('Comparison formula',
         help=_VALUE_FORMULA_HELP)
     negate = fields.Boolean('Negate',
         help='Negate the value (change the sign of the )')
