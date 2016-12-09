@@ -320,14 +320,18 @@ class ReportLine(ModelSQL, ModelView):
     code = fields.Char('Code', required=True, select=True, states=_states,
         depends=_depends)
     notes = fields.Text('Notes')
-    current_value = fields.Numeric('Current Value', digits=(16, 2),
-        states=_states, depends=_depends)
-    previous_value = fields.Numeric('Comparison Value', digits=(16, 2),
+    currency_digits = fields.Function(fields.Integer('Currency Digits'),
+        'on_change_with_currency_digits')
+    current_value = fields.Numeric('Current Value',
+        digits=(16, Eval('currency_digits', 2)),
+        states=_states, depends=_depends + ['currency_digits'])
+    previous_value = fields.Numeric('Comparison Value',
+        digits=(16, Eval('currency_digits', 2)),
         states={
             'readonly': _states['readonly'],
             'invisible': ~Eval('comparison_report', False),
             },
-        depends=_depends + ['comparison_report'])
+        depends=_depends + ['comparison_report', 'currency_digits'])
     calculation_date = fields.DateTime('Calculation date', readonly=True)
     template_line = fields.Many2One(
         'account.financial.statement.template.line', 'Line template',
@@ -406,6 +410,12 @@ class ReportLine(ModelSQL, ModelView):
     def on_change_with_comparison_report(self, name=None):
         if self.report:
             return self.report.comparison
+
+    @fields.depends('report')
+    def on_change_with_currency_digits(self, name=None):
+        if self.report:
+            return self.report.company.currency.digits
+        return 2
 
     @staticmethod
     def default_css_class():
