@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2016-12-12T11:06:13 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="account_financial_statment" language="i18ngroovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="11c43566-2656-47b4-9c58-4003ff2bc2f9">
 	<property name="TRYTON_RELATIONS" value="[&apos;lines&apos;]"/>
 	<property name="ireport.zoom" value="1.9487171000000014"/>
@@ -40,7 +42,7 @@
 		<fieldDescription><![CDATA[/data/record/company-company/rec_name-rec_name]]></fieldDescription>
 	</field>
 	<field name="company-vat_number" class="java.lang.String">
-        <fieldDescription><![CDATA[/data/record/company/party/tax_identifier/code]]></fieldDescription>
+		<fieldDescription><![CDATA[/data/record/company/party/tax_identifier/code]]></fieldDescription>
 	</field>
 	<field name="sequence-sequence" class="java.lang.String">
 		<fieldDescription><![CDATA[/data/record/lines-lines/sequence-sequence]]></fieldDescription>
@@ -87,6 +89,9 @@
 	<field name="previous_periods_end_date" class="java.util.Date">
 		<fieldDescription><![CDATA[/data/record/previous_periods_end_date]]></fieldDescription>
 	</field>
+	<field name="comparison" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[/data/record/comparison]]></fieldDescription>
+	</field>
 	<sortField name="sequence-sequence"/>
 	<variable name="L" class="java.util.Locale" resetType="Page">
 		<variableExpression><![CDATA[$F{lang-lang} != null && $F{lang-lang}.length() == 5 ? new Locale($F{lang-lang}) : ( $F{lang-lang} != null && $F{lang-lang}.length() == 2 ? new Locale($F{lang-lang}) :  $P{REPORT_LOCALE})]]></variableExpression>
@@ -96,6 +101,8 @@
 		<groupExpression><![CDATA[$F{id}]]></groupExpression>
 		<groupHeader>
 			<band height="29">
+				<printWhenExpression><![CDATA[
+$F{comparison}]]></printWhenExpression>
 				<textField>
 					<reportElement style="header" x="0" y="10" width="303" height="18" uuid="d310ead1-be8c-4c3c-94e4-a8c2698bdc04"/>
 					<textFieldExpression><![CDATA[tr($V{L},"Concept")]]></textFieldExpression>
@@ -116,6 +123,25 @@
 				</textField>
 				<line>
 					<reportElement x="0" y="27" width="551" height="1" uuid="3b8efa9c-da3e-412b-9753-84d6c756fb29"/>
+				</line>
+			</band>
+			<band height="29">
+				<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				<printWhenExpression><![CDATA[!$F{comparison}]]></printWhenExpression>
+				<textField>
+					<reportElement style="header" x="0" y="10" width="426" height="18" uuid="02e34867-6b34-40a9-bdde-58909ed50c7c"/>
+					<textFieldExpression><![CDATA[tr($V{L},"Concept")]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement style="header" x="427" y="9" width="124" height="18" uuid="ed1365ed-a1dc-4923-a964-5852e5e7c0fd">
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+						<printWhenExpression><![CDATA[$F{current_fiscalyear} != null && $F{current_fiscalyear} != ""]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[tr($V{L},"Amount") + ":"]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="27" width="551" height="1" uuid="119c1c40-69de-4cfb-9c53-98bef89127a8"/>
 				</line>
 			</band>
 		</groupHeader>
@@ -177,6 +203,7 @@
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
+			<printWhenExpression><![CDATA[$F{comparison}]]></printWhenExpression>
 			<textField isBlankWhenNull="true">
 				<reportElement style="default" x="0" y="0" width="303" height="20" uuid="f0a7202b-a4b8-4fcb-9003-a0b1ac025382"/>
 				<textFieldExpression><![CDATA[$F{line-name}]]></textFieldExpression>
@@ -194,6 +221,22 @@
 				</reportElement>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{line-previous_value}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="20">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<printWhenExpression><![CDATA[!$F{comparison}]]></printWhenExpression>
+			<textField isBlankWhenNull="true">
+				<reportElement style="default" x="0" y="0" width="433" height="20" uuid="db06fffc-f02b-43f7-9db3-4f76b8f8eedb"/>
+				<textFieldExpression><![CDATA[$F{line-name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="427" y="0" width="124" height="20" uuid="c479097c-b2f1-43cf-88f7-b928dd827922">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<printWhenExpression><![CDATA[$F{current_fiscalyear} != null && $F{current_fiscalyear} != ""]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{line-current_value}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
