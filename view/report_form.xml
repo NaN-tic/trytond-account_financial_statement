@@ -17,7 +17,7 @@ copyright notices and license terms. -->
                 <field name="current_fiscalyear" colspan="3"/>
                 <field name="current_periods" colspan="4"/>
         </page>
-        <page name="previous_fiscalyear" string="Comparison" colspan="4">
+        <page name="previous_fiscalyear" string="Comparison">
             <label name="previous_fiscalyear"/>
             <field name="previous_fiscalyear" colspan="3"/>
             <field name="previous_periods" colspan="4"/>
