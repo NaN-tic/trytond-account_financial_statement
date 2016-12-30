@@ -777,5 +777,5 @@ msgstr "Cancel·la"
 
 msgctxt ""
 "wizard_button:account.financial.statement.report.line.detail,start,select:"
-msgid "Ok"
-msgstr "D'acord"
+msgid "Open"
+msgstr "Obrir"

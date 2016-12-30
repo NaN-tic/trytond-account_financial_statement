@@ -7,11 +7,10 @@ copyright notices and license terms. -->
     <field name="name"/>
     <label name="template"/>
     <field name="template"/>
+    <label name="company"/>
+    <field name="company"/>
     <notebook>
         <page string="Configuration" id="configuration">
-            <label name="company"/>
-            <field name="company"/>
-            <newline/>
             <group id="fiscal_year1" yexpand="1" yfill="1" string="Period 1" colspan="2">
                 <label name="current_fiscalyear" />
                 <field name="current_fiscalyear" colspan="3" />
