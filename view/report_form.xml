@@ -7,37 +7,36 @@ copyright notices and license terms. -->
     <field name="name"/>
     <label name="template"/>
     <field name="template"/>
-    <label name="company"/>
-    <field name="company"/>
-    <label name="comparison"/>
-    <field name="comparison"/>
     <notebook>
-        <page name="current_fiscalyear" string="Current">
-                <label name="current_fiscalyear"/>
-                <field name="current_fiscalyear" colspan="3"/>
-                <field name="current_periods" colspan="4"/>
-        </page>
-        <page name="previous_fiscalyear" string="Comparison">
-            <label name="previous_fiscalyear"/>
-            <field name="previous_fiscalyear" colspan="3"/>
-            <field name="previous_periods" colspan="4"/>
+        <page string="Configuration" id="configuration">
+            <label name="company"/>
+            <field name="company"/>
+            <newline/>
+            <group id="fiscal_year1" yexpand="1" yfill="1" string="Period 1" colspan="2">
+                <label name="current_fiscalyear" />
+                <field name="current_fiscalyear" colspan="3" />
+                <field name="current_periods" colspan="4"  />
+            </group>
+            <group id="fiscal_year2" yexpand="1" yfill="1" string="Period 2" colspan="2">
+                <label name="previous_fiscalyear" />
+                <field name="previous_fiscalyear" colspan="3" />
+                <field name="previous_periods" colspan="4" />
+            </group>
+            <group id="state" string="State" colspan="4">
+                <label name="state"/>
+                <field name="state"/>
+                <label name="calculation_date"/>
+                <field name="calculation_date"/>
+            </group>
+            <group id="buttons" colspan="4">
+                <button name="calculate" string="Calculate"
+                    icon="tryton-go-next"/>
+                <button name="draft" string="Draft"
+                    icon="tryton-go-previous"/>
+            </group>
         </page>
         <page string="Lines" id="lines">
             <field name="lines" />
         </page>
     </notebook>
-    <group id="state_buttons" colspan="4" col="-1">
-        <group id="state" colspan="2">
-            <label name="state"/>
-            <field name="state"/>
-            <label name="calculation_date"/>
-            <field name="calculation_date"/>
-        </group>
-        <group id="buttons" colspan="4">
-            <button name="calculate" string="Calculate"
-                icon="tryton-go-next"/>
-            <button name="draft" string="Draft"
-                icon="tryton-go-previous"/>
-        </group>
-    </group>
 </form>
