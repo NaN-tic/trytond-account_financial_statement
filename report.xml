@@ -172,7 +172,7 @@ copyright notices and license terms. -->
 
         <menuitem id="menu_account_financial_statement_templates"
                 name="Financial Statement Templates"
-                parent="account.menu_account_configuration"
+                parent="account.menu_templates"
                 action="act_account_financial_statement_template"
                 sequence="100"/>
 
