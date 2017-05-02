@@ -27,7 +27,7 @@ msgid "Create User"
 msgstr "Usuari creació"
 
 msgctxt "field:account.financial.statement.report,current_fiscalyear:"
-msgid "Fiscal year 1"
+msgid "Fiscal Year 1"
 msgstr "Exercici fiscal 1"
 
 msgctxt "field:account.financial.statement.report,current_periods:"
@@ -59,7 +59,7 @@ msgid "Name"
 msgstr "Nom"
 
 msgctxt "field:account.financial.statement.report,previous_fiscalyear:"
-msgid "Fiscal year 2"
+msgid "Fiscal Year 2"
 msgstr "Exercici fiscal 2"
 
 msgctxt "field:account.financial.statement.report,previous_periods:"
