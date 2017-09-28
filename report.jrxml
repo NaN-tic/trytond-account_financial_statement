@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="account_financial_statment" language="i18ngroovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="11c43566-2656-47b4-9c58-4003ff2bc2f9">
 	<property name="TRYTON_RELATIONS" value="[&apos;lines&apos;]"/>
 	<property name="ireport.zoom" value="1.9487171000000014"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="37"/>
 	<property name="ireport.y" value="0"/>
 	<style name="default">
 		<conditionalStyle>
@@ -87,10 +87,16 @@
 	<field name="previous_periods_end_date" class="java.util.Date">
 		<fieldDescription><![CDATA[/data/record/previous_periods_end_date]]></fieldDescription>
 	</field>
+	<field name="analytic_account" class="java.lang.String">
+		<fieldDescription><![CDATA[/data/record/analytic_account/name]]></fieldDescription>
+	</field>
 	<sortField name="sequence-sequence"/>
 	<variable name="L" class="java.util.Locale" resetType="Page">
 		<variableExpression><![CDATA[$F{lang-lang} != null && $F{lang-lang}.length() == 5 ? new Locale($F{lang-lang}) : ( $F{lang-lang} != null && $F{lang-lang}.length() == 2 ? new Locale($F{lang-lang}) :  $P{REPORT_LOCALE})]]></variableExpression>
 		<initialValueExpression><![CDATA[$F{lang-lang} != null && $F{lang-lang}.length() == 5 ? new Locale($F{lang-lang}) : ( $F{lang-lang} != null && $F{lang-lang}.length() == 2 ? new Locale($F{lang-lang}) :  $P{REPORT_LOCALE} )]]></initialValueExpression>
+	</variable>
+	<variable name="ONLY_ONE_FY" class="java.lang.Boolean">
+		<variableExpression><![CDATA[$F{previous_fiscalyear}.isEmpty()]]></variableExpression>
 	</variable>
 	<group name="Lines" isStartNewPage="true" isResetPageNumber="true" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{id}]]></groupExpression>
@@ -105,7 +111,7 @@
 						<printWhenExpression><![CDATA[$F{current_fiscalyear} != null && $F{current_fiscalyear} != ""]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[tr($V{L},"Fiscal Year 1") + " (" + $F{current_fiscalyear} + "):"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[tr($V{L},"Fiscal Year ") + ( $F{previous_fiscalyear}.isEmpty() ? "" : "1" ) + " (" + $F{current_fiscalyear} + "):"]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement style="header" x="427" y="10" width="124" height="18" uuid="433221ca-37ec-493f-883d-24ed5e0b504a">
@@ -146,16 +152,16 @@
 				<textFieldExpression><![CDATA[$F{company-rec_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="37" width="350" height="10" uuid="d6af1a0c-3053-45e9-86d9-a9c2e2578c64">
+				<reportElement x="0" y="45" width="350" height="11" uuid="d6af1a0c-3053-45e9-86d9-a9c2e2578c64">
 					<printWhenExpression><![CDATA[$F{current_fiscalyear} != null && $F{current_fiscalyear} != ""]]></printWhenExpression>
 				</reportElement>
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[tr($V{L},"Fiscal Year 1") + " (" + $F{current_fiscalyear} + "): " + new SimpleDateFormat("dd'-'MM'-'yyyy").format($F{current_periods_start_date}) + "  /  " + new SimpleDateFormat("dd'-'MM'-'yyyy").format($F{current_periods_end_date})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[tr($V{L},"Fiscal Year ") + ( $F{previous_fiscalyear}.isEmpty() ? "" : " 1" ) + " (" + $F{current_fiscalyear} + "): " + new SimpleDateFormat("dd'-'MM'-'yyyy").format($F{current_periods_start_date}) + "  /  " + new SimpleDateFormat("dd'-'MM'-'yyyy").format($F{current_periods_end_date})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="48" width="350" height="10" uuid="0555dc34-1157-4741-ac3e-7e4931736c0a">
+				<reportElement x="0" y="56" width="350" height="10" uuid="0555dc34-1157-4741-ac3e-7e4931736c0a">
 					<printWhenExpression><![CDATA[$F{previous_fiscalyear} != null && $F{previous_fiscalyear} != ""]]></printWhenExpression>
 				</reportElement>
 				<textElement>
@@ -169,6 +175,12 @@
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[tr($V{L}, "VAT") + ": " + $F{company-vat_number}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="30" width="555" height="15" uuid="98aba9fa-d5ff-43cf-b498-1370af166f55">
+					<printWhenExpression><![CDATA[$F{analytic_account} != null && $F{analytic_account} != ""]]></printWhenExpression>
+				</reportElement>
+				<textFieldExpression><![CDATA[tr($V{L}, "Analytic Account: ") + $F{analytic_account}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
