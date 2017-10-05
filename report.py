@@ -11,7 +11,7 @@ from trytond import backend
 from trytond.modules.jasper_reports.jasper import JasperReport
 
 import re
-from datetime import datetime, date
+from datetime import datetime
 from decimal import Decimal
 
 __all__ = [
