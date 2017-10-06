@@ -274,6 +274,7 @@ class ReportLine(ModelSQL, ModelView):
         'parent', 'Children', domain=[
             ('report', '=', Eval('report')),
             ], depends=['report'])
+    visible = fields.Boolean('Visible')
 
     # Order sequence, it's also used for grouping into sections,
     # that's why it is a char
@@ -322,6 +323,10 @@ class ReportLine(ModelSQL, ModelView):
     @staticmethod
     def default_css_class():
         return 'default'
+
+    @staticmethod
+    def default_visible():
+        return True
 
     def get_rec_name(self, name):
         if self.code:
@@ -772,6 +777,7 @@ class TemplateLine(ModelSQL, ModelView):
         'Parent', ondelete='CASCADE')
     children = fields.One2Many('account.financial.statement.template.line',
         'parent', 'Children')
+    visible = fields.Boolean('Visible')
 
     @classmethod
     def __setup__(cls):
@@ -791,6 +797,10 @@ class TemplateLine(ModelSQL, ModelView):
     @staticmethod
     def default_css_class():
         return 'default'
+
+    @staticmethod
+    def default_visible():
+        return True
 
     def get_rec_name(self, name):
         if self.code:
@@ -816,6 +826,7 @@ class TemplateLine(ModelSQL, ModelView):
             parent=None,
             current_value=None,
             previous_value=None,
+            visible=self.visible,
             sequence=self.sequence,
             css_class=self.css_class,
             )

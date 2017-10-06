@@ -22,6 +22,8 @@ copyright notices and license terms. -->
         </group>
     </group>
     <group id="style" string="Style"  colspan="4">
+        <label name="visible"/>
+        <field name="visible"/>
         <label name="sequence"/>
         <field name="sequence"/>
         <label name="css_class"/>
