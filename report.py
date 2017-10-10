@@ -9,10 +9,13 @@ from trytond.pyson import Eval, PYSONEncoder
 from trytond.pool import Pool
 from trytond import backend
 from trytond.modules.jasper_reports.jasper import JasperReport
+from trytond.tools import decistmt
 
 import re
 from datetime import datetime
 from decimal import Decimal
+from simpleeval import simple_eval
+from functools import partial
 
 __all__ = [
     'Report', 'ReportJasper', 'ReportCurrentPeriods',
@@ -342,6 +345,55 @@ class ReportLine(ModelSQL, ModelView):
             return [('id', 'in', ids)]
         return [('name',) + tuple(clause[1:])]
 
+    def balance(self, *account_codes):
+        result = 0
+        for account_code in account_codes:
+            result += self._get_account_(str(account_code), mode='balance')
+        return result
+
+    def invert(self, *account_codes):
+        result = 0
+        for account_code in account_codes:
+            result += self._get_account_(str(account_code), mode='balance',
+                invert=True)
+        return result
+
+    def debit(self, *account_codes):
+        result = 0
+        for account_code in account_codes:
+            account_code = str(account_code)[6:-1]
+            result += self._get_account_(account_code, mode='debit')
+        return result
+
+    def credit(self, *account_codes):
+        result = 0
+        for account_code in account_codes:
+            account_code = str(account_code)[7:-1]
+            result += self._get_account_(account_code, mode='debit')
+        return result
+
+    def concept(self, value, *concepts):
+        result = 0
+        for concept in concepts:
+            # Check the sign of the code (substraction)
+            if concept < 0:
+                sign = -Decimal('1.0')
+                concept = abs(concept)
+            else:
+                sign = Decimal('1.0')
+            concept = str(concept)
+            # Search for the line (perfect match)
+            lines = self.search([
+                    ('report', '=', self.report.id),
+                    ('code', '=', concept),
+                    ])
+            for child in lines:
+                if child.calculation_date != child.report.calculation_date:
+                    # Tell the child to refresh its values
+                    child.refresh_values()
+                result += getattr(child, value) * sign
+        return result
+
     def refresh_values(self):
         """
         Recalculates the values of this report line using the
@@ -380,14 +432,8 @@ class ReportLine(ModelSQL, ModelView):
                             child.refresh_values()
                         value += getattr(child, getvalue)
 
-                elif re.match(r'^\-?[0-9]*\.[0-9]*$', template_value):
-                    # Number with decimal points => that number
-                    # value (constant).
-                    value = Decimal(template_value)
+                else:
 
-                elif re.match(r'^[0-9a-zA-Z,\(\)\*_]*$', template_value):
-                    # Account numbers separated by commas => sum of the
-                    # accounts.
                     # We will use the context to filter the accounts by
                     # fiscalyear and periods.
                     getperiods = '%s_periods' % (fyear)
@@ -398,40 +444,15 @@ class ReportLine(ModelSQL, ModelView):
                         'period': fyear,
                         'cumulate': self.template_line.template.cumulate,
                         }
-                    mode = self.template_line.template.mode
                     with Transaction().set_context(ctx):
-                        value = self._get_account_(template_value, mode)
-
-                elif re.match(r'^[\+\-0-9a-zA-Z_\*]*$', template_value):
-                    # Account concept codes separated by "+" => sum of the
-                    # concept (report lines) values.
-                    for line_code in re.findall(r'(-?\(?[0-9a-zA-Z_]*\)?)',
-                            template_value):
-                        # Check the sign of the code (substraction)
-                        if (line_code.startswith('-')
-                                or line_code.startswith('(')):
-                            sign = -Decimal('1.0')
-                        else:
-                            sign = Decimal('1.0')
-                        line_code = line_code.strip('-()*')
-
-                        # Check if the code is valid (findall might return
-                        # empty strings)
-                        if len(line_code) > 0:
-                            # Search for the line (perfect match)
-                            lines = self.search([
-                                    ('report', '=', self.report.id),
-                                    ('code', '=', line_code),
-                                    ])
-                            for child in lines:
-                                if (child.calculation_date !=
-                                        child.report.calculation_date):
-                                    # Tell the child to refresh its values
-                                    child.refresh_values()
-                                if fyear == 'current':
-                                    value += child.current_value * sign
-                                elif fyear == 'previous':
-                                    value += child.previous_value * sign
+                        functions = {'balance': self.balance,
+                            'invert': self.invert,
+                            'debit': self.debit,
+                            'credit': self.credit,
+                            'concept': partial(self.concept, getvalue),
+                            'Decimal': Decimal}
+                        value = simple_eval(decistmt(template_value),
+                            functions=functions)
 
             # Negate the value if needed
             if self.template_line.negate:
@@ -440,7 +461,7 @@ class ReportLine(ModelSQL, ModelView):
         self.calculation_date = self.report.calculation_date
         self.save()
 
-    def _get_account_(self, code, balance_mode='debit-credit'):
+    def _get_account_(self, code, mode, invert=False):
         """
         It returns the (debit, credit, *) tuple for a account with the
         given code, or the sum of those values for a set of accounts
@@ -455,6 +476,7 @@ class ReportLine(ModelSQL, ModelView):
         Account = pool.get('account.account')
         ReportLineAccount = pool.get(
             'account.financial.statement.report.line.account')
+        balance_mode = self.template_line.template.mode
         res = Decimal('0.0')
         vlist = []
         for account_code in re.findall('(-?\w*\(?[0-9a-zA-Z_]*\)?)', code):
@@ -467,26 +489,14 @@ class ReportLine(ModelSQL, ModelView):
                 else:
                     sign = Decimal('1.0')
 
-                if re.match(r'^debit\(.*\)$', account_code):
-                    mode = 'debit'
-                    account_code = account_code[6:-1]  # Strip debit()
-                    if balance_mode == 'credit-debit':
-                        # We use credit-debit in the balance
-                        sign = Decimal('-1.0') * sign
-                elif re.match(r'^credit\(.*\)$', account_code):
-                    mode = 'credit'
-                    account_code = account_code[7:-1]  # Strip credit()
-                    if balance_mode == 'credit-debit':
-                        # We use credit-debit in the
-                        sign = Decimal('-1.0') * sign
+                if balance_mode == 'credit-debit' and mode != 'balance':
+                    sign = Decimal('-1.0') * sign
                 else:
-                    mode = 'balance'
                     # Calculate the , as given by mode
                     if balance_mode == 'debit-credit-reversed':
                         # We use debit-credit as default ,
                         # but for accounts in brackets we use credit-debit
-                        if (account_code.startswith('(')
-                                and account_code.endswith(')')):
+                        if invert:
                             sign = Decimal('-1.0') * sign
                     elif balance_mode == 'credit-debit':
                         # We use credit-debit as the ,
@@ -494,13 +504,8 @@ class ReportLine(ModelSQL, ModelView):
                     elif balance_mode == 'credit-debit-reversed':
                         # We use credit-debit as default ,
                         # but for accounts in brackets we use debit-credit
-                        if (not account_code.startswith('(')
-                                and not account_code.endswith(')')):
+                        if invert:
                             sign = Decimal('-1.0') * sign
-                    # Strip the brackets (if there are brackets)
-                    if (account_code.startswith('(')
-                            and account_code.endswith(')')):
-                        account_code = account_code[1:-1]
 
                 # Search for the account (perfect match)
                 accounts = Account.search([
