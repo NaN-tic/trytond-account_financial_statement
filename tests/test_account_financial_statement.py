@@ -207,8 +207,8 @@ class AccountFinancialStatementTestCase(ModuleTestCase):
                                         }, {
                                         'code': '2',
                                         'name': 'Sum',
-                                        'current_value': '0+1',
-                                        'previous_value': '0+1',
+                                        'current_value': 'concept(0,1)',
+                                        'previous_value': 'concept(0,1)',
                                         }]
                                 )],
                         }])
@@ -217,15 +217,15 @@ class AccountFinancialStatementTestCase(ModuleTestCase):
             self.template_line.create([{
                             'code': '01',
                             'name': 'Expense',
-                            'current_value': '6',
-                            'previous_value': '6',
+                            'current_value': 'balance(6)',
+                            'previous_value': 'balance(6)',
                             'parent': results.id,
                             'template': template.id,
                             }, {
                             'code': '02',
                             'name': 'Revenue',
-                            'current_value': '7',
-                            'previous_value': '7',
+                            'current_value': 'balance(7)',
+                            'previous_value': 'balance(7)',
                             'parent': results.id,
                             'template': template.id,
                             }])
@@ -338,29 +338,29 @@ class AccountFinancialStatementTestCase(ModuleTestCase):
             self.template_line.create([{
                             'code': '01',
                             'name': 'Expense',
-                            'current_value': '6',
-                            'previous_value': '6',
+                            'current_value': 'balance(6)',
+                            'previous_value': 'balance(6)',
                             'parent': results_line.id,
                             'template': template_balance.id,
                             }, {
                             'code': '02',
                             'name': 'Revenue',
-                            'current_value': '7',
-                            'previous_value': '7',
+                            'current_value': 'balance(7)',
+                            'previous_value': 'balance(7)',
                             'parent': results_line.id,
                             'template': template_balance.id,
                             }, {
                             'code': '03',
                             'name': 'Payable',
-                            'current_value': '41',
-                            'previous_value': '41',
+                            'current_value': 'balance(41)',
+                            'previous_value': 'balance(41)',
                             'parent': results_line.id,
                             'template': template_balance.id,
                             }, {
                             'code': '04',
                             'name': 'Receivable',
-                            'current_value': '43',
-                            'previous_value': '43',
+                            'current_value': 'balance(43)',
+                            'previous_value': 'balance(43)',
                             'parent': results_line.id,
                             'template': template_balance.id,
                             }])
@@ -370,15 +370,15 @@ class AccountFinancialStatementTestCase(ModuleTestCase):
             self.template_line.create([{
                             'code': '01',
                             'name': 'Expense',
-                            'current_value': '6',
-                            'previous_value': '6',
+                            'current_value': 'balance(6)',
+                            'previous_value': 'balance(6)',
                             'parent': results_line.id,
                             'template': template_income.id,
                             }, {
                             'code': '02',
                             'name': 'Revenue',
-                            'current_value': '7',
-                            'previous_value': '7',
+                            'current_value': 'balance(7)',
+                            'previous_value': 'balance(7)',
                             'parent': results_line.id,
                             'template': template_income.id,
                             }])
