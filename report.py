@@ -264,8 +264,12 @@ class ReportLine(ModelSQL, ModelView):
     # will be used when printing)
     code = fields.Char('Code', required=True, select=True)
     notes = fields.Text('Notes')
-    current_value = fields.Numeric('Current Value', digits=(16, 2))
-    previous_value = fields.Numeric('Previous value', digits=(16, 2))
+    currency_digits = fields.Function(fields.Integer('Currency Digits'),
+        'get_currency_digits')
+    current_value = fields.Numeric('Current Value',
+        digits=(16, Eval('currency_digits', 2)))
+    previous_value = fields.Numeric('Previous value',
+        digits=(16, Eval('currency_digits', 2)))
     calculation_date = fields.DateTime('Calculation date')
     template_line = fields.Many2One('account.financial.statement.template.line',
         'Line template', ondelete='SET NULL')
@@ -292,6 +296,9 @@ class ReportLine(ModelSQL, ModelView):
     previous_line_accounts = fields.Function(fields.One2Many(
             'account.financial.statement.report.line.account', 'report_line',
             'Previous Detail'), 'get_line_accounts')
+
+    def get_currency_digits(self, name):
+        return self.report.company.currency.digits
 
     @classmethod
     def get_line_accounts(cls, report_lines, names):
@@ -452,7 +459,8 @@ class ReportLine(ModelSQL, ModelView):
                             'concept': partial(self.concept, getvalue),
                             'Decimal': Decimal}
                         value = simple_eval(decistmt(template_value),
-                            functions=functions)
+                            functions=functions).quantize(
+                                Decimal(10) ** -self.currency_digits)
 
             # Negate the value if needed
             if self.template_line.negate:
