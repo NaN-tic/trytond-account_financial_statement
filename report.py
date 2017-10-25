@@ -514,7 +514,7 @@ class ReportLine(ModelSQL, ModelView):
                     elif balance_mode == 'credit-debit-reversed':
                         # We use credit-debit as default ,
                         # but for accounts in brackets we use debit-credit
-                        if invert:
+                        if not invert:
                             sign = Decimal('-1.0') * sign
 
                 # Search for the account (perfect match)
