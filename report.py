@@ -298,7 +298,9 @@ class ReportLine(ModelSQL, ModelView):
             'Previous Detail'), 'get_line_accounts')
 
     def get_currency_digits(self, name):
-        return self.report.company.currency.digits
+        if self.report:
+            return self.report.company.currency.digits
+        return 2
 
     @classmethod
     def get_line_accounts(cls, report_lines, names):
