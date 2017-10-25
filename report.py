@@ -267,9 +267,9 @@ class ReportLine(ModelSQL, ModelView):
     currency_digits = fields.Function(fields.Integer('Currency Digits'),
         'get_currency_digits')
     current_value = fields.Numeric('Current Value',
-        digits=(16, Eval('currency_digits', 2)))
+        digits=(16, Eval('currency_digits', 2)), depends=['currency_digits'])
     previous_value = fields.Numeric('Previous value',
-        digits=(16, Eval('currency_digits', 2)))
+        digits=(16, Eval('currency_digits', 2)), depends=['currency_digits'])
     calculation_date = fields.DateTime('Calculation date')
     template_line = fields.Many2One('account.financial.statement.template.line',
         'Line template', ondelete='SET NULL')
