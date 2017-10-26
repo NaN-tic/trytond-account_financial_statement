@@ -16,6 +16,7 @@ from datetime import datetime
 from decimal import Decimal
 from simpleeval import simple_eval
 from functools import partial
+from ast import parse
 
 __all__ = [
     'Report', 'ReportJasper', 'ReportCurrentPeriods',
@@ -820,6 +821,32 @@ class TemplateLine(ModelSQL, ModelView):
             ('report_code_uniq', Unique(t, t.template, t.code),
                 'The code must be unique for this template.'),
             ]
+        cls._error_messages.update({'invalid_syntax': (
+                    'Invalid syntax in "%(field)s" of line code "%(line)s".'
+                    )})
+
+    @classmethod
+    def validate(cls, records):
+        super(TemplateLine, cls).validate(records)
+        for record in records:
+            record.check_syntax()
+
+    def check_syntax(self):
+        pool = Pool()
+        Translation = pool.get('ir.translation')
+        language = Transaction().language
+
+        for value in ['current_value', 'previous_value']:
+            try:
+                parse(getattr(self, value))
+            except SyntaxError:
+                field_name = '{},{}'.format(self.__name__,value)
+                field_string = Translation.get_source(field_name, 'field',
+                    language)
+                self.raise_user_error('invalid_syntax', {
+                        'field': field_string,
+                        'line': self.code,
+                        })
 
     @staticmethod
     def default_negate():
