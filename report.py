@@ -378,7 +378,7 @@ class ReportLine(ModelSQL, ModelView):
         result = 0
         for account_code in account_codes:
             account_code = str(account_code)[7:-1]
-            result += self._get_account_(account_code, mode='debit')
+            result += self._get_account_(account_code, mode='credit')
         return result
 
     def concept(self, value, *concepts):
