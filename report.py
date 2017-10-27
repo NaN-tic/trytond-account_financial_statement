@@ -717,9 +717,9 @@ class Template(ModelSQL, ModelView):
     description = fields.Text('Description')
     mode = fields.Selection([
             ('debit-credit', 'Debit-Credit'),
-            ('debit-credit-reversed', 'Debit-Credit, reversed with brakets'),
+            ('debit-credit-reversed', 'Debit-Credit, reversed with invert()'),
             ('credit-debit', 'Credit-Debit'),
-            ('credit-debit-reversed', 'Credit-Debit, reversed with brakets')
+            ('credit-debit-reversed', 'Credit-Debit, reversed with invert()')
             ], 'Mode')
     cumulate = fields.Boolean('Cumulate Balances')
 
