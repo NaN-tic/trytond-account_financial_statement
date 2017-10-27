@@ -461,8 +461,9 @@ class ReportLine(ModelSQL, ModelView):
                             'concept': partial(self.concept, getvalue),
                             'Decimal': Decimal}
                         value = simple_eval(decistmt(template_value),
-                            functions=functions).quantize(
-                                Decimal(10) ** -self.currency_digits)
+                            functions=functions)
+                        if isinstance(value, Decimal):
+                            value.quantize(Decimal(10) ** -self.currency_digits)
 
             # Negate the value if needed
             if self.template_line.negate:
