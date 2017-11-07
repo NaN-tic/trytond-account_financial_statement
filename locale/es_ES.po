@@ -36,15 +36,15 @@ msgstr "Periodos del ejercicio fiscal 1"
 
 msgctxt "field:account.financial.statement.report,current_periods_end_date:"
 msgid "Current Periods Dates"
-msgstr ""
+msgstr "Fechas periodos actuales"
 
 msgctxt "field:account.financial.statement.report,current_periods_list:"
 msgid "Current Periods List"
-msgstr ""
+msgstr "Lista periodos actuales"
 
 msgctxt "field:account.financial.statement.report,current_periods_start_date:"
 msgid "Current Periods Dates"
-msgstr ""
+msgstr "Fechas periodos actuales"
 
 msgctxt "field:account.financial.statement.report,id:"
 msgid "ID"
@@ -68,16 +68,16 @@ msgstr "Periodos del ejercicio fiscal 2"
 
 msgctxt "field:account.financial.statement.report,previous_periods_end_date:"
 msgid "Previous Periods Dates"
-msgstr ""
+msgstr "Fechas periodos anteriores"
 
 msgctxt "field:account.financial.statement.report,previous_periods_list:"
 msgid "Previous Periods List"
-msgstr ""
+msgstr "Lista periodos anteriores"
 
 msgctxt ""
 "field:account.financial.statement.report,previous_periods_start_date:"
 msgid "Previous Periods Dates"
-msgstr ""
+msgstr "Fechas periodos anteriores"
 
 msgctxt "field:account.financial.statement.report,rec_name:"
 msgid "Name"

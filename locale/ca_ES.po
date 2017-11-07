@@ -36,15 +36,15 @@ msgstr "Períodes de l'exercici fiscal 1"
 
 msgctxt "field:account.financial.statement.report,current_periods_end_date:"
 msgid "Current Periods Dates"
-msgstr ""
+msgstr "Dates de periodes actuals"
 
 msgctxt "field:account.financial.statement.report,current_periods_list:"
 msgid "Current Periods List"
-msgstr ""
+msgstr "Llista de periodes actuals"
 
 msgctxt "field:account.financial.statement.report,current_periods_start_date:"
 msgid "Current Periods Dates"
-msgstr ""
+msgstr "Dates de periodes actuals"
 
 msgctxt "field:account.financial.statement.report,id:"
 msgid "ID"
@@ -68,16 +68,16 @@ msgstr "Períodes de l'exercici fiscal 2"
 
 msgctxt "field:account.financial.statement.report,previous_periods_end_date:"
 msgid "Previous Periods Dates"
-msgstr ""
+msgstr "Dates de periodes anteriors"
 
 msgctxt "field:account.financial.statement.report,previous_periods_list:"
 msgid "Previous Periods List"
-msgstr ""
+msgstr "Llista de periodes anteriors"
 
 msgctxt ""
 "field:account.financial.statement.report,previous_periods_start_date:"
 msgid "Previous Periods Dates"
-msgstr ""
+msgstr "Dates de periodes anteriors"
 
 msgctxt "field:account.financial.statement.report,rec_name:"
 msgid "Name"
@@ -504,7 +504,6 @@ msgctxt "jasper:account.financial.statement.report:"
 msgid "Fiscal Year 2"
 msgstr "Exercici fiscal 2"
 
-#, fuzzy
 msgctxt "jasper:account.financial.statement.report:"
 msgid "VAT"
 msgstr "NIF"
