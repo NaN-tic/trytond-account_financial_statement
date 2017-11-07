@@ -87,6 +87,7 @@
 	<field name="previous_periods_end_date" class="java.util.Date">
 		<fieldDescription><![CDATA[/data/record/previous_periods_end_date]]></fieldDescription>
 	</field>
+	<!-- account_financial_statement_analytic -->
 	<field name="analytic_account" class="java.lang.String">
 		<fieldDescription><![CDATA[/data/record/analytic_account/name]]></fieldDescription>
 	</field>
@@ -94,9 +95,6 @@
 	<variable name="L" class="java.util.Locale" resetType="Page">
 		<variableExpression><![CDATA[$F{lang-lang} != null && $F{lang-lang}.length() == 5 ? new Locale($F{lang-lang}) : ( $F{lang-lang} != null && $F{lang-lang}.length() == 2 ? new Locale($F{lang-lang}) :  $P{REPORT_LOCALE})]]></variableExpression>
 		<initialValueExpression><![CDATA[$F{lang-lang} != null && $F{lang-lang}.length() == 5 ? new Locale($F{lang-lang}) : ( $F{lang-lang} != null && $F{lang-lang}.length() == 2 ? new Locale($F{lang-lang}) :  $P{REPORT_LOCALE} )]]></initialValueExpression>
-	</variable>
-	<variable name="ONLY_ONE_FY" class="java.lang.Boolean">
-		<variableExpression><![CDATA[$F{previous_fiscalyear}.isEmpty()]]></variableExpression>
 	</variable>
 	<group name="Lines" isStartNewPage="true" isResetPageNumber="true" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{id}]]></groupExpression>
