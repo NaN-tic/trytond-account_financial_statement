@@ -40,7 +40,7 @@
 		<fieldDescription><![CDATA[/data/record/company-company/rec_name-rec_name]]></fieldDescription>
 	</field>
 	<field name="company-vat_number" class="java.lang.String">
-		<fieldDescription><![CDATA[/data/record/company/party/vat_number]]></fieldDescription>
+		<fieldDescription><![CDATA[/data/record/company/party/vat_code]]></fieldDescription>
 	</field>
 	<field name="sequence-sequence" class="java.lang.String">
 		<fieldDescription><![CDATA[/data/record/lines-lines/sequence-sequence]]></fieldDescription>
@@ -87,7 +87,6 @@
 	<field name="previous_periods_end_date" class="java.util.Date">
 		<fieldDescription><![CDATA[/data/record/previous_periods_end_date]]></fieldDescription>
 	</field>
-	<!-- account_financial_statement_analytic -->
 	<field name="analytic_account" class="java.lang.String">
 		<fieldDescription><![CDATA[/data/record/analytic_account/name]]></fieldDescription>
 	</field>
