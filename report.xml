@@ -296,6 +296,7 @@ copyright notices and license terms. -->
             <field name="report_name">account.financial.statement.report</field>
             <field name="report">account_financial_statement/report.jrxml</field>
             <field name="extension">pdf</field>
+            <field name="template_extension">jrxml</field>
         </record>
         <record model="ir.action.keyword" id="report_pdf_keyword">
             <field name="keyword">form_print</field>
