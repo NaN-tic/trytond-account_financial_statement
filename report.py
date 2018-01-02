@@ -426,11 +426,8 @@ class ReportLine(ModelSQL, ModelView):
 
         Depending on this formula the final value is calculated as follows:
         - Empy template value: sum of (this concept) children values.
-        - Number with decimal point ("10.2"): that value (constant).
-        - Account numbers separated by commas ("430,431,(437)"): Sum of the
-          accounts.  (The sign of the  depends on the mode)
-        - Concept codes separated by "+" ("11000+12000"): Sum of those concepts
-          values.
+        - Evaluate python expression using simpleeval with self.invert(),
+        self.debit(), self.credit(), self.concept() helpers.
         """
         for child in self.children:
             child.refresh_values()
