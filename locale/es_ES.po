@@ -672,7 +672,7 @@ msgstr "Haber-Debe"
 
 msgctxt "selection:account.financial.statement.template,mode:"
 msgid "Credit-Debit, reversed with invert()"
-msgstr "Debe-Haber, invertido con invert()"
+msgstr "Haber-Debe, invertido con invert()"
 
 msgctxt "selection:account.financial.statement.template,mode:"
 msgid "Debit-Credit"
