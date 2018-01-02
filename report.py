@@ -493,8 +493,7 @@ class ReportLine(ModelSQL, ModelView):
         when the code is in the form "400,300,(323)"
 
         Also the user may specify to use only the debit or credit of the
-        account instead of the balance by writing "debit(551)" or
-        "credit(551)".
+        account instead of the balance using the mode parameter.
         """
         context = Transaction().context
         pool = Pool()
