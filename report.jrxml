@@ -42,6 +42,9 @@
 	<field name="company-vat_number" class="java.lang.String">
 		<fieldDescription><![CDATA[/data/record/company/party/vat_number]]></fieldDescription>
 	</field>
+	<field name="visible" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[/data/record/lines/visible]]></fieldDescription>
+	</field>
 	<field name="sequence-sequence" class="java.lang.String">
 		<fieldDescription><![CDATA[/data/record/lines-lines/sequence-sequence]]></fieldDescription>
 	</field>
@@ -177,6 +180,7 @@
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
+			<printWhenExpression><![CDATA[$F{visible}]]></printWhenExpression>
 			<textField isBlankWhenNull="true">
 				<reportElement style="default" x="0" y="0" width="303" height="20" uuid="f0a7202b-a4b8-4fcb-9003-a0b1ac025382"/>
 				<textFieldExpression><![CDATA[$F{line-name}]]></textFieldExpression>

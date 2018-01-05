@@ -20,6 +20,8 @@ copyright notices and license terms. -->
     <field name="current_line_accounts" colspan="2"/>
     <field name="previous_line_accounts" colspan="2"/>
     <group id="style" string="Style" colspan="4">
+        <label name="visible"/>
+        <field name="visible"/>
         <label name="sequence" />
         <field name="sequence" />
         <label name="css_class" />

@@ -9,10 +9,14 @@ from trytond.pyson import Eval, PYSONEncoder
 from trytond.pool import Pool
 from trytond import backend
 from trytond.modules.jasper_reports.jasper import JasperReport
+from trytond.tools import decistmt
 
 import re
-from datetime import datetime, date
+from datetime import datetime
 from decimal import Decimal
+from simpleeval import simple_eval
+from functools import partial
+from ast import parse
 
 __all__ = [
     'Report', 'ReportJasper', 'ReportCurrentPeriods',
@@ -39,10 +43,25 @@ _VALUE_FORMULA_HELP = ('Value calculation formula: Depending on this formula '
     'the final value is calculated as follows:\n'
     '- Empy template value: sum of (this concept) children values.\n'
     '- Number with decimal point ("10.2"): that value (constant).\n'
-    '- Account numbers separated by commas ("430,431,(437)"): Sum of the '
-    'accounts (the sign of the  depends on the  mode). \n'
-    '- Concept codes separated by "+" ("11000+12000"): Sum of those '
-    'concepts values.')
+    '- A matematic formula with following helpers:\n'
+    '  * balance() with comma-separated account numbers. Sum of the accounts '
+    '(the sign of the depends on the mode).\n'
+    '  * invert() with comma-separated account numbers. Sum of the account '
+    '(the sign is inverted if reversed modes are used).\n'
+    '  * credit() with comma-separeted account numbers. Sum of the credit '
+    'accounts.\n'
+    '  * debit() with comma-separeted account numbers. Sum of the debit of '
+    'accounts.\n'
+    '  * concept() with comma-separated concept codes in quotes of the report '
+    'itself (column Code). Sum of the concept values.\n'
+    'Examples:\n'
+    'balance(430, 431) + invert(437)\n'
+    'balance(5305, 5315) + invert(5325, 5335) + debit(551, 5525)\n'
+    'balance(5103) + credit(5523)\n'
+    'concept("11000", "12000")\n'
+    'balance(7) - 1.25 * balance(6)\n'
+    'concept("101") / 2'
+    )
 
 
 class Report(Workflow, ModelSQL, ModelView):
@@ -261,8 +280,12 @@ class ReportLine(ModelSQL, ModelView):
     # will be used when printing)
     code = fields.Char('Code', required=True, select=True)
     notes = fields.Text('Notes')
-    current_value = fields.Numeric('Current Value', digits=(16, 2))
-    previous_value = fields.Numeric('Previous value', digits=(16, 2))
+    currency_digits = fields.Function(fields.Integer('Currency Digits'),
+        'get_currency_digits')
+    current_value = fields.Numeric('Current Value',
+        digits=(16, Eval('currency_digits', 2)), depends=['currency_digits'])
+    previous_value = fields.Numeric('Previous value',
+        digits=(16, Eval('currency_digits', 2)), depends=['currency_digits'])
     calculation_date = fields.DateTime('Calculation date')
     template_line = fields.Many2One('account.financial.statement.template.line',
         'Line template', ondelete='SET NULL')
@@ -274,6 +297,7 @@ class ReportLine(ModelSQL, ModelView):
         'parent', 'Children', domain=[
             ('report', '=', Eval('report')),
             ], depends=['report'])
+    visible = fields.Boolean('Visible')
 
     # Order sequence, it's also used for grouping into sections,
     # that's why it is a char
@@ -288,6 +312,11 @@ class ReportLine(ModelSQL, ModelView):
     previous_line_accounts = fields.Function(fields.One2Many(
             'account.financial.statement.report.line.account', 'report_line',
             'Previous Detail'), 'get_line_accounts')
+
+    def get_currency_digits(self, name):
+        if self.report:
+            return self.report.company.currency.digits
+        return 2
 
     @classmethod
     def get_line_accounts(cls, report_lines, names):
@@ -323,6 +352,10 @@ class ReportLine(ModelSQL, ModelView):
     def default_css_class():
         return 'default'
 
+    @staticmethod
+    def default_visible():
+        return True
+
     def get_rec_name(self, name):
         if self.code:
             return '[%s] %s' % (self.code, self.name)
@@ -337,6 +370,55 @@ class ReportLine(ModelSQL, ModelView):
             return [('id', 'in', ids)]
         return [('name',) + tuple(clause[1:])]
 
+    def balance(self, *account_codes):
+        result = 0
+        for account_code in account_codes:
+            result += self._get_account_(str(account_code), mode='balance')
+        return result
+
+    def invert(self, *account_codes):
+        result = 0
+        for account_code in account_codes:
+            result += self._get_account_(str(account_code), mode='balance',
+                invert=True)
+        return result
+
+    def debit(self, *account_codes):
+        result = 0
+        for account_code in account_codes:
+            account_code = str(account_code)[6:-1]
+            result += self._get_account_(account_code, mode='debit')
+        return result
+
+    def credit(self, *account_codes):
+        result = 0
+        for account_code in account_codes:
+            account_code = str(account_code)[7:-1]
+            result += self._get_account_(account_code, mode='credit')
+        return result
+
+    def concept(self, value, *concepts):
+        result = 0
+        for concept in concepts:
+            # Check the sign of the code (substraction)
+            if concept < 0:
+                sign = -Decimal('1.0')
+                concept = abs(concept)
+            else:
+                sign = Decimal('1.0')
+            concept = str(concept)
+            # Search for the line (perfect match)
+            lines = self.search([
+                    ('report', '=', self.report.id),
+                    ('code', '=', concept),
+                    ])
+            for child in lines:
+                if child.calculation_date != child.report.calculation_date:
+                    # Tell the child to refresh its values
+                    child.refresh_values()
+                result += getattr(child, value) * sign
+        return result
+
     def refresh_values(self):
         """
         Recalculates the values of this report line using the
@@ -344,11 +426,8 @@ class ReportLine(ModelSQL, ModelView):
 
         Depending on this formula the final value is calculated as follows:
         - Empy template value: sum of (this concept) children values.
-        - Number with decimal point ("10.2"): that value (constant).
-        - Account numbers separated by commas ("430,431,(437)"): Sum of the
-          accounts.  (The sign of the  depends on the mode)
-        - Concept codes separated by "+" ("11000+12000"): Sum of those concepts
-          values.
+        - Evaluate python expression using simpleeval with self.invert(),
+        self.debit(), self.credit(), self.concept() helpers.
         """
         for child in self.children:
             child.refresh_values()
@@ -375,14 +454,8 @@ class ReportLine(ModelSQL, ModelView):
                             child.refresh_values()
                         value += getattr(child, getvalue)
 
-                elif re.match(r'^\-?[0-9]*\.[0-9]*$', template_value):
-                    # Number with decimal points => that number
-                    # value (constant).
-                    value = Decimal(template_value)
+                else:
 
-                elif re.match(r'^[0-9a-zA-Z,\(\)\*_]*$', template_value):
-                    # Account numbers separated by commas => sum of the
-                    # accounts.
                     # We will use the context to filter the accounts by
                     # fiscalyear and periods.
                     getperiods = '%s_periods' % (fyear)
@@ -393,40 +466,18 @@ class ReportLine(ModelSQL, ModelView):
                         'period': fyear,
                         'cumulate': self.template_line.template.cumulate,
                         }
-                    mode = self.template_line.template.mode
                     with Transaction().set_context(ctx):
-                        value = self._get_account_(template_value, mode)
-
-                elif re.match(r'^[\+\-0-9a-zA-Z_\*]*$', template_value):
-                    # Account concept codes separated by "+" => sum of the
-                    # concept (report lines) values.
-                    for line_code in re.findall(r'(-?\(?[0-9a-zA-Z_]*\)?)',
-                            template_value):
-                        # Check the sign of the code (substraction)
-                        if (line_code.startswith('-')
-                                or line_code.startswith('(')):
-                            sign = -Decimal('1.0')
-                        else:
-                            sign = Decimal('1.0')
-                        line_code = line_code.strip('-()*')
-
-                        # Check if the code is valid (findall might return
-                        # empty strings)
-                        if len(line_code) > 0:
-                            # Search for the line (perfect match)
-                            lines = self.search([
-                                    ('report', '=', self.report.id),
-                                    ('code', '=', line_code),
-                                    ])
-                            for child in lines:
-                                if (child.calculation_date !=
-                                        child.report.calculation_date):
-                                    # Tell the child to refresh its values
-                                    child.refresh_values()
-                                if fyear == 'current':
-                                    value += child.current_value * sign
-                                elif fyear == 'previous':
-                                    value += child.previous_value * sign
+                        functions = {'balance': self.balance,
+                            'invert': self.invert,
+                            'debit': self.debit,
+                            'credit': self.credit,
+                            'concept': partial(self.concept, getvalue),
+                            'Decimal': Decimal}
+                        value = simple_eval(decistmt(template_value),
+                            functions=functions)
+                        if isinstance(value, Decimal):
+                            value = value.quantize(
+                                Decimal(10) ** -self.currency_digits)
 
             # Negate the value if needed
             if self.template_line.negate:
@@ -435,21 +486,21 @@ class ReportLine(ModelSQL, ModelView):
         self.calculation_date = self.report.calculation_date
         self.save()
 
-    def _get_account_(self, code, balance_mode='debit-credit'):
+    def _get_account_(self, code, mode, invert=False):
         """
         It returns the (debit, credit, *) tuple for a account with the
         given code, or the sum of those values for a set of accounts
         when the code is in the form "400,300,(323)"
 
         Also the user may specify to use only the debit or credit of the
-        account instead of the balance by writing "debit(551)" or
-        "credit(551)".
+        account instead of the balance using the mode parameter.
         """
         context = Transaction().context
         pool = Pool()
         Account = pool.get('account.account')
         ReportLineAccount = pool.get(
             'account.financial.statement.report.line.account')
+        balance_mode = self.template_line.template.mode
         res = Decimal('0.0')
         vlist = []
         for account_code in re.findall('(-?\w*\(?[0-9a-zA-Z_]*\)?)', code):
@@ -462,26 +513,14 @@ class ReportLine(ModelSQL, ModelView):
                 else:
                     sign = Decimal('1.0')
 
-                if re.match(r'^debit\(.*\)$', account_code):
-                    mode = 'debit'
-                    account_code = account_code[6:-1]  # Strip debit()
-                    if balance_mode == 'credit-debit':
-                        # We use credit-debit in the balance
-                        sign = Decimal('-1.0') * sign
-                elif re.match(r'^credit\(.*\)$', account_code):
-                    mode = 'credit'
-                    account_code = account_code[7:-1]  # Strip credit()
-                    if balance_mode == 'credit-debit':
-                        # We use credit-debit in the
-                        sign = Decimal('-1.0') * sign
+                if balance_mode == 'credit-debit' and mode != 'balance':
+                    sign = Decimal('-1.0') * sign
                 else:
-                    mode = 'balance'
                     # Calculate the , as given by mode
                     if balance_mode == 'debit-credit-reversed':
                         # We use debit-credit as default ,
                         # but for accounts in brackets we use credit-debit
-                        if (account_code.startswith('(')
-                                and account_code.endswith(')')):
+                        if invert:
                             sign = Decimal('-1.0') * sign
                     elif balance_mode == 'credit-debit':
                         # We use credit-debit as the ,
@@ -489,13 +528,8 @@ class ReportLine(ModelSQL, ModelView):
                     elif balance_mode == 'credit-debit-reversed':
                         # We use credit-debit as default ,
                         # but for accounts in brackets we use debit-credit
-                        if (not account_code.startswith('(')
-                                and not account_code.endswith(')')):
+                        if not invert:
                             sign = Decimal('-1.0') * sign
-                    # Strip the brackets (if there are brackets)
-                    if (account_code.startswith('(')
-                            and account_code.endswith(')')):
-                        account_code = account_code[1:-1]
 
                 # Search for the account (perfect match)
                 accounts = Account.search([
@@ -696,9 +730,9 @@ class Template(ModelSQL, ModelView):
     description = fields.Text('Description')
     mode = fields.Selection([
             ('debit-credit', 'Debit-Credit'),
-            ('debit-credit-reversed', 'Debit-Credit, reversed with brakets'),
+            ('debit-credit-reversed', 'Debit-Credit, reversed with invert()'),
             ('credit-debit', 'Credit-Debit'),
-            ('credit-debit-reversed', 'Credit-Debit, reversed with brakets')
+            ('credit-debit-reversed', 'Credit-Debit, reversed with invert()')
             ], 'Mode')
     cumulate = fields.Boolean('Cumulate Balances')
 
@@ -772,6 +806,7 @@ class TemplateLine(ModelSQL, ModelView):
         'Parent', ondelete='CASCADE')
     children = fields.One2Many('account.financial.statement.template.line',
         'parent', 'Children')
+    visible = fields.Boolean('Visible')
 
     @classmethod
     def __setup__(cls):
@@ -783,6 +818,32 @@ class TemplateLine(ModelSQL, ModelView):
             ('report_code_uniq', Unique(t, t.template, t.code),
                 'The code must be unique for this template.'),
             ]
+        cls._error_messages.update({'invalid_syntax': (
+                    'Invalid syntax in "%(field)s" of line code "%(line)s".'
+                    )})
+
+    @classmethod
+    def validate(cls, records):
+        super(TemplateLine, cls).validate(records)
+        for record in records:
+            record.check_syntax()
+
+    def check_syntax(self):
+        pool = Pool()
+        Translation = pool.get('ir.translation')
+        language = Transaction().language
+
+        for value in ['current_value', 'previous_value']:
+            try:
+                parse(getattr(self, value).split(';')[0])
+            except SyntaxError:
+                field_name = '{},{}'.format(self.__name__,value)
+                field_string = Translation.get_source(field_name, 'field',
+                    language)
+                self.raise_user_error('invalid_syntax', {
+                        'field': field_string,
+                        'line': self.code,
+                        })
 
     @staticmethod
     def default_negate():
@@ -791,6 +852,10 @@ class TemplateLine(ModelSQL, ModelView):
     @staticmethod
     def default_css_class():
         return 'default'
+
+    @staticmethod
+    def default_visible():
+        return True
 
     def get_rec_name(self, name):
         if self.code:
@@ -816,6 +881,7 @@ class TemplateLine(ModelSQL, ModelView):
             parent=None,
             current_value=None,
             previous_value=None,
+            visible=self.visible,
             sequence=self.sequence,
             css_class=self.css_class,
             )
