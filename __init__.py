@@ -2,23 +2,23 @@
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
 from trytond.pool import Pool
-from .report import *
+from . import report
 
 
 def register():
     Pool.register(
-        Template,
-        TemplateLine,
-        Report,
-        ReportLine,
-        ReportLineAccount,
-        ReportLineDetailStart,
-        ReportCurrentPeriods,
-        ReportPreviousPeriods,
+        report.Template,
+        report.TemplateLine,
+        report.Report,
+        report.ReportLine,
+        report.ReportLineAccount,
+        report.ReportLineDetailStart,
+        report.ReportCurrentPeriods,
+        report.ReportPreviousPeriods,
         module='account_financial_statement', type_='model')
     Pool.register(
-        ReportLineDetail,
+        report.ReportLineDetail,
         module='account_financial_statement', type_='wizard')
     Pool.register(
-        ReportJasper,
+        report.ReportJasper,
         module='account_financial_statement', type_='report')
