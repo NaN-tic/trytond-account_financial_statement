@@ -132,21 +132,21 @@
 	<pageHeader>
 		<band height="66" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
-				<reportElement x="244" y="0" width="311" height="29" isPrintWhenDetailOverflows="true" uuid="eb352bab-b8e1-4b50-a709-c5d4e0e8684b"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="250" y="20" width="305" height="20" isPrintWhenDetailOverflows="true" uuid="eb352bab-b8e1-4b50-a709-c5d4e0e8684b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="16" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{report-rec_name}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="0" y="0" width="234" height="17" uuid="4cf08399-4731-4e1c-a47f-b32529ff951a"/>
+				<reportElement x="0" y="0" width="400" height="17" uuid="4cf08399-4731-4e1c-a47f-b32529ff951a"/>
 				<textElement textAlignment="Left">
 					<font size="13" isBold="true" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{company-rec_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="37" width="350" height="10" uuid="d6af1a0c-3053-45e9-86d9-a9c2e2578c64">
+				<reportElement x="10" y="45" width="544" height="10" uuid="d6af1a0c-3053-45e9-86d9-a9c2e2578c64">
 					<printWhenExpression><![CDATA[$F{current_fiscalyear} != null && $F{current_fiscalyear} != ""]]></printWhenExpression>
 				</reportElement>
 				<textElement>
@@ -155,7 +155,7 @@
 				<textFieldExpression><![CDATA[tr($V{L},"Fiscal Year 1") + " (" + $F{current_fiscalyear} + "): " + new SimpleDateFormat("dd'-'MM'-'yyyy").format($F{current_periods_start_date}) + "  /  " + new SimpleDateFormat("dd'-'MM'-'yyyy").format($F{current_periods_end_date})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="48" width="350" height="10" uuid="0555dc34-1157-4741-ac3e-7e4931736c0a">
+				<reportElement x="10" y="55" width="544" height="10" uuid="0555dc34-1157-4741-ac3e-7e4931736c0a">
 					<printWhenExpression><![CDATA[$F{previous_fiscalyear} != null && $F{previous_fiscalyear} != ""]]></printWhenExpression>
 				</reportElement>
 				<textElement>
