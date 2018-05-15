@@ -488,15 +488,15 @@ msgctxt "help:account.financial.statement.template.line,sequence:"
 msgid "Lines will be sorted/grouped by this field"
 msgstr "Las líneas se ordenarán/agruparán por este campo."
 
-msgctxt "jasper:account.financial.statement.report:"
+msgctxt "report:account.financial.statement.report:"
 msgid "Concept"
 msgstr "Concepto"
 
-msgctxt "jasper:account.financial.statement.report:"
+msgctxt "report:account.financial.statement.report:"
 msgid "Current Value"
 msgstr "Valor actual"
 
-msgctxt "jasper:account.financial.statement.report:"
+msgctxt "report:account.financial.statement.report:"
 msgid "Previous Value"
 msgstr "Valor anterior"
 
