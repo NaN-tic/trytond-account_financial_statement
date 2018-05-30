@@ -839,7 +839,7 @@ class TemplateLine(ModelSQL, ModelView):
 
         for value in ['current_value', 'previous_value']:
             try:
-                parse(getattr(self, value).split(';')[0])
+                parse((getattr(self, value) or '').split(';')[0])
             except SyntaxError:
                 field_name = '{},{}'.format(self.__name__,value)
                 field_string = Translation.get_source(field_name, 'field',
