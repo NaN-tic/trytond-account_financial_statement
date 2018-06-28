@@ -260,7 +260,8 @@ copyright notices and license terms. -->
         </record>
 
         <record model="ir.model.button" id="financial_statement_calculate_button">
-            <field name="name">Calculate</field>
+            <field name="name">calculate</field>
+            <field name="string">Calculate</field>
             <field name="model" search="[('model', '=', 'account.financial.statement.report')]"/>
         </record>
         <record model="ir.model.button-res.group"
@@ -270,7 +271,8 @@ copyright notices and license terms. -->
         </record>
 
         <record model="ir.model.button" id="financial_statement_draft_button">
-            <field name="name">Draft</field>
+            <field name="name">draft</field>
+            <field name="string">Draft</field>
             <field name="model" search="[('model', '=', 'account.financial.statement.report')]"/>
         </record>
         <record model="ir.model.button-res.group"
@@ -278,6 +280,18 @@ copyright notices and license terms. -->
             <field name="button" ref="financial_statement_draft_button"/>
             <field name="group" ref="account.group_account"/>
         </record>
+
+        <record model="ir.model.button" id="financial_statement_open_details_button">
+            <field name="name">open_details</field>
+            <field name="string">Open Details</field>
+            <field name="model" search="[('model', '=', 'account.financial.statement.report.line')]"/>
+        </record>
+        <record model="ir.model.button-res.group"
+            id="financial_statement_open_details_button_group_account">
+            <field name="button" ref="financial_statement_open_details_button"/>
+            <field name="group" ref="account.group_account"/>
+        </record>
+
         <record model="ir.rule.group" id="rule_group_report">
             <field name="model" search="[('model', '=', 'account.financial.statement.report')]"/>
             <field name="global_p" eval="True"/>
