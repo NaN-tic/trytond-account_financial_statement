@@ -360,10 +360,11 @@ class ReportLine(ModelSQL, ModelView):
 
     @classmethod
     def search_rec_name(cls, name, clause):
-        ids = map(int, cls.search([('code',) + tuple(clause[1:])], order=[]))
+        ids = [x.id for x in cls.search([('code',) + tuple(clause[1:])],
+                order=[])]
         if ids:
-            ids += map(int, cls.search([('name',) + tuple(clause[1:])],
-                    order=[]))
+            ids += [x.id for x in cls.search([('name',) + tuple(clause[1:])],
+                    order=[])]
             return [('id', 'in', ids)]
         return [('name',) + tuple(clause[1:])]
 
@@ -828,10 +829,10 @@ class TemplateLine(ModelSQL, ModelView):
 
     @classmethod
     def search_rec_name(cls, name, clause):
-        ids = map(int, cls.search([('code',) + tuple(clause[1:])], order=[]))
+        ids = list(map(int, cls.search([('code',) + tuple(clause[1:])], order=[])))
         if ids:
-            ids += map(int, cls.search([('name',) + tuple(clause[1:])],
-                    order=[]))
+            ids += list(map(int, cls.search([('name',) + tuple(clause[1:])],
+                    order=[])))
             return [('id', 'in', ids)]
         return [('name',) + tuple(clause[1:])]
 
@@ -873,7 +874,7 @@ class TemplateLine(ModelSQL, ModelView):
 
             prev_lang = self._context.get('language') or Config.get_language()
             prev_data = {}
-            for field_name, field in self._fields.iteritems():
+            for field_name, field in self._fields.items():
                 if getattr(field, 'translate', False):
                     prev_data[field_name] = getattr(self, field_name)
             for lang in Lang.get_translatable_languages():
@@ -882,7 +883,7 @@ class TemplateLine(ModelSQL, ModelView):
                 with Transaction().set_context(language=lang):
                     template = self.__class__(self.id)
                     data = {}
-                    for field_name, field in self._fields.iteritems():
+                    for field_name, field in self._fields.items():
                         if (getattr(field, 'translate', False)
                                 and (getattr(template, field_name) !=
                                     prev_data[field_name])):
