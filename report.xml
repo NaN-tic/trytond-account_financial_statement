@@ -293,6 +293,7 @@ copyright notices and license terms. -->
         </record>
 
         <record model="ir.rule.group" id="rule_group_report">
+            <field name="name">Report Group</field>
             <field name="model" search="[('model', '=', 'account.financial.statement.report')]"/>
             <field name="global_p" eval="True"/>
         </record>
