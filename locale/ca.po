@@ -634,7 +634,7 @@ msgstr "Compte"
 msgctxt ""
 "selection:account.financial.statement.report.line.detail.start,detail:"
 msgid "Move"
-msgstr "Apunt"
+msgstr "Assentament"
 
 msgctxt ""
 "selection:account.financial.statement.report.line.detail.start,fiscalyear:"
