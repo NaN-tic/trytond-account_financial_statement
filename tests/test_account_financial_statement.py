@@ -236,11 +236,12 @@ class AccountFinancialStatementTestCase(ModuleTestCase):
                         }])
 
         with set_company(company):
-            report, = Report.create([{
-                        'name': 'Test report',
-                        'template': template.id,
-                        'current_fiscalyear': fiscalyear,
-                        }])
+            report = Report()
+            report.name = 'Test Report'
+            report.template = template.id
+            report.current_fiscalyear = fiscalyear
+            report.current_periods= [x.id for x in fiscalyear.periods]
+            report.save()
             self.assertEqual(report.state, 'draft')
             Report.calculate([report])
             self.assertEqual(report.state, 'calculated')
@@ -272,6 +273,7 @@ class AccountFinancialStatementTestCase(ModuleTestCase):
             template.save()
             Report.draft([report])
             report.previous_fiscalyear = fiscalyear
+            report.previous_periods = [x.id for x in fiscalyear.periods]
             report.save()
             Report.calculate([report])
             for line in report.lines:
@@ -387,12 +389,14 @@ class AccountFinancialStatementTestCase(ModuleTestCase):
                         }])
 
         with set_company(company):
-            report_balance, = Report.create([{
-                        'name': 'Test report',
-                        'template': template_balance.id,
-                        'current_fiscalyear': next_fiscalyear,
-                        'previous_fiscalyear': fiscalyear,
-                        }])
+            report_balance = Report()
+            report_balance.name = 'Test Report'
+            report_balance.template = template_balance.id
+            report_balance.current_fiscalyear = next_fiscalyear
+            report_balance.previous_fiscalyear = fiscalyear
+            report_balance.current_periods= [x.id for x in next_fiscalyear.periods]
+            report_balance.previous_periods= [x.id for x in fiscalyear.periods]
+            report_balance.save()
             self.assertEqual(report_balance.state, 'draft')
             Report.calculate([report_balance])
             self.assertEqual(report_balance.state, 'calculated')
@@ -410,12 +414,14 @@ class AccountFinancialStatementTestCase(ModuleTestCase):
                 self.assertEqual(current, line.current_value)
                 self.assertEqual(previous, line.previous_value)
 
-            report_income, = Report.create([{
-                        'name': 'Test report',
-                        'template': template_income.id,
-                        'current_fiscalyear': next_fiscalyear,
-                        'previous_fiscalyear': fiscalyear,
-                        }])
+            report_income=Report()
+            report_income.name='Test report'
+            report_income.template=template_income.id
+            report_income.current_fiscalyear=next_fiscalyear
+            report_income.previous_fiscalyear=fiscalyear
+            report_income.current_periods = [x.id for x in next_fiscalyear.periods]
+            report_income.previous_periods = [x.id for x in fiscalyear.periods]
+            report_income.save()
             self.assertEqual(report_income.state, 'draft')
             Report.calculate([report_income])
             self.assertEqual(report_income.state, 'calculated')
