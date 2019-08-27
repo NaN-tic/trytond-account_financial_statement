@@ -2,7 +2,7 @@
 <!-- This file is part account_financial_statement module for Tryton.
 The COPYRIGHT file at the top level of this repository contains the full
 copyright notices and license terms. -->
-<form string="Financial Statement Template Line" col="4">
+<form col="4">
     <label name="template"/>
     <field name="template" colspan="3"/>
     <label name="code"/>
@@ -11,6 +11,8 @@ copyright notices and license terms. -->
     <field name="name"/>
     <label name="parent"/>
     <field name="parent"/>
+    <label name="negate"/>
+    <field name="negate"/>
     <group id="value" yexpand="1" yfill="1" colspan="4" col="2">
         <group id="current_value" col="1" yexpand="1" yfill="1">
             <label name="current_value" xalign="0"/>

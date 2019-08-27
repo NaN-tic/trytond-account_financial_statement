@@ -5,11 +5,13 @@ from trytond.model import ModelView, ModelSQL, Workflow, fields, Unique
 from trytond.wizard import Wizard, StateView, StateAction, StateTransition, \
     Button
 from trytond.transaction import Transaction
-from trytond.pyson import Eval, PYSONEncoder
+from trytond.pyson import Eval, PYSONEncoder, Bool
 from trytond.pool import Pool
 from trytond import backend
 from trytond.modules.jasper_reports.jasper import JasperReport
 from trytond.tools import decistmt
+from trytond.exceptions import UserError
+from trytond.i18n import gettext
 
 import re
 from datetime import datetime
@@ -63,16 +65,18 @@ _VALUE_FORMULA_HELP = ('Value calculation formula: Depending on this formula '
     'concept("101") / 2'
     )
 
+STATES = [
+    ('draft', 'Draft'),
+    ('calculated', 'Calculated'),
+    ]
+
 
 class Report(Workflow, ModelSQL, ModelView):
     'Financial Statement Report'
     __name__ = 'account.financial.statement.report'
 
     name = fields.Char('Name', required=True, select=True)
-    state = fields.Selection([
-            ('draft', 'Draft'),
-            ('calculated', 'Calculated'),
-            ], 'State', readonly=True)
+    state = fields.Selection(STATES, 'State', readonly=True)
     template = fields.Many2One('account.financial.statement.template',
         'Template', ondelete='SET NULL', required=True, select=True,
         states=_STATES, depends=_DEPENDS)
@@ -272,13 +276,23 @@ class ReportLine(ModelSQL, ModelView):
     formula of the linked template line.
     """
     __name__ = 'account.financial.statement.report.line'
+    _states = {
+        'readonly': Eval('report_state') != 'draft',
+        }
+    _depends = ['report_state']
 
-    name = fields.Char('Name', required=True, select=True)
+    name = fields.Char('Name', required=True, select=True, states=_states,
+        depends=_depends)
     report = fields.Many2One('account.financial.statement.report', 'Report',
-        required=True, ondelete='CASCADE')
+        required=True, ondelete='CASCADE',
+        states={
+            'readonly': _states['readonly'] & Bool(Eval('report')),
+            },
+        depends=_depends + ['report'])
     # Concept official code (as specified by normalized models,
     # will be used when printing)
-    code = fields.Char('Code', required=True, select=True)
+    code = fields.Char('Code', required=True, select=True, states=_states,
+        depends=_depends)
     notes = fields.Text('Notes')
     currency_digits = fields.Function(fields.Integer('Currency Digits'),
         'get_currency_digits')
@@ -286,32 +300,42 @@ class ReportLine(ModelSQL, ModelView):
         digits=(16, Eval('currency_digits', 2)), depends=['currency_digits'])
     previous_value = fields.Numeric('Previous value',
         digits=(16, Eval('currency_digits', 2)), depends=['currency_digits'])
-    calculation_date = fields.DateTime('Calculation date')
+    calculation_date = fields.DateTime('Calculation date', readonly=True)
     template_line = fields.Many2One('account.financial.statement.template.line',
         'Line template', ondelete='SET NULL')
     parent = fields.Many2One('account.financial.statement.report.line',
-        'Parent', ondelete='CASCADE', domain=[
+        'Parent', ondelete='CASCADE',
+        domain=[
             ('report', '=', Eval('report')),
-            ], depends=['report'])
+            ],
+        states=_states, depends=_depends + ['report'])
     children = fields.One2Many('account.financial.statement.report.line',
-        'parent', 'Children', domain=[
+        'parent', 'Children',
+        domain=[
             ('report', '=', Eval('report')),
-            ], depends=['report'])
+            ],
+        states=_states, depends=_depends + ['report'])
     visible = fields.Boolean('Visible')
 
     # Order sequence, it's also used for grouping into sections,
     # that's why it is a char
-    sequence = fields.Char('Sequence')
-    css_class = fields.Selection(CSS_CLASSES, 'CSS Class')
+    sequence = fields.Char('Sequence', states=_states, depends=_depends)
+    css_class = fields.Selection(CSS_CLASSES, 'CSS Class', states=_states,
+        depends=_depends)
     line_accounts = fields.One2Many(
         'account.financial.statement.report.line.account',
-        'report_line', 'Line Accounts')
+        'report_line', 'Line Accounts', states=_states, depends=_depends)
     current_line_accounts = fields.Function(fields.One2Many(
             'account.financial.statement.report.line.account', 'report_line',
-            'Current Detail'), 'get_line_accounts')
+            'Current Detail', states=_states, depends=_depends),
+        'get_line_accounts')
     previous_line_accounts = fields.Function(fields.One2Many(
             'account.financial.statement.report.line.account', 'report_line',
-            'Previous Detail'), 'get_line_accounts')
+            'Previous Detail', states=_states, depends=_depends),
+        'get_line_accounts')
+    report_state = fields.Function(fields.Selection(STATES, 'Report State'),
+        'on_change_with_report_state')
+    del _states, _depends
 
     def get_currency_digits(self, name):
         if self.report:
@@ -342,11 +366,16 @@ class ReportLine(ModelSQL, ModelView):
         cls._order.insert(1, ('code', 'ASC'))
         cls._sql_constraints += [
             ('report_code_uniq', Unique(t, t.report, t.code),
-                'Code line must be unique per report.'),
+                'account_financial_statement.msg_code_unique_per_report'),
             ]
         cls._buttons.update({
                 'open_details': {},
                 })
+
+    @fields.depends('report')
+    def on_change_with_report_state(self, name=None):
+        if self.report:
+            return self.report.state
 
     @staticmethod
     def default_css_class():
@@ -363,10 +392,11 @@ class ReportLine(ModelSQL, ModelView):
 
     @classmethod
     def search_rec_name(cls, name, clause):
-        ids = map(int, cls.search([('code',) + tuple(clause[1:])], order=[]))
+        ids = [x.id for x in cls.search([('code',) + tuple(clause[1:])],
+                order=[])]
         if ids:
-            ids += map(int, cls.search([('name',) + tuple(clause[1:])],
-                    order=[]))
+            ids += [x.id for x in cls.search([('name',) + tuple(clause[1:])],
+                    order=[])]
             return [('id', 'in', ids)]
         return [('name',) + tuple(clause[1:])]
 
@@ -503,7 +533,7 @@ class ReportLine(ModelSQL, ModelView):
         balance_mode = self.template_line.template.mode
         res = Decimal('0.0')
         vlist = []
-        for account_code in re.findall('(-?\w*\(?[0-9a-zA-Z_]*\)?)', code):
+        for account_code in re.findall(r'(-?\w*\(?[0-9a-zA-Z_]*\)?)', code):
             # Check if the code is valid (findall might return empty strings)
             if len(account_code) > 0:
                 # Check the sign of the code (substraction)
@@ -601,13 +631,14 @@ class ReportLineAccount(ModelSQL, ModelView):
     @classmethod
     def __register__(cls, module_name):
         TableHandler = backend.get('TableHandler')
-        cursor = Transaction().cursor
 
         # Migration from 3.6: rename table
         old_table = 'account_financial_statement_report_line_account'
         new_table = 'account_financial_statement_rep_lin_acco'
-        if TableHandler.table_exist(cursor, old_table):
-            TableHandler.table_rename(cursor, old_table, new_table)
+        if TableHandler.table_exist(old_table):
+            TableHandler.table_rename(old_table, new_table)
+
+        super(ReportLineAccount, cls).__register__(module_name)
 
         super(ReportLineAccount, cls).__register__(module_name)
 
@@ -650,7 +681,7 @@ class ReportLineDetail(Wizard):
     start = StateView('account.financial.statement.report.line.detail.start',
         'account_financial_statement.report_line_detail_start_form', [
             Button('Cancel', 'end', 'tryton-cancel'),
-            Button('Ok', 'select', 'tryton-go-next', default=True),
+            Button('Open', 'select', 'tryton-go-next', default=True),
             ])
     select = StateTransition()
     account = StateAction(
@@ -816,11 +847,8 @@ class TemplateLine(ModelSQL, ModelView):
         cls._order.insert(1, ('code', 'ASC'))
         cls._sql_constraints += [
             ('report_code_uniq', Unique(t, t.template, t.code),
-                'The code must be unique for this template.'),
+                'account_financial_statement.msg_code_unique_per_template'),
             ]
-        cls._error_messages.update({'invalid_syntax': (
-                    'Invalid syntax in "%(field)s" of line code "%(line)s".'
-                    )})
 
     @classmethod
     def validate(cls, records):
@@ -835,15 +863,14 @@ class TemplateLine(ModelSQL, ModelView):
 
         for value in ['current_value', 'previous_value']:
             try:
-                parse(getattr(self, value).split(';')[0])
+                parse((getattr(self, value) or '').split(';')[0])
             except SyntaxError:
                 field_name = '{},{}'.format(self.__name__,value)
                 field_string = Translation.get_source(field_name, 'field',
                     language)
-                self.raise_user_error('invalid_syntax', {
-                        'field': field_string,
-                        'line': self.code,
-                        })
+                raise UserError(gettext('account_financial_statement.'
+                        'msg_code_unique_per_template',
+                    field=field_string, line=self.code))
 
     @staticmethod
     def default_negate():
@@ -864,10 +891,10 @@ class TemplateLine(ModelSQL, ModelView):
 
     @classmethod
     def search_rec_name(cls, name, clause):
-        ids = map(int, cls.search([('code',) + tuple(clause[1:])], order=[]))
+        ids = list(map(int, cls.search([('code',) + tuple(clause[1:])], order=[])))
         if ids:
-            ids += map(int, cls.search([('name',) + tuple(clause[1:])],
-                    order=[]))
+            ids += list(map(int, cls.search([('name',) + tuple(clause[1:])],
+                    order=[])))
             return [('id', 'in', ids)]
         return [('name',) + tuple(clause[1:])]
 
@@ -910,7 +937,7 @@ class TemplateLine(ModelSQL, ModelView):
 
             prev_lang = self._context.get('language') or Config.get_language()
             prev_data = {}
-            for field_name, field in self._fields.iteritems():
+            for field_name, field in self._fields.items():
                 if getattr(field, 'translate', False):
                     prev_data[field_name] = getattr(self, field_name)
             for lang in Lang.get_translatable_languages():
@@ -919,7 +946,7 @@ class TemplateLine(ModelSQL, ModelView):
                 with Transaction().set_context(language=lang):
                     template = self.__class__(self.id)
                     data = {}
-                    for field_name, field in self._fields.iteritems():
+                    for field_name, field in self._fields.items():
                         if (getattr(field, 'translate', False)
                                 and (getattr(template, field_name) !=
                                     prev_data[field_name])):
