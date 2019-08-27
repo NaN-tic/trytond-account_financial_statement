@@ -431,7 +431,11 @@ class ReportLine(ModelSQL, ModelView):
         result = 0
         for concept in concepts:
             # Check the sign of the code (substraction)
-            if concept < 0:
+            try:
+                int_concept = int(concept)
+            except ValueError:
+                int_concept = 0
+            if int_concept < 0:
                 sign = -Decimal('1.0')
                 concept = abs(concept)
             else:
