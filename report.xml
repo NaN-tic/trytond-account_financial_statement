@@ -172,9 +172,9 @@ copyright notices and license terms. -->
 
         <menuitem id="menu_account_financial_statement_templates"
                 name="Financial Statement Templates"
-                parent="account.menu_account_configuration"
+                parent="account.menu_templates"
                 action="act_account_financial_statement_template"
-                sequence="50"/>
+                sequence="100"/>
 
         <!-- Permisions -->
         <record model="ir.model.access"
@@ -214,6 +214,16 @@ copyright notices and license terms. -->
         </record>
 
         <record model="ir.model.access"
+                id="access_account_financial_statement_report_line_account">
+            <field name="model"
+                search="[('model', '=', 'account.financial.statement.report.line.account')]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_delete" eval="False"/>
+        </record>
+
+        <record model="ir.model.access"
              id="access_account_financial_statement_template">
             <field name="model" search="[('model', '=', 'account.financial.statement.template')]"/>
             <field name="group" ref="account.group_account_admin"/>
@@ -250,7 +260,8 @@ copyright notices and license terms. -->
         </record>
 
         <record model="ir.model.button" id="financial_statement_calculate_button">
-            <field name="name">Calculate</field>
+            <field name="name">calculate</field>
+            <field name="string">Calculate</field>
             <field name="model" search="[('model', '=', 'account.financial.statement.report')]"/>
         </record>
         <record model="ir.model.button-res.group"
@@ -260,7 +271,8 @@ copyright notices and license terms. -->
         </record>
 
         <record model="ir.model.button" id="financial_statement_draft_button">
-            <field name="name">Draft</field>
+            <field name="name">draft</field>
+            <field name="string">Draft</field>
             <field name="model" search="[('model', '=', 'account.financial.statement.report')]"/>
         </record>
         <record model="ir.model.button-res.group"
@@ -268,7 +280,20 @@ copyright notices and license terms. -->
             <field name="button" ref="financial_statement_draft_button"/>
             <field name="group" ref="account.group_account"/>
         </record>
+
+        <record model="ir.model.button" id="financial_statement_open_details_button">
+            <field name="name">open_details</field>
+            <field name="string">Open Details</field>
+            <field name="model" search="[('model', '=', 'account.financial.statement.report.line')]"/>
+        </record>
+        <record model="ir.model.button-res.group"
+            id="financial_statement_open_details_button_group_account">
+            <field name="button" ref="financial_statement_open_details_button"/>
+            <field name="group" ref="account.group_account"/>
+        </record>
+
         <record model="ir.rule.group" id="rule_group_report">
+            <field name="name">Report Group</field>
             <field name="model" search="[('model', '=', 'account.financial.statement.report')]"/>
             <field name="global_p" eval="True"/>
         </record>
@@ -286,6 +311,7 @@ copyright notices and license terms. -->
             <field name="report_name">account.financial.statement.report</field>
             <field name="report">account_financial_statement/report.jrxml</field>
             <field name="extension">pdf</field>
+            <field name="template_extension">jrxml</field>
         </record>
         <record model="ir.action.keyword" id="report_pdf_keyword">
             <field name="keyword">form_print</field>
