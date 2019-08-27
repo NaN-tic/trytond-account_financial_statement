@@ -1,0 +1,13 @@
+<tryton>
+    <data grouped="1">
+        <record model="ir.message" id="msg_invalid_syntax">
+            <field name="text">Invalid syntax in "%(field)s" of line code "%(line)s".</field>
+        </record>
+        <record model="ir.message" id="msg_code_unique_per_template">
+            <field name="text">The code must be unique for this template.</field>
+        </record>
+        <record model="ir.message" id="msg_code_unique_per_report">
+            <field name="text">The code must be unique for this report.</field>
+        </record>
+    </data>
+</tryton>
