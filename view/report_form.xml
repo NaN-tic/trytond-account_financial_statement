@@ -29,9 +29,9 @@ copyright notices and license terms. -->
             </group>
             <group id="buttons" colspan="4">
                 <button name="calculate" string="Calculate"
-                    icon="tryton-go-next"/>
+                    icon="tryton-forward"/>
                 <button name="draft" string="Draft"
-                    icon="tryton-go-previous"/>
+                    icon="tryton-back"/>
             </group>
         </page>
         <page string="Lines" id="lines">
