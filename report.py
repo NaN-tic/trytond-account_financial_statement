@@ -685,7 +685,7 @@ class ReportLineDetail(Wizard):
     start = StateView('account.financial.statement.report.line.detail.start',
         'account_financial_statement.report_line_detail_start_form', [
             Button('Cancel', 'end', 'tryton-cancel'),
-            Button('Open', 'select', 'tryton-go-next', default=True),
+            Button('Open', 'select', 'tryton-forward', default=True),
             ])
     select = StateTransition()
     account = StateAction(
