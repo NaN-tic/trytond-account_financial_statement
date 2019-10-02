@@ -28,10 +28,8 @@ copyright notices and license terms. -->
                 <field name="calculation_date"/>
             </group>
             <group id="buttons" colspan="4">
-                <button name="calculate" string="Calculate"
-                    icon="tryton-forward"/>
-                <button name="draft" string="Draft"
-                    icon="tryton-back"/>
+                <button name="calculate" />
+                <button name="draft" />
             </group>
         </page>
         <page string="Lines" id="lines">

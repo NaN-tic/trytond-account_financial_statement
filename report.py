@@ -124,9 +124,11 @@ class Report(Workflow, ModelSQL, ModelView):
         cls._buttons.update({
                 'calculate': {
                     'invisible': Eval('state') != 'draft',
+                    'icon': 'tryton-forward',
                     },
                 'draft': {
                     'invisible': Eval('state') != 'calculated',
+                    'icon': 'tryton-back',
                     },
                 })
 
