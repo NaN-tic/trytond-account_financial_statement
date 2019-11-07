@@ -374,7 +374,7 @@ class ReportLine(ModelSQL, ModelView):
                 'open_details': {},
                 })
 
-    @fields.depends('report')
+    @fields.depends('_parent_report.id', 'report')
     def on_change_with_report_state(self, name=None):
         if self.report:
             return self.report.state
