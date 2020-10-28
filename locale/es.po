@@ -14,6 +14,10 @@ msgctxt "model:ir.message,text:msg_code_unique_per_template"
 msgid "The code must be unique for this template."
 msgstr "El código debe ser único en esta plantilla."
 
+msgctxt "model:ir.message,text:msg_wrong_expression"
+msgid "The expression \"%(expression)s\" from \"%(template)s\" it not valid: \"%(traceback)s\"."
+msgstr "La expresión \"%(expression)s\" de \"%(template)s\" no és válida: \"%(traceback)s\"."
+
 msgctxt "field:account.financial.statement.report,calculation_date:"
 msgid "Calculation date"
 msgstr "Fecha del cálculo"

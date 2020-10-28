@@ -507,8 +507,17 @@ class ReportLine(ModelSQL, ModelView):
                             'credit': self.credit,
                             'concept': partial(self.concept, getvalue),
                             'Decimal': Decimal}
-                        value = simple_eval(decistmt(template_value),
+                        try:
+                            value = simple_eval(decistmt(template_value),
                             functions=functions)
+                        except Exception as e:
+                            raise UserError(gettext('account_financial_statement.'
+                                'msg_wrong_expression',
+                                expression=template_value,
+                                template=self.template_line.name,
+                                traceback=e,
+                            ))
+
                         if isinstance(value, Decimal):
                             value = value.quantize(
                                 Decimal(10) ** -self.currency_digits)
