@@ -9,5 +9,8 @@
         <record model="ir.message" id="msg_code_unique_per_report">
             <field name="text">The code must be unique for this report.</field>
         </record>
+        <record model="ir.message" id="msg_wrong_expression">
+            <field name="text">The expression "%(expression)s" from "%(template)s" it not valid: "%(traceback)s".</field>
+        </record>
     </data>
 </tryton>
