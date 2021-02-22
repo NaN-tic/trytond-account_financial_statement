@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 5.5.2  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="account_financial_statment" language="i18ngroovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="11c43566-2656-47b4-9c58-4003ff2bc2f9">
 	<property name="TRYTON_RELATIONS" value="[&apos;lines&apos;]"/>
 	<property name="ireport.zoom" value="1.9487171000000014"/>
@@ -40,7 +41,7 @@
 		<fieldDescription><![CDATA[/data/record/company-company/rec_name-rec_name]]></fieldDescription>
 	</field>
 	<field name="company-vat_number" class="java.lang.String">
-        <fieldDescription><![CDATA[/data/record/company/party/tax_identifier/code]]></fieldDescription>
+		<fieldDescription><![CDATA[/data/record/company/party/tax_identifier/code]]></fieldDescription>
 	</field>
 	<field name="visible" class="java.lang.Boolean">
 		<fieldDescription><![CDATA[/data/record/lines/visible]]></fieldDescription>
@@ -181,7 +182,7 @@
 	<detail>
 		<band height="20" splitType="Stretch">
 			<printWhenExpression><![CDATA[$F{visible}]]></printWhenExpression>
-			<textField isBlankWhenNull="true">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement style="default" x="0" y="0" width="303" height="20" uuid="f0a7202b-a4b8-4fcb-9003-a0b1ac025382"/>
 				<textFieldExpression><![CDATA[$F{line-name}]]></textFieldExpression>
 			</textField>
