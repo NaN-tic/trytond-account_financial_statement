@@ -633,12 +633,24 @@ msgid "Concept"
 msgstr "Concepto"
 
 msgctxt "report:account.financial.statement.report:"
+msgid "Fiscal Year 1"
+msgstr "Año fiscal 1"
+
+msgctxt "report:account.financial.statement.report:"
+msgid "Fiscal Year 2"
+msgstr "Año fiscal 2"
+
+msgctxt "report:account.financial.statement.report:"
 msgid "Current Value"
 msgstr "Valor actual"
 
 msgctxt "report:account.financial.statement.report:"
 msgid "Previous Value"
 msgstr "Valor anterior"
+
+msgctxt "report:account.financial.statement.report:"
+msgid "VAT"
+msgstr "NIF"
 
 msgctxt "selection:account.financial.statement.report,state:"
 msgid "Calculated"
