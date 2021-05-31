@@ -882,7 +882,7 @@ class TemplateLine(ModelSQL, ModelView):
                 field_string = Translation.get_source(field_name, 'field',
                     language)
                 raise UserError(gettext('account_financial_statement.'
-                        'msg_code_unique_per_template',
+                        'msg_wrong_expression',
                     field=field_string, line=self.code))
 
     @staticmethod
