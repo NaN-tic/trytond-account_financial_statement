@@ -221,9 +221,9 @@ msgid "Credit"
 msgstr "Haber"
 
 msgctxt ""
-"field:account.financial.statement.report.line.account,currency_digits:"
-msgid "Currency Digits"
-msgstr "Decimales de la moneda"
+"field:account.financial.statement.report.line.account,currency:"
+msgid "Currency"
+msgstr "Moneda"
 
 msgctxt "field:account.financial.statement.report.line.account,debit:"
 msgid "Debit"

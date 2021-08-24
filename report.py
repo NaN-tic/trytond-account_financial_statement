@@ -12,6 +12,7 @@ from trytond.modules.jasper_reports.jasper import JasperReport
 from trytond.tools import decistmt
 from trytond.exceptions import UserError
 from trytond.i18n import gettext
+from trytond.modules.currency.fields import Monetary
 
 import re
 from datetime import datetime
@@ -296,12 +297,12 @@ class ReportLine(ModelSQL, ModelView):
     code = fields.Char('Code', required=True, select=True, states=_states,
         depends=_depends)
     notes = fields.Text('Notes')
-    currency_digits = fields.Function(fields.Integer('Currency Digits'),
-        'get_currency_digits')
-    current_value = fields.Numeric('Current Value',
-        digits=(16, Eval('currency_digits', 2)), depends=['currency_digits'])
-    previous_value = fields.Numeric('Previous value',
-        digits=(16, Eval('currency_digits', 2)), depends=['currency_digits'])
+    currency = fields.Function(fields.Many2One('currency.currency', 'Currency'),
+        'on_change_with_currency')
+    current_value = Monetary('Current Value',
+        digits='currency', currency='currency')
+    previous_value = Monetary('Previous value',
+        digits='currency', currency='currency')
     calculation_date = fields.DateTime('Calculation date', readonly=True)
     template_line = fields.Many2One('account.financial.statement.template.line',
         'Line template', ondelete='SET NULL')
@@ -339,10 +340,10 @@ class ReportLine(ModelSQL, ModelView):
         'on_change_with_report_state')
     del _states, _depends
 
-    def get_currency_digits(self, name):
-        if self.report:
-            return self.report.company.currency.digits
-        return 2
+    @fields.depends('report', '_parent_report.company')
+    def on_change_with_currency(self, name=None):
+        if self.report and self.report.company:
+            return self.report.company.currency.id
 
     @classmethod
     def get_line_accounts(cls, report_lines, names):
@@ -520,7 +521,7 @@ class ReportLine(ModelSQL, ModelView):
 
                         if isinstance(value, Decimal):
                             value = value.quantize(
-                                Decimal(10) ** -self.currency_digits)
+                                Decimal(10) ** -self.currency.digits)
 
             # Negate the value if needed
             if self.template_line.negate:
@@ -627,19 +628,16 @@ class ReportLineAccount(ModelSQL, ModelView):
     report_line = fields.Many2One('account.financial.statement.report.line',
         'Report Line', ondelete='CASCADE')
     account = fields.Many2One('account.account', 'Account', required=True)
-    currency_digits = fields.Function(fields.Integer('Currency Digits'),
-        'get_currency_digits')
-    credit = fields.Numeric('Credit', digits=(16, Eval('currency_digits', 2)),
-        depends=['currency_digits'])
-    debit = fields.Numeric('Debit', digits=(16, Eval('currency_digits', 2)),
-        depends=['currency_digits'])
-    balance = fields.Function(fields.Numeric('Balance',
-            digits=(16, Eval('currency_digits', 2)),
-            depends=['currency_digits']), 'get_balance')
+    currency = fields.Function(fields.Many2One('currency.currency', 'Currency'),
+        'on_change_with_currency')
+    credit = Monetary('Credit', digits='currency', currency='currency')
+    debit = Monetary('Debit', digits='currency', currency='currency')
+    balance = fields.Function(Monetary('Balance',
+        digits='currency', currency='currency'), 'get_balance')
     fiscal_year = fields.Selection([
             ('current', 'Current'),
             ('previous', 'Previous'),
-            ], 'Fiscal Year')
+        ], 'Fiscal Year')
 
     @classmethod
     def __register__(cls, module_name):
@@ -653,8 +651,10 @@ class ReportLineAccount(ModelSQL, ModelView):
 
         super(ReportLineAccount, cls).__register__(module_name)
 
-    def get_currency_digits(self, name):
-        return self.account.currency_digits
+    @fields.depends('report_line', '_parent_report_line.currency')
+    def on_change_with_currency(self, name=None):
+        if self.report_line and self.report_line.currency:
+            return self.report_line.currency.id
 
     def get_balance(self, name):
         if self.report_line.report.template.mode[0:5] == 'debit':
