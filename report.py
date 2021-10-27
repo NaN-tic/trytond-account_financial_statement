@@ -932,10 +932,6 @@ class TemplateLine(ModelSQL, ModelView):
         filled with new lines
         Returns the instance of the line created
         '''
-        pool = Pool()
-        Line = pool.get('account.financial.statement.report.line')
-        Lang = pool.get('ir.lang')
-        Config = pool.get('ir.configuration')
 
         if template2line is None:
             template2line = {}
@@ -946,24 +942,6 @@ class TemplateLine(ModelSQL, ModelView):
             line.report = report
             line.save()
 
-            prev_lang = self._context.get('language') or Config.get_language()
-            prev_data = {}
-            for field_name, field in self._fields.items():
-                if getattr(field, 'translate', False):
-                    prev_data[field_name] = getattr(self, field_name)
-            for lang in Lang.get_translatable_languages():
-                if lang == prev_lang:
-                    continue
-                with Transaction().set_context(language=lang):
-                    template = self.__class__(self.id)
-                    data = {}
-                    for field_name, field in self._fields.items():
-                        if (getattr(field, 'translate', False)
-                                and (getattr(template, field_name) !=
-                                    prev_data[field_name])):
-                            data[field_name] = getattr(template, field_name)
-                    if data:
-                        Line.write([line], data)
             template2line[self.id] = line.id
         for child in self.children:
             child.create_report_line(report, template2line=template2line,
