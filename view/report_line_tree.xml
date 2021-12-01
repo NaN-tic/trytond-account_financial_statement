@@ -6,7 +6,7 @@ copyright notices and license terms. -->
     <field name="visible"/>
     <field name="sequence"/>
     <field name="code"/>
-    <field name="name"/>
+    <field name="name" expand="2"/>
     <field name="report"/>
     <field name="parent"/>
     <field name="current_value"/>
