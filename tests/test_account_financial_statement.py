@@ -8,11 +8,12 @@ from trytond.pool import Pool
 import trytond.tests.test_tryton
 from trytond.tests.test_tryton import ModuleTestCase, with_transaction
 
-from trytond.modules.company.tests import create_company, set_company
+from trytond.modules.company.tests import (CompanyTestMixin, create_company,
+    set_company)
 from trytond.modules.account.tests import create_chart, get_fiscalyear
 
 
-class AccountFinancialStatementTestCase(ModuleTestCase):
+class AccountFinancialStatementTestCase(CompanyTestMixin, ModuleTestCase):
     'Test Account Financial Statement module'
     module = 'account_financial_statement'
 
