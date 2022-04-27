@@ -1,11 +1,10 @@
-# This file is part of the account_financial_statement module for Tryton.
-# The COPYRIGHT file at the top level of this repository contains the full
-# copyright notices and license terms.
+
+# This file is part of Tryton.  The COPYRIGHT file at the top level of
+# this repository contains the full copyright notices and license terms.
+
 import datetime
 from decimal import Decimal
-import unittest
 from trytond.pool import Pool
-import trytond.tests.test_tryton
 from trytond.tests.test_tryton import ModuleTestCase, with_transaction
 
 from trytond.modules.company.tests import (CompanyTestMixin, create_company,
@@ -14,7 +13,7 @@ from trytond.modules.account.tests import create_chart, get_fiscalyear
 
 
 class AccountFinancialStatementTestCase(CompanyTestMixin, ModuleTestCase):
-    'Test Account Financial Statement module'
+    'Test AccountFinancialStatement module'
     module = 'account_financial_statement'
 
     def create_moves(self, fiscalyear=None):
@@ -439,9 +438,4 @@ class AccountFinancialStatementTestCase(CompanyTestMixin, ModuleTestCase):
                 self.assertEqual(current, line.current_value)
                 self.assertEqual(previous, line.previous_value)
 
-
-def suite():
-    suite = trytond.tests.test_tryton.suite()
-    suite.addTests(unittest.TestLoader().loadTestsFromTestCase(
-        AccountFinancialStatementTestCase))
-    return suite
+del ModuleTestCase
