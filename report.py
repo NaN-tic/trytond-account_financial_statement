@@ -8,6 +8,7 @@ from trytond.transaction import Transaction
 from trytond.pyson import Eval, PYSONEncoder, Bool
 from trytond.pool import Pool
 from trytond import backend
+#from trytond.modules.html_report.html_report import HTMLReport
 from trytond.modules.jasper_reports.jasper import JasperReport
 from trytond.tools import decistmt
 from trytond.exceptions import UserError
@@ -337,6 +338,7 @@ class ReportLine(ModelSQL, ModelView):
         'get_line_accounts')
     report_state = fields.Function(fields.Selection(STATES, 'Report State'),
         'on_change_with_report_state')
+    page_break = fields.Boolean('Page Break')
     del _states, _depends
 
     def get_currency_digits(self, name):
@@ -849,6 +851,7 @@ class TemplateLine(ModelSQL, ModelView):
     children = fields.One2Many('account.financial.statement.template.line',
         'parent', 'Children')
     visible = fields.Boolean('Visible')
+    page_break = fields.Boolean('Page Break')
 
     @classmethod
     def __setup__(cls):
@@ -922,6 +925,7 @@ class TemplateLine(ModelSQL, ModelView):
             visible=self.visible,
             sequence=self.sequence,
             css_class=self.css_class,
+            page_break=self.page_break,
             )
 
     def create_report_line(self, report, template2line=None, parent=None):

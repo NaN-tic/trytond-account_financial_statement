@@ -192,6 +192,10 @@ msgctxt "field:account.financial.statement.report.line,visible:"
 msgid "Visible"
 msgstr "Visible"
 
+msgctxt "field:account.financial.statement.report.line,page_break:"
+msgid "Page Break"
+msgstr "Salt de pàgina"
+
 msgctxt "field:account.financial.statement.report.line,write_date:"
 msgid "Write Date"
 msgstr "Data de modificació"
@@ -385,6 +389,10 @@ msgstr "Data de modificació"
 msgctxt "field:account.financial.statement.template.line,write_uid:"
 msgid "Write User"
 msgstr "Usuari de modificació"
+
+msgctxt "field:account.financial.statement.template.line,page_break:"
+msgid "Page Break"
+msgstr "Salt de pàgina"
 
 msgctxt ""
 "field:account_financial_statement-account_period_current,create_date:"
