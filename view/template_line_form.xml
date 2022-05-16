@@ -30,5 +30,7 @@ copyright notices and license terms. -->
         <field name="sequence"/>
         <label name="css_class"/>
         <field name="css_class"/>
+        <label name="page_break"/>
+        <field name="page_break"/>
     </group>
 </form>

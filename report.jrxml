@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 5.5.2  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="account_financial_statment" language="i18ngroovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="11c43566-2656-47b4-9c58-4003ff2bc2f9">
 	<property name="TRYTON_RELATIONS" value="[&apos;lines&apos;]"/>
 	<property name="ireport.zoom" value="1.9487171000000014"/>
@@ -63,6 +62,9 @@
 	</field>
 	<field name="line-css_class" class="java.lang.String">
 		<fieldDescription><![CDATA[/data/record/lines-lines/css_class-css_class]]></fieldDescription>
+	</field>
+	<field name="line-page_break" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[/data/record/lines/page_break]]></fieldDescription>
 	</field>
 	<field name="id" class="java.lang.String">
 		<fieldDescription><![CDATA[/data/record/id]]></fieldDescription>
@@ -200,6 +202,11 @@
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{line-previous_value}]]></textFieldExpression>
 			</textField>
+			<break>
+				<reportElement x="0" y="19" width="100" height="1" uuid="80fd28ad-87e2-4bfe-a007-a976360f0321">
+					<printWhenExpression><![CDATA[$F{line-page_break}]]></printWhenExpression>
+				</reportElement>
+			</break>
 		</band>
 	</detail>
 	<columnFooter>
