@@ -77,16 +77,16 @@ class Report(Workflow, ModelSQL, ModelView):
     'Financial Statement Report'
     __name__ = 'account.financial.statement.report'
 
-    name = fields.Char('Name', required=True, select=True)
+    name = fields.Char('Name', required=True)
     state = fields.Selection(STATES, 'State', readonly=True)
     template = fields.Many2One('account.financial.statement.template',
-        'Template', ondelete='SET NULL', required=True, select=True,
+        'Template', ondelete='SET NULL', required=True,
         states=_STATES, depends=_DEPENDS)
     calculation_date = fields.DateTime('Calculation date', readonly=True)
     company = fields.Many2One('company.company', 'Company', ondelete='CASCADE',
         readonly=True, required=True)
     current_fiscalyear = fields.Many2One('account.fiscalyear', 'Fiscal year 1',
-        select=True, required=True, states=_STATES, depends=_DEPENDS)
+        required=True, states=_STATES, depends=_DEPENDS)
     current_periods = fields.Many2Many(
         'account_financial_statement-account_period_current', 'report',
         'period', 'Fiscal year 1 periods', states=_STATES, domain=[
@@ -99,7 +99,7 @@ class Report(Workflow, ModelSQL, ModelView):
     current_periods_end_date = fields.Function(
         fields.Char('Current Periods Dates'), 'get_dates')
     previous_fiscalyear = fields.Many2One('account.fiscalyear',
-        'Fiscal year 2', select=True, states=_STATES, depends=_DEPENDS)
+        'Fiscal year 2', states=_STATES, depends=_DEPENDS)
     previous_periods = fields.Many2Many(
         'account_financial_statement-account_period_previous', 'report',
         'period', 'Fiscal year 2 periods', states=_STATES, domain=[
@@ -255,9 +255,9 @@ class ReportCurrentPeriods(ModelSQL):
     __name__ = 'account_financial_statement-account_period_current'
     _table = 'account_financial_statement_current_period_rel'
     report = fields.Many2One('account.financial.statement.report',
-        'Account Report', ondelete='CASCADE', select=True, required=True)
+        'Account Report', ondelete='CASCADE', required=True)
     period = fields.Many2One('account.period', 'Period',
-        ondelete='CASCADE', select=True, required=True)
+        ondelete='CASCADE', required=True)
 
 
 class ReportPreviousPeriods(ModelSQL):
@@ -265,9 +265,9 @@ class ReportPreviousPeriods(ModelSQL):
     __name__ = 'account_financial_statement-account_period_previous'
     _table = 'account_financial_statement_previous_period_rel'
     report = fields.Many2One('account.financial.statement.report',
-        'Account Report', ondelete='CASCADE', select=True, required=True)
+        'Account Report', ondelete='CASCADE', required=True)
     period = fields.Many2One('account.period', 'Period',
-        ondelete='CASCADE', select=True, required=True)
+        ondelete='CASCADE', required=True)
 
 
 class ReportLine(ModelSQL, ModelView):
@@ -285,7 +285,7 @@ class ReportLine(ModelSQL, ModelView):
         }
     _depends = ['report_state']
 
-    name = fields.Char('Name', required=True, select=True, states=_states,
+    name = fields.Char('Name', required=True, states=_states,
         depends=_depends)
     report = fields.Many2One('account.financial.statement.report', 'Report',
         required=True, ondelete='CASCADE',
@@ -295,7 +295,7 @@ class ReportLine(ModelSQL, ModelView):
         depends=_depends + ['report'])
     # Concept official code (as specified by normalized models,
     # will be used when printing)
-    code = fields.Char('Code', required=True, select=True, states=_states,
+    code = fields.Char('Code', required=True, states=_states,
         depends=_depends)
     notes = fields.Text('Notes')
     currency = fields.Function(fields.Many2One('currency.currency', 'Currency'),
@@ -761,7 +761,7 @@ class Template(ModelSQL, ModelView):
     """
     __name__ = "account.financial.statement.template"
 
-    name = fields.Char('Name', required=True, select=True, translate=True)
+    name = fields.Char('Name', required=True, translate=True)
     type = fields.Selection([
             ('system', 'System'),
             ('user', 'User')
@@ -835,10 +835,10 @@ class TemplateLine(ModelSQL, ModelView):
 
     # Concept official code (as specified by normalized models,
     # will be used when printing)
-    code = fields.Char('Code', required=True, select=True,
+    code = fields.Char('Code', required=True,
         help='Concept code, may be used in formulas to reference this line')
     # Concept official name (will be used when printing)
-    name = fields.Char('Name', required=True, select=True, translate=True,
+    name = fields.Char('Name', required=True, translate=True,
         help='Concept name/description')
     current_value = fields.Text('Fiscal year 1 formula',
         help=_VALUE_FORMULA_HELP)
