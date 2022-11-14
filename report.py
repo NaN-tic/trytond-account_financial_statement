@@ -456,6 +456,32 @@ class ReportLine(ModelSQL, ModelView):
                 result += getattr(child, value) * sign
         return result
 
+    def percent(self, value, *concepts):
+        result = 0
+
+        if len(concepts) != 2:
+            return result
+
+        divisior = self.search([
+                ('report', '=', self.report.id),
+                ('code', '=', concepts[0]),
+                ])
+
+        dividend = self.search([
+                ('report', '=', self.report.id),
+                ('code', '=', concepts[1])
+                ])
+
+        if divisior and dividend:
+            divisior[0].refresh_values()
+            dividend[0].refresh_values()
+
+            if getattr(divisior[0], value) == 0:
+                return result
+
+            result = getattr(divisior[0], value) / getattr(dividend[0], value)
+        return result
+
     def refresh_values(self):
         """
         Recalculates the values of this report line using the
@@ -509,7 +535,8 @@ class ReportLine(ModelSQL, ModelView):
                             'debit': self.debit,
                             'credit': self.credit,
                             'concept': partial(self.concept, getvalue),
-                            'Decimal': Decimal}
+                            'Decimal': Decimal,
+                            'percent': partial(self.percent, getvalue)}
                         try:
                             value = simple_eval(decistmt(template_value),
                             functions=functions)
