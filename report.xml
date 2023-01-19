@@ -334,28 +334,5 @@ copyright notices and license terms. -->
                 pyson="1"/>
             <field name="rule_group" ref="rule_group_report"/>
         </record>
-
-        <!-- Reports -->
-        <record model="ir.action.report" id="action_report_pdf">
-            <field name="name">Account Financial Statement</field>
-            <field name="model">account.financial.statement.report</field>
-            <field name="report_name">account.financial.statement.report</field>
-            <field name="report">account_financial_statement/report.jrxml</field>
-            <field name="extension">pdf</field>
-            <field name="template_extension">jrxml</field>
-        </record>
-        <record model="ir.action.keyword" id="report_pdf_keyword">
-            <field name="keyword">form_print</field>
-            <field name="model">account.financial.statement.report,-1</field>
-            <field name="action" ref="action_report_pdf"/>
-        </record>
-
-        <!-- Deactivate standard account reports -->
-        <record model="ir.ui.menu" id="account.menu_open_balance_sheet">
-            <field name="active" eval="False"/>
-        </record>
-        <record model="ir.ui.menu" id="account.menu_open_income_statement">
-            <field name="active" eval="False"/>
-        </record>
     </data>
 </tryton>
