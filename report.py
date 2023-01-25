@@ -180,18 +180,26 @@ class Report(Workflow, ModelSQL, ModelView):
                 if report.previous_periods:
                     start = min(p.start_date for p in report.previous_periods)
                 else:
-                    start = report.previous_fiscalyear.start_date
-                result.setdefault('previous_periods_start_date',
-                    {})[report.id] = datetime.combine(start,
-                        datetime.min.time())
+                    start = None
+                if start:
+                    result.setdefault('previous_periods_start_date',
+                        {})[report.id] = datetime.combine(start,
+                            datetime.min.time())
+                else:
+                    result.setdefault('previous_periods_start_date',
+                        {})[report.id] = None
             if 'previous_periods_end_date' in names:
                 if report.previous_periods:
                     end = max(p.end_date for p in report.previous_periods)
                 else:
-                    end = report.previous_fiscalyear.end_date
-                result.setdefault('previous_periods_end_date',
-                    {})[report.id] = datetime.combine(end,
-                        datetime.min.time())
+                    start = None
+                if start:
+                    result.setdefault('previous_periods_end_date',
+                        {})[report.id] = datetime.combine(end,
+                            datetime.min.time())
+                else:
+                    result.setdefault('previous_periods_end_date',
+                        {})[report.id] = None
         return result
 
     @classmethod
@@ -243,11 +251,6 @@ class Report(Workflow, ModelSQL, ModelView):
         if 'calculation_date' not in default:
             default['calculation_date'] = None
         return super(Report, cls).copy(reports, default=default)
-
-
-class ReportJasper(JasperReport):
-    'Financial Statement Report'
-    __name__ = 'account.financial.statement.report'
 
 
 class ReportCurrentPeriods(ModelSQL):

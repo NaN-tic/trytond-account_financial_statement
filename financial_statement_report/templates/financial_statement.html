@@ -1,0 +1,30 @@
+
+{% language company.party.lang and company.party.raw.lang.code or 'en' %}
+<link rel="stylesheet" href="{{ 'html_report/templates/base.css'|modulepath }}">
+<table>
+  <thead style="border-bottom: 1px solid black; border-top: 1px solid black">
+    <tr>
+      <th nowrap>{{ _('Concept') }}</th>
+      <th nowrap>{{ label('account.financial.statement.report', 'current_fiscalyear') + ' ' + record.current_fiscalyear.render.name}}</th>
+      {% if record.raw.previous_fiscalyear %}
+        <th nowrap>{{ label('account.financial.statement.report', 'previous_fiscalyear') + ' ' + record.previous_fiscalyear.render.name }}</th>
+      {% endif %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for line in record.lines %}
+        <tr>
+            {% if not line.raw.parent %}
+                <th>{{ line.render.name }}</th>
+            {% else %}
+                <td>{{ line.render.name }}</td>
+            {% endif %}
+            <td>{{ line.render.current_value }}</td>
+            {% if record.raw.previous_fiscalyear %}
+                <td>{{ line.render.previous_value }}</td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endlanguage %}
