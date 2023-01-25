@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!-- This file is part of account_financial_statement module for Tryton.
+The COPYRIGHT file at the top level of this repository contains the full
+copyright notices and license terms. -->
+<tryton>
+    <data>
+        <!-- Reports -->
+        <record model="html.template" id="financial_statement_header_template">
+            <field name="name">Financial Statement - Header</field>
+            <field name="type">header</field>
+            <field name="sequence" eval="99"/>
+            <field name="filename">account_financial_statement/financial_statement_report/templates/financial_statement_header.html</field>
+        </record>
+        <record model="html.template" id="financial_statement_template">
+            <field name="name">Financial Statement</field>
+            <field name="type">base</field>
+            <field name="sequence" eval="99"/>
+            <field name="filename">account_financial_statement/financial_statement_report/templates/financial_statement.html</field>
+        </record>
+
+        <record model="ir.action.report" id="html_report_financial_statement">
+            <field name="name">Account Financial Statement</field>
+            <field name="model">account.financial.statement.report</field>
+            <field name="report_name">account.financial.statement.report</field>
+            <field name="extension">pdf</field>
+            <field name="template_extension">jinja</field>
+            <field name="single" eval="True"/>
+            <field name="html_header_template" ref="financial_statement_header_template"/>
+            <field name="html_template" ref="financial_statement_template"/>
+        </record>
+        <record model="ir.action.keyword" id="html_report_financial_statement_keyword">
+            <field name="keyword">form_print</field>
+            <field name="model">account.financial.statement.report,-1</field>
+            <field name="action" ref="html_report_financial_statement"/>
+        </record>
+
+        <!-- Deactivate standard account reports -->
+        <record model="ir.ui.menu" id="account.menu_open_balance_sheet">
+            <field name="active" eval="False"/>
+        </record>
+        <record model="ir.ui.menu" id="account.menu_open_income_statement">
+            <field name="active" eval="False"/>
+        </record>
+    </data>
+    <data noupdate="1">
+        <record model="html.template.translation" id="report_translation_financial_statement_ca">
+            <field name="report" ref="html_report_financial_statement"/>
+            <field name="src">Concept</field>
+            <field name="value">Concepte</field>
+            <field name="lang">ca</field>
+        </record>
+        <record model="html.template.translation" id="report_translation_financial_statement_es">
+            <field name="report" ref="html_report_financial_statement"/>
+            <field name="src">Concept</field>
+            <field name="value">Concepto</field>
+            <field name="lang">es</field>
+        </record>
+    </data>
+</tryton>

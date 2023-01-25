@@ -3,6 +3,7 @@
 # the full copyright notices and license terms.
 from trytond.pool import Pool
 from . import report
+from . import financial_statement_report
 
 
 def register():
@@ -19,6 +20,5 @@ def register():
     Pool.register(
         report.ReportLineDetail,
         module='account_financial_statement', type_='wizard')
-    Pool.register(
-        report.ReportJasper,
-        module='account_financial_statement', type_='report')
+
+    financial_statement_report.register('account_financial_statement')
