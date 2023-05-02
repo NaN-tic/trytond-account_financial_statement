@@ -12,7 +12,7 @@
     </tr>
   </thead>
   <tbody>
-    {% for line in record.lines %}
+    {% for line in record.lines %}{% if line.raw.visible %}
         <tr>
             {% if not line.raw.parent %}
                 <th>{{ line.render.name }}</th>
@@ -24,7 +24,7 @@
                 <td>{{ line.render.previous_value }}</td>
             {% endif %}
         </tr>
-    {% endfor %}
+    {% endif %}{% endfor %}
   </tbody>
 </table>
 {% endlanguage %}
