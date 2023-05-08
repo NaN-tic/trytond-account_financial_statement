@@ -1,9 +1,9 @@
 
 {% language company.party.lang and company.party.raw.lang.code or 'en' %}
 <link rel="stylesheet" href="{{ 'html_report/templates/base.css'|modulepath }}">
-<table>
+<table style="page-break-inside: auto;">
   <thead style="border-bottom: 1px solid black; border-top: 1px solid black">
-    <tr>
+    <tr style="page-break-inside:avoid;">
       <th nowrap>{{ _('Concept') }}</th>
       <th nowrap>{{ label('account.financial.statement.report', 'current_fiscalyear') + ' ' + record.current_fiscalyear.render.name}}</th>
       {% if record.raw.previous_fiscalyear %}
@@ -13,17 +13,17 @@
   </thead>
   <tbody>
     {% for line in record.lines %}{% if line.raw.visible %}
-        <tr>
-            {% if not line.raw.parent %}
-                <th>{{ line.render.name }}</th>
-            {% else %}
-                <td>{{ line.render.name }}</td>
-            {% endif %}
-            <td>{{ line.render.current_value }}</td>
-            {% if record.raw.previous_fiscalyear %}
-                <td>{{ line.render.previous_value }}</td>
-            {% endif %}
-        </tr>
+      <tr style="page-break-inside:avoid; {% if line.raw.page_break %} page-break-after:always;{% endif %}">
+        {% if not line.raw.parent %}
+            <th>{{ line.render.name }}</th>
+        {% else %}
+            <td>{{ line.render.name }}</td>
+        {% endif %}
+        <td>{{ line.render.current_value }}</td>
+        {% if record.raw.previous_fiscalyear %}
+            <td>{{ line.render.previous_value }}</td>
+        {% endif %}
+      </tr>
     {% endif %}{% endfor %}
   </tbody>
 </table>
