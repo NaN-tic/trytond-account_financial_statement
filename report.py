@@ -86,7 +86,9 @@ class Report(Workflow, ModelSQL, ModelView):
     company = fields.Many2One('company.company', 'Company', ondelete='CASCADE',
         readonly=True, required=True)
     current_fiscalyear = fields.Many2One('account.fiscalyear', 'Fiscal year 1',
-        required=True, states=_STATES, depends=_DEPENDS)
+        required=True, states=_STATES, depends=_DEPENDS + ['company'], domain=[
+            ('company', '=', Eval('company')),
+            ])
     current_periods = fields.Many2Many(
         'account_financial_statement-account_period_current', 'report',
         'period', 'Fiscal year 1 periods', states=_STATES, domain=[
@@ -99,7 +101,9 @@ class Report(Workflow, ModelSQL, ModelView):
     current_periods_end_date = fields.Function(
         fields.Char('Current Periods Dates'), 'get_dates')
     previous_fiscalyear = fields.Many2One('account.fiscalyear',
-        'Fiscal year 2', states=_STATES, depends=_DEPENDS)
+        'Fiscal year 2', states=_STATES, depends=_DEPENDS + ['company'], domain=[
+            ('company', '=', Eval('company')),
+            ])
     previous_periods = fields.Many2Many(
         'account_financial_statement-account_period_previous', 'report',
         'period', 'Fiscal year 2 periods', states=_STATES, domain=[
@@ -609,6 +613,7 @@ class ReportLine(ModelSQL, ModelView):
 
                 # Search for the account (perfect match)
                 accounts = Account.search([
+                        ('company', '=', self.report.company.id),
                         ('code', 'like', account_code + '%'),
                         ('type', '!=', None),
                         ])
@@ -654,7 +659,11 @@ class ReportLineAccount(ModelSQL, ModelView):
     _table = 'account_financial_statement_rep_lin_acco'
     report_line = fields.Many2One('account.financial.statement.report.line',
         'Report Line', ondelete='CASCADE')
-    account = fields.Many2One('account.account', 'Account', required=True)
+    company = fields.Function(fields.Many2One('company.company', 'Company'),
+        'on_change_with_company')
+    account = fields.Many2One('account.account', 'Account', required=True, domain=[
+            ('company', '=', Eval('company')),
+            ], depends=['company'])
     currency = fields.Function(fields.Many2One('currency.currency', 'Currency'),
         'on_change_with_currency')
     credit = Monetary('Credit', digits='currency', currency='currency')
@@ -666,6 +675,12 @@ class ReportLineAccount(ModelSQL, ModelView):
             ('previous', 'Previous'),
         ], 'Fiscal Year')
 
+    @fields.depends('report_line')
+    def on_change_with_company(self, name=None):
+        if (self.report_line and self.report_line.report
+                and self.report_line.report.company):
+            return self.report_line.report.company.id
+
     @classmethod
     def __register__(cls, module_name):
         # Migration from 3.6: rename table
@@ -673,9 +688,6 @@ class ReportLineAccount(ModelSQL, ModelView):
         new_table = 'account_financial_statement_rep_lin_acco'
         if backend.TableHandler.table_exist(old_table):
             backend.TableHandler.table_rename(old_table, new_table)
-
-        super(ReportLineAccount, cls).__register__(module_name)
-
         super(ReportLineAccount, cls).__register__(module_name)
 
     @fields.depends('report_line', '_parent_report_line.currency')
