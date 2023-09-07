@@ -372,10 +372,11 @@ class ReportLine(ModelSQL, ModelView):
 
     @classmethod
     def __setup__(cls):
-        super(ReportLine, cls).__setup__()
-        t = cls.__table__()
+        super().__setup__()
+        cls.__access__.add('report')
         cls._order.insert(0, ('sequence', 'ASC'))
         cls._order.insert(1, ('code', 'ASC'))
+        t = cls.__table__()
         cls._sql_constraints += [
             ('report_code_uniq', Unique(t, t.report, t.code),
                 'account_financial_statement.msg_code_unique_per_report'),
@@ -675,11 +676,16 @@ class ReportLineAccount(ModelSQL, ModelView):
             ('previous', 'Previous'),
         ], 'Fiscal Year')
 
-    @fields.depends('report_line')
+    @fields.depends('report_line', '_parent_report_line.id')
     def on_change_with_company(self, name=None):
         if (self.report_line and self.report_line.report
                 and self.report_line.report.company):
             return self.report_line.report.company.id
+
+    @classmethod
+    def __setup__(cls):
+        super().__setup__()
+        cls.__access__.add('report_line')
 
     @classmethod
     def __register__(cls, module_name):
