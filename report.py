@@ -578,14 +578,9 @@ class ReportLine(ModelSQL, ModelView):
 
                 # Search for the account (perfect match)
                 accounts = Account.search([
-                        ('code', '=', account_code),
+                        ('code', 'like', account_code + '%'),
+                        ('type', '!=', None),
                         ])
-                if not accounts:
-                    # We didn't find the account, search for a subaccount
-                    # ending with '0'
-                    accounts = Account.search([
-                            ('code', 'like', '%s%%0' % account_code),
-                            ])
                 if accounts:
                     accounts = Account.search([
                             ('parent', 'child_of', [a.id for a in accounts]),
