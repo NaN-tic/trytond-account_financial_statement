@@ -340,9 +340,11 @@ copyright notices and license terms. -->
             <field name="model" search="[('model', '=', 'account.financial.statement.report.line.account')]"/>
             <field name="global_p" eval="True"/>
         </record>
-        <record model="ir.rule" id="rule_report1">
-            <field name="domain" eval="[('report_line.report.company', 'in', Eval('companies', []))]" pyson="1"/>
-            <field name="rule_group" ref="rule_group_report"/>
+        <record model="ir.rule" id="rule_report1_line_account">
+            <field name="domain"
+                eval="[('report_line.report.company', 'in', Eval('companies', []))]"
+                pyson="1"/>
+            <field name="rule_group" ref="rule_group_report_line_account"/>
         </record>
     </data>
 </tryton>
