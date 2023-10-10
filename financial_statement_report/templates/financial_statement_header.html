@@ -7,7 +7,7 @@
     <tr>
         <td>
             <h2><i>{{ record.company.render.rec_name}}</i></h2>
-            <h3>NIF: {{ record.company.party.tax_identifier.render.code}}</h3>
+            <h3>NIF: {{ record.company.party.tax_identifier and record.company.party.tax_identifier.render.code or '-'}}</h3>
         </td>
         <td>
             <h1>{{ record.render.rec_name }}</h1>
