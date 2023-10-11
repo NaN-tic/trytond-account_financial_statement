@@ -9,7 +9,6 @@ from trytond.pyson import Eval, PYSONEncoder, Bool
 from trytond.pool import Pool
 from trytond import backend
 #from trytond.modules.html_report.html_report import HTMLReport
-from trytond.modules.jasper_reports.jasper import JasperReport
 from trytond.tools import decistmt
 from trytond.exceptions import UserError
 from trytond.i18n import gettext
@@ -21,12 +20,6 @@ from decimal import Decimal
 from simpleeval import simple_eval
 from functools import partial
 from ast import parse
-
-__all__ = [
-    'Report', 'ReportJasper', 'ReportCurrentPeriods',
-    'ReportPreviousPeriods', 'ReportLine', 'ReportLineAccount',
-    'Template', 'TemplateLine', 'ReportLineDetailStart', 'ReportLineDetail',
-    ]
 
 CSS_CLASSES = [
     ('default', 'Default'),
