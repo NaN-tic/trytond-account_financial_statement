@@ -680,15 +680,6 @@ class ReportLineAccount(ModelSQL, ModelView):
         super().__setup__()
         cls.__access__.add('report_line')
 
-    @classmethod
-    def __register__(cls, module_name):
-        # Migration from 3.6: rename table
-        old_table = 'account_financial_statement_report_line_account'
-        new_table = 'account_financial_statement_rep_lin_acco'
-        if backend.TableHandler.table_exist(old_table):
-            backend.TableHandler.table_rename(old_table, new_table)
-        super(ReportLineAccount, cls).__register__(module_name)
-
     @fields.depends('report_line', '_parent_report_line.currency')
     def on_change_with_currency(self, name=None):
         if self.report_line and self.report_line.currency:
