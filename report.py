@@ -34,8 +34,6 @@ _STATES = {
     'readonly': Eval('state') == 'calculated',
     }
 
-_DEPENDS = ['state']
-
 _VALUE_FORMULA_HELP = ('Value calculation formula: Depending on this formula '
     'the final value is calculated as follows:\n'
     '- Empy template value: sum of (this concept) children values.\n'
@@ -74,19 +72,19 @@ class Report(Workflow, ModelSQL, ModelView):
     state = fields.Selection(STATES, 'State', readonly=True)
     template = fields.Many2One('account.financial.statement.template',
         'Template', ondelete='SET NULL', required=True,
-        states=_STATES, depends=_DEPENDS)
+        states=_STATES)
     calculation_date = fields.DateTime('Calculation date', readonly=True)
     company = fields.Many2One('company.company', 'Company', ondelete='CASCADE',
         readonly=True, required=True)
     current_fiscalyear = fields.Many2One('account.fiscalyear', 'Fiscal year 1',
-        required=True, states=_STATES, depends=_DEPENDS + ['company'], domain=[
+        required=True, states=_STATES, domain=[
             ('company', '=', Eval('company')),
             ])
     current_periods = fields.Many2Many(
         'account_financial_statement-account_period_current', 'report',
         'period', 'Fiscal year 1 periods', states=_STATES, domain=[
             ('fiscalyear', '=', Eval('current_fiscalyear')),
-            ], depends=_DEPENDS + ['current_fiscalyear'])
+            ])
     current_periods_list = fields.Function(fields.Char('Current Periods List'),
         'get_periods')
     current_periods_start_date = fields.Function(
@@ -94,14 +92,14 @@ class Report(Workflow, ModelSQL, ModelView):
     current_periods_end_date = fields.Function(
         fields.Char('Current Periods Dates'), 'get_dates')
     previous_fiscalyear = fields.Many2One('account.fiscalyear',
-        'Fiscal year 2', states=_STATES, depends=_DEPENDS + ['company'], domain=[
+        'Fiscal year 2', states=_STATES, domain=[
             ('company', '=', Eval('company')),
             ])
     previous_periods = fields.Many2Many(
         'account_financial_statement-account_period_previous', 'report',
         'period', 'Fiscal year 2 periods', states=_STATES, domain=[
             ('fiscalyear', '=', Eval('previous_fiscalyear')),
-            ], depends=_DEPENDS + ['previous_fiscalyear'])
+            ])
     previous_periods_list = fields.Function(
         fields.Char('Previous Periods List'), 'get_periods')
     previous_periods_start_date = fields.Function(
@@ -285,18 +283,15 @@ class ReportLine(ModelSQL, ModelView):
         }
     _depends = ['report_state']
 
-    name = fields.Char('Name', required=True, states=_states,
-        depends=_depends)
+    name = fields.Char('Name', required=True, states=_states)
     report = fields.Many2One('account.financial.statement.report', 'Report',
         required=True, ondelete='CASCADE',
         states={
             'readonly': _states['readonly'] & Bool(Eval('report')),
-            },
-        depends=_depends + ['report'])
+            })
     # Concept official code (as specified by normalized models,
     # will be used when printing)
-    code = fields.Char('Code', required=True, states=_states,
-        depends=_depends)
+    code = fields.Char('Code', required=True, states=_states)
     notes = fields.Text('Notes')
     currency = fields.Function(fields.Many2One('currency.currency', 'Currency'),
         'on_change_with_currency')
@@ -312,31 +307,28 @@ class ReportLine(ModelSQL, ModelView):
         domain=[
             ('report', '=', Eval('report')),
             ],
-        states=_states, depends=_depends + ['report'])
+        states=_states)
     children = fields.One2Many('account.financial.statement.report.line',
         'parent', 'Children',
         domain=[
             ('report', '=', Eval('report')),
             ],
-        states=_states, depends=_depends + ['report'])
+        states=_states)
     visible = fields.Boolean('Visible')
 
     # Order sequence, it's also used for grouping into sections,
     # that's why it is a char
-    sequence = fields.Char('Sequence', states=_states, depends=_depends)
-    css_class = fields.Selection(CSS_CLASSES, 'CSS Class', states=_states,
-        depends=_depends)
+    sequence = fields.Char('Sequence', states=_states)
+    css_class = fields.Selection(CSS_CLASSES, 'CSS Class', states=_states)
     line_accounts = fields.One2Many(
         'account.financial.statement.report.line.account',
-        'report_line', 'Line Accounts', states=_states, depends=_depends)
+        'report_line', 'Line Accounts', states=_states)
     current_line_accounts = fields.Function(fields.One2Many(
             'account.financial.statement.report.line.account', 'report_line',
-            'Current Detail', states=_states, depends=_depends),
-        'get_line_accounts')
+            'Current Detail', states=_states), 'get_line_accounts')
     previous_line_accounts = fields.Function(fields.One2Many(
             'account.financial.statement.report.line.account', 'report_line',
-            'Previous Detail', states=_states, depends=_depends),
-        'get_line_accounts')
+            'Previous Detail', states=_states), 'get_line_accounts')
     report_state = fields.Function(fields.Selection(STATES, 'Report State'),
         'on_change_with_report_state')
     page_break = fields.Boolean('Page Break')
@@ -657,7 +649,7 @@ class ReportLineAccount(ModelSQL, ModelView):
         'on_change_with_company')
     account = fields.Many2One('account.account', 'Account', required=True, domain=[
             ('company', '=', Eval('company')),
-            ], depends=['company'])
+            ])
     currency = fields.Function(fields.Many2One('currency.currency', 'Currency'),
         'on_change_with_currency')
     credit = Monetary('Credit', digits='currency', currency='currency')
