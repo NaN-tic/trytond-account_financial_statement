@@ -256,7 +256,7 @@ class AccountFinancialStatementTestCase(CompanyTestMixin, ModuleTestCase):
                 }
             for line in report.lines:
                 self.assertEqual(results[line.code], line.current_value)
-                self.assertEqual(Decimal('0.0'), line.previous_value)
+                self.assertEqual(Decimal(0), line.previous_value)
             Report.draft([report])
             template.mode = 'debit-credit'
             template.save()
@@ -404,7 +404,7 @@ class AccountFinancialStatementTestCase(CompanyTestMixin, ModuleTestCase):
             self.assertEqual(len(report_balance.lines), 5)
 
             results_balance = {
-                '0': (Decimal('0.0'), Decimal('0.0')),
+                '0': (Decimal(0), Decimal(0)),
                 '01': (Decimal('-260.0'), Decimal('-130.0')),
                 '02': (Decimal('1200.0'), Decimal('600.0')),
                 '03': (Decimal('260.0'), Decimal('130.0')),

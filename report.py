@@ -567,7 +567,7 @@ class ReportLine(ModelSQL, ModelView):
         ReportLineAccount = pool.get(
             'account.financial.statement.report.line.account')
         balance_mode = self.template_line.template.mode
-        res = Decimal('0.0')
+        res = Decimal(0)
         vlist = []
         for account_code in re.findall(r'(-?\w*\(?[0-9a-zA-Z_\.]*\)?)', code):
             # Check if the code is valid (findall might return empty strings)
