@@ -2,24 +2,23 @@
 <!-- This file is part account_financial_statement module for Tryton.
 The COPYRIGHT file at the top level of this repository contains the full
 copyright notices and license terms. -->
-<form>
+<form col="6">
     <label name="name"/>
     <field name="name"/>
     <label name="type"/>
     <field name="type"/>
     <label name="report_xml"/>
     <field name="report_xml"/>
-    <newline/>
     <label name="mode"/>
     <field name="mode"/>
     <label name="cumulate"/>
     <field name="cumulate"/>
-    <notebook colspan="4">
-        <page id="lines" string="Lines">
-            <field name="lines" />
+    <notebook colspan="6">
+        <page name="lines">
+            <field name="lines" colspan="4" height="450"/>
         </page>
-        <page id="information" string="Information">
-            <field name="description" />
+        <page name="description">
+            <field name="description" colspan="4"/>
         </page>
     </notebook>
 </form>

@@ -2,38 +2,36 @@
 <!-- This file is part account_financial_statement module for Tryton.
 The COPYRIGHT file at the top level of this repository contains the full
 copyright notices and license terms. -->
-<form>
+<form col="6">
     <label name="name"/>
     <field name="name"/>
     <label name="template"/>
     <field name="template"/>
     <label name="company"/>
     <field name="company"/>
-    <notebook>
-        <page string="Configuration" id="configuration">
-            <group id="fiscal_year1" yexpand="1" yfill="1" string="Period 1" colspan="2">
+    <notebook colspan="6">
+        <page string="Configuration" id="configuration" col="6">
+            <group id="fiscal_year1" yexpand="1" yfill="1" string="Period 1" colspan="3">
                 <label name="current_fiscalyear" />
                 <field name="current_fiscalyear" colspan="3" />
-                <field name="current_periods" colspan="4"  />
+                <field name="current_periods" colspan="4" height="300"/>
             </group>
-            <group id="fiscal_year2" yexpand="1" yfill="1" string="Period 2" colspan="2">
+            <group id="fiscal_year2" yexpand="1" yfill="1" string="Period 2" colspan="3">
                 <label name="previous_fiscalyear" />
                 <field name="previous_fiscalyear" colspan="3" />
-                <field name="previous_periods" colspan="4" />
+                <field name="previous_periods" colspan="4" height="300"/>
             </group>
-            <group id="state" string="State" colspan="4">
-                <label name="state"/>
-                <field name="state"/>
-                <label name="calculation_date"/>
-                <field name="calculation_date"/>
-            </group>
-            <group id="buttons" colspan="4">
+            <label name="state"/>
+            <field name="state"/>
+            <label name="calculation_date"/>
+            <field name="calculation_date"/>
+            <group id="buttons" colspan="2">
                 <button name="calculate" />
                 <button name="draft" />
             </group>
         </page>
-        <page string="Lines" id="lines">
-            <field name="lines" />
+        <page name="lines">
+            <field name="lines" height="500"/>
         </page>
     </notebook>
 </form>
