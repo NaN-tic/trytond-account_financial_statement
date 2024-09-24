@@ -248,6 +248,54 @@ class Report(Workflow, ModelSQL, ModelView):
         return super(Report, cls).copy(reports, default=default)
 
 
+class ViewAccountsStart(ModelView):
+    'View Used And Unused Accounts Start'
+    __name__= 'account.financial.statement.report.accounts.start'
+    included_accounts = fields.Function(fields.Many2Many('account.account-balance-used', 'balance', 'account', 'Included Accounts'), 'get_used_accounts')
+    excluded_accounts = fields.Function(fields.Many2Many('account.account-balance-missing', 'balance', 'account', 'Excluded Accounts'), 'get_unused_accounts')
+
+    @staticmethod
+    def get_used_accounts(report):
+        used = []
+        for line in report.lines:
+            for account in line.line_accounts:
+                used.append(account.id)
+        return used
+
+    @staticmethod
+    def get_unused_accounts(report):
+        Account = Pool().get('account.financial.statement.report.line.account')
+        all_accounts = []
+        with Transaction().set_context(test_active=False):
+            all_accounts = Account.search([])
+        used = ViewAccountsStart.get_used_accounts(report)
+        unused = list(set(all_accounts) - set(used))
+        unused_ids = []
+        for acc in unused:
+            unused_ids.append(acc.id)
+        return unused_ids
+
+    @staticmethod
+    def default_included_accounts():
+        Report = Pool().get('account.financial.statement.report')
+        return ViewAccountsStart.get_used_accounts(Report(Transaction().context['active_id']))
+
+    @staticmethod
+    def default_excluded_accounts():
+        Report = Pool().get('account.financial.statement.report')
+        return ViewAccountsStart.get_unused_accounts(Report(Transaction().context['active_id']))
+
+class ViewAccounts(Wizard):
+    'View Used And Unused Accounts'
+    __name__= 'account.financial.statement.report.accounts'
+
+    start = StateView('account.financial.statement.report.accounts.start',
+        'account_financial_statement.view_accounts_start_form', [
+            Button('Close', 'end', 'tryton-close')
+        ])
+
+
+
 class ReportCurrentPeriods(ModelSQL):
     'Financial Statement Report - Current Periods'
     __name__ = 'account_financial_statement-account_period_current'
@@ -983,3 +1031,16 @@ class TemplateLine(ModelSQL, ModelView):
             new_default['parent'] = new_line.id
             cls.copy(record.children, default=new_default)
         return new_lines
+
+class AccountRelationshipUsed(ModelSQL):
+    'Used balance accounts'
+    __name__ = 'account.account-balance-used'
+    account = fields.Many2One('account.financial.statement.report.line.account', 'Account')
+    balance = fields.Many2One('account.financial.statement.report', 'Balance')
+
+
+class AccountRelationshipMissing(ModelSQL):
+    'Missing balance accounts'
+    __name__ = 'account.account-balance-missing'
+    account = fields.Many2One('account.financial.statement.report.line.account', 'Account')
+    balance = fields.Many2One('account.financial.statement.report', 'Balance')
