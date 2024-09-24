@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<form>
+    <field name="included_accounts"/>
+    <field name="excluded_accounts"/>
+</form>
