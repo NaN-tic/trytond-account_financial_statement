@@ -440,10 +440,6 @@ msgctxt "model:account_financial_statement-account_period_previous,name:"
 msgid "Financial Statement Report - Previous Periods"
 msgstr "Informe de balance contable - Periodos anteriores"
 
-msgctxt "model:ir.action,name:"
-msgid "Account Financial Statement"
-msgstr "Informe de balance contable"
-
 msgctxt "model:ir.action,name:act_account_financial_statement"
 msgid "Financial Statement Report"
 msgstr "Informe de balance contable"
