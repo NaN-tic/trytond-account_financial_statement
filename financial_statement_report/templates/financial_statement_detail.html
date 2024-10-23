@@ -1,0 +1,49 @@
+
+{% language company.party.lang and company.party.raw.lang.code or 'en' %}
+<link rel="stylesheet" href="{{ 'html_report/templates/base.css'|modulepath }}">
+<table style="page-break-inside: auto;">
+  <thead style="border-bottom: 1px solid black; border-top: 1px solid black">
+    <tr style="page-break-inside:avoid;">
+      <th nowrap>{{ _('Concept') }}</th>
+      <th nowrap>{{ label('account.financial.statement.report', 'current_fiscalyear') + ' ' + record.current_fiscalyear.render.name}}</th>
+      {% if record.raw.previous_fiscalyear %}
+        <th nowrap>{{ label('account.financial.statement.report', 'previous_fiscalyear') + ' ' + record.previous_fiscalyear.render.name }}</th>
+      {% endif %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for line in record.lines %}{% if line.raw.visible %}
+      <tr style="page-break-inside:avoid; {% if line.raw.page_break %} page-break-after:always;{% endif %}">
+        {% if not line.raw.parent %}
+            <th>{{ line.render.name }}</th>
+        {% else %}
+            <td>{{ line.render.name }}</td>
+        {% endif %}
+        <td>{{ line.render.current_value }}</td>
+        {% if record.raw.previous_fiscalyear %}
+            <td>{{ line.render.previous_value }}</td>
+        {% endif %}
+      </tr>
+      {% for current in line.current_line_accounts %}
+        <tr style="page-break-inside:avoid; {% if line.raw.page_break %} page-break-after:always;{% endif %} color: #A2A2A2;">
+          {% set previous = line.previous_line_accounts | selectattr("account.raw.code", "equalto", current.account.raw.code) | first %}
+          <td>{{ current.account.render.code }} - {{ current.account.render.name }}</td>
+          <td>{{ current.raw.debit - current.raw.credit }}</td>
+          {% if record.raw.previous_fiscalyear %}
+            <td>{{ previous.raw.debit - previous.raw.credit if previous else '' }}</td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+      {% for previous in line.previous_line_accounts %}
+        {% if record.raw.previous_fiscalyear and not line.current_line_accounts | selectattr("account.raw.code", "equalto", previous.account.raw.code) | first %}
+        <tr style="page-break-inside:avoid; {% if line.raw.page_break %} page-break-after:always;{% endif %} color: #A2A2A2;">
+          <td>{{ previous.account.render.code }} - {{ previous.account.render.name }}</td>
+          <td></td>
+          <td>{{ previous.raw.debit - previous.raw.credit if previous else '' }}</td>
+        </tr>
+        {% endif %}
+      {% endfor %}
+    {% endif %}{% endfor %}
+  </tbody>
+</table>
+{% endlanguage %}
