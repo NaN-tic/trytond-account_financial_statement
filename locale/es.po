@@ -434,7 +434,6 @@ msgstr "Informe de balance contable"
 msgctxt "model:ir.action,name:html_report_financial_statement_detail"
 msgid "Account Financial Statement Detail"
 msgstr "Detalle del estado financiero de la cuenta"
-msgstr "Informe de balancw contable detallado"
 
 msgctxt "model:ir.message,text:msg_code_unique_per_report"
 msgid "The code must be unique for this report."
