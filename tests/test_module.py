@@ -47,19 +47,23 @@ class AccountFinancialStatementTestCase(CompanyTestMixin, ModuleTestCase):
                     ])
             revenue, = Account.search([
                     ('type.revenue', '=', True),
-                    ])
+                    ('closed', '=', False),
+                    ], limit=1)
             Account.write([revenue], {'code': '7'})
             receivable, = Account.search([
                     ('type.receivable', '=', True),
-                    ])
+                    ('closed', '=', False),
+                    ], limit=1)
             Account.write([receivable], {'code': '43'})
             expense, = Account.search([
                     ('type.expense', '=', True),
-                    ])
+                    ('closed', '=', False),
+                    ], limit=1)
             Account.write([expense], {'code': '6'})
             payable, = Account.search([
                     ('type.payable', '=', True),
-                    ])
+                    ('closed', '=', False),
+                    ], limit=1)
             Account.write([payable], {'code': '41'})
             chart, = Account.search([
                     ('parent', '=', None),
