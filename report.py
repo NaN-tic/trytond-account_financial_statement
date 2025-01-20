@@ -1,13 +1,12 @@
 # This file is part of account_financial_statement module for Tryton.
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
-from trytond.model import ModelView, ModelSQL, Workflow, fields, Unique
+from trytond.model import ModelView, ModelSQL, Workflow, fields, Unique, DeactivableMixin
 from trytond.wizard import Wizard, StateView, StateAction, StateTransition, \
     Button
 from trytond.transaction import Transaction
 from trytond.pyson import Eval, PYSONEncoder, Bool
 from trytond.pool import Pool
-from trytond import backend
 #from trytond.modules.html_report.html_report import HTMLReport
 from trytond.tools import decistmt
 from trytond.exceptions import UserError
@@ -771,7 +770,7 @@ class ReportLineDetail(Wizard):
         return action, {}
 
 
-class Template(ModelSQL, ModelView):
+class Template(ModelSQL, ModelView, DeactivableMixin):
     """
     Financial Statement Template
     It stores the header fields of an account report template,

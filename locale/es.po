@@ -435,6 +435,21 @@ msgctxt "model:ir.action,name:html_report_financial_statement_detail"
 msgid "Account Financial Statement Detail"
 msgstr "Detalle del estado financiero de la cuenta"
 
+msgctxt ""
+"model:ir.action.act_window.domain,name:act_account_financial_statement_all"
+msgid "All"
+msgstr "Todo"
+
+msgctxt ""
+"model:ir.action.act_window.domain,name:act_account_financial_statement_calculated"
+msgid "Calculated"
+msgstr "Calculado"
+
+msgctxt ""
+"model:ir.action.act_window.domain,name:act_account_financial_statement_draft"
+msgid "Draft"
+msgstr "Borrador"
+
 msgctxt "model:ir.message,text:msg_code_unique_per_report"
 msgid "The code must be unique for this report."
 msgstr "El código de la línea debe ser único en el informe."
