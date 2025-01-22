@@ -70,28 +70,6 @@ copyright notices and license terms. -->
             <field name="res_model">account.financial.statement.report</field>
         </record>
 
-        <record model="ir.action.act_window.domain" id="act_account_financial_statement_draft">
-            <field name="name">Draft</field>
-            <field name="sequence" eval="40"/>
-            <field name="domain" eval="[('state', '=', 'draft')]" pyson="1"/>
-            <field name="count" eval="True"/>
-            <field name="act_window" ref="act_account_financial_statement"/>
-        </record>
-        <record model="ir.action.act_window.domain" id="act_account_financial_statement_calculated">
-            <field name="name">Calculated</field>
-            <field name="sequence" eval="50"/>
-            <field name="domain" eval="[('state', '=', 'calculated')]" pyson="1"/>
-            <field name="count" eval="True"/>
-            <field name="act_window" ref="act_account_financial_statement"/>
-        </record>
-        <record model="ir.action.act_window.domain" id="act_account_financial_statement_all">
-            <field name="name">All</field>
-            <field name="sequence" eval="60"/>
-            <field name="domain" eval="[]" pyson="1"/>
-            <field name="count" eval="True"/>
-            <field name="act_window" ref="act_account_financial_statement"/>
-        </record>
-
         <record model="ir.action.act_window.view"
              id="act_account_financial_statement_tree">
             <field name="sequence" eval="10" />

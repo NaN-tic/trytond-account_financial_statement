@@ -111,7 +111,8 @@ class Report(Workflow, ModelSQL, ModelView):
     @classmethod
     def __setup__(cls):
         super(Report, cls).__setup__()
-        cls._order.insert(0, ('name', 'ASC'))
+        cls._order.insert(0, ('current_fiscalyear', 'DESC'))
+        cls._order.insert(1, ('name', 'ASC'))
         cls._transition_state = 'state'
         cls._transitions |= set((
                 ('draft', 'calculated'),
