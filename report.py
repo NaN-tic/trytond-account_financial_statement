@@ -40,8 +40,6 @@ _VALUE_FORMULA_HELP = ('Value calculation formula: Depending on this formula '
     '- A matematic formula with following helpers:\n'
     '  * balance() with comma-separated account numbers. Sum of the accounts '
     '(the sign of the depends on the mode).\n'
-    '  * invert() with comma-separated account numbers. Sum of the account '
-    '(the sign is inverted if reversed modes are used).\n'
     '  * credit() with comma-separeted account numbers. Sum of the credit of '
     'the account if the total amount is negative. Zero otherwise.\n'
     '  * debit() with comma-separeted account numbers. Sum of the debit of '
@@ -49,8 +47,6 @@ _VALUE_FORMULA_HELP = ('Value calculation formula: Depending on this formula '
     '  * concept() with comma-separated concept codes in quotes of the report '
     'itself (column Code). Sum of the concept values.\n'
     'Examples:\n'
-    'balance(430, 431) + invert(437)\n'
-    'balance(5305, 5315) + invert(5325, 5335) + debit(551, 5525)\n'
     'balance(5103) + credit(5523)\n'
     'concept("11000", "12000")\n'
     'balance(7) - 1.25 * balance(6)\n'
@@ -404,13 +400,6 @@ class ReportLine(ModelSQL, ModelView):
             result += self._get_account_(str(account_code), mode='balance')
         return result
 
-    def invert(self, *account_codes):
-        result = 0
-        for account_code in account_codes:
-            result += self._get_account_(str(account_code), mode='balance',
-                invert=True)
-        return result
-
     def debit(self, *account_codes):
         result = 0
         for account_code in account_codes:
@@ -482,7 +471,7 @@ class ReportLine(ModelSQL, ModelView):
 
         Depending on this formula the final value is calculated as follows:
         - Empy template value: sum of (this concept) children values.
-        - Evaluate python expression using simpleeval with self.invert(),
+        - Evaluate python expression using simpleeval with
         self.debit(), self.credit(), self.concept() helpers.
         """
         for child in self.children:
@@ -524,7 +513,6 @@ class ReportLine(ModelSQL, ModelView):
                         }
                     with Transaction().set_context(ctx):
                         functions = {'balance': self.balance,
-                            'invert': self.invert,
                             'debit': self.debit,
                             'credit': self.credit,
                             'concept': partial(self.concept, getvalue),
@@ -552,7 +540,7 @@ class ReportLine(ModelSQL, ModelView):
         self.calculation_date = self.report.calculation_date
         self.save()
 
-    def _get_account_(self, code, mode, invert=False):
+    def _get_account_(self, code, mode):
         """
         It returns the (debit, credit, *) tuple for a account with the
         given code, or the sum of those values for a set of accounts
@@ -583,19 +571,9 @@ class ReportLine(ModelSQL, ModelView):
                     sign = Decimal('-1.0') * sign
                 else:
                     # Calculate the , as given by mode
-                    if balance_mode == 'debit-credit-reversed':
-                        # We use debit-credit as default ,
-                        # but for accounts in brackets we use credit-debit
-                        if invert:
-                            sign = Decimal('-1.0') * sign
-                    elif balance_mode == 'credit-debit':
+                    if balance_mode == 'credit-debit':
                         # We use credit-debit as the ,
                         sign = Decimal('-1.0') * sign
-                    elif balance_mode == 'credit-debit-reversed':
-                        # We use credit-debit as default ,
-                        # but for accounts in brackets we use debit-credit
-                        if not invert:
-                            sign = Decimal('-1.0') * sign
 
                 # Search for the account (perfect match)
                 accounts = Account.search([
@@ -793,9 +771,7 @@ class Template(ModelSQL, ModelView, DeactivableMixin):
     description = fields.Text('Description')
     mode = fields.Selection([
             ('debit-credit', 'Debit-Credit'),
-            ('debit-credit-reversed', 'Debit-Credit, reversed with invert()'),
             ('credit-debit', 'Credit-Debit'),
-            ('credit-debit-reversed', 'Credit-Debit, reversed with invert()')
             ], 'Mode')
     cumulate = fields.Boolean('Cumulate Balances')
 
