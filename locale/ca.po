@@ -435,6 +435,21 @@ msgctxt "model:ir.action,name:html_report_financial_statement_detail"
 msgid "Account Financial Statement Detail"
 msgstr "Informe de balanç comptable detellat"
 
+msgctxt ""
+"model:ir.action.act_window.domain,name:act_account_financial_statement_all"
+msgid "All"
+msgstr "Tots"
+
+msgctxt ""
+"model:ir.action.act_window.domain,name:act_account_financial_statement_calculated"
+msgid "Calculated"
+msgstr "Calcul·lat"
+
+msgctxt ""
+"model:ir.action.act_window.domain,name:act_account_financial_statement_draft"
+msgid "Draft"
+msgstr "Esborrany"
+
 msgctxt "model:ir.message,text:msg_code_unique_per_report"
 msgid "The code must be unique for this report."
 msgstr "El codi de la línia ha de ser únic en l'informe."

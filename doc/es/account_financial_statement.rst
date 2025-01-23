@@ -70,8 +70,3 @@ especialmente útil en caso de cambio de cuentas de un año a otro. También
 podemos observar que la definición de cuentas sigue la misma estructura que los
 documentos oficiales del BOE.
 
-.. NOTE:: Los números de cuenta entre paréntesis sólo son indicativos (no
-    cambian el signo), a menos que cambiemos el campo *Modo* en la plantilla a
-    algún tipo con la indicación *Invertido si está entre paréntesis*. No es
-    recomendable cambiar el campo *Modo* a menos que sepamos bien lo que
-    estamos haciendo.
