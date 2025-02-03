@@ -866,7 +866,9 @@ class TemplateLine(ModelSQL, ModelView):
     negate = fields.Boolean('Negate',
         help='Negate the value (change the sign of the )')
     parent = fields.Many2One('account.financial.statement.template.line',
-        'Parent', ondelete='CASCADE')
+        'Parent', ondelete='CASCADE', domain=[
+            ('template', '=', Eval('template', -1)),
+        ])
     children = fields.One2Many('account.financial.statement.template.line',
         'parent', 'Children')
     visible = fields.Boolean('Visible')
