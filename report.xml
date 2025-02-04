@@ -183,12 +183,12 @@ copyright notices and license terms. -->
         </record>
 
         <record model="ir.action.wizard" id="act_view_accounts">
-            <field name="name">View Accounts</field>
+            <field name="name">View Used and Unused Accounts</field>
             <field name="wiz_name">account.financial.statement.report.accounts</field>
         </record>
 
         <record model="ir.action.keyword" id="act_view_accounts_keyword">
-            <field name="keyword">form_relate</field>
+            <field name="keyword">form_action</field>
             <field name="model">account.financial.statement.report,-1</field>
             <field name="action" ref="act_view_accounts"/>
         </record>

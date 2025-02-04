@@ -7,8 +7,6 @@ from trytond.wizard import Wizard, StateView, StateAction, StateTransition, \
 from trytond.transaction import Transaction
 from trytond.pyson import Eval, PYSONEncoder, Bool
 from trytond.pool import Pool
-from trytond import backend
-#from trytond.modules.html_report.html_report import HTMLReport
 from trytond.tools import decistmt
 from trytond.exceptions import UserError
 from trytond.i18n import gettext
@@ -251,39 +249,11 @@ class Report(Workflow, ModelSQL, ModelView):
 class ViewAccountsStart(ModelView):
     'View Used And Unused Accounts Start'
     __name__= 'account.financial.statement.report.accounts.start'
-    included_accounts = fields.Function(fields.Many2Many('account.account-balance-used', 'balance', 'account', 'Included Accounts'), 'get_used_accounts')
-    excluded_accounts = fields.Function(fields.Many2Many('account.account-balance-missing', 'balance', 'account', 'Excluded Accounts'), 'get_unused_accounts')
+    used_accounts = fields.Many2Many('account.account', None, None,
+            'Used Accounts')
+    unused_accounts = fields.Many2Many('account.account', None, None,
+            'Unused Accounts')
 
-    @staticmethod
-    def get_used_accounts(report):
-        used = []
-        for line in report.lines:
-            for account in line.line_accounts:
-                used.append(account.id)
-        return used
-
-    @staticmethod
-    def get_unused_accounts(report):
-        Account = Pool().get('account.financial.statement.report.line.account')
-        all_accounts = []
-        with Transaction().set_context(test_active=False):
-            all_accounts = Account.search([])
-        used = ViewAccountsStart.get_used_accounts(report)
-        unused = list(set(all_accounts) - set(used))
-        unused_ids = []
-        for acc in unused:
-            unused_ids.append(acc.id)
-        return unused_ids
-
-    @staticmethod
-    def default_included_accounts():
-        Report = Pool().get('account.financial.statement.report')
-        return ViewAccountsStart.get_used_accounts(Report(Transaction().context['active_id']))
-
-    @staticmethod
-    def default_excluded_accounts():
-        Report = Pool().get('account.financial.statement.report')
-        return ViewAccountsStart.get_unused_accounts(Report(Transaction().context['active_id']))
 
 class ViewAccounts(Wizard):
     'View Used And Unused Accounts'
@@ -294,6 +264,26 @@ class ViewAccounts(Wizard):
             Button('Close', 'end', 'tryton-close')
         ])
 
+    def default_start(self, fields):
+        pool = Pool()
+        Account = pool.get('account.account')
+
+        used = []
+        for line in self.record.lines:
+            for account in line.line_accounts:
+                used.append(account.account)
+
+        all_accounts = Account.search([
+                ('parent', '!=', None),
+                ('type', '!=', None),
+                ])
+        unused = list(set(all_accounts) - set(used))
+        unused = [x.id for x in sorted(unused, key=lambda x: x.code)]
+        used = [x.id for x in sorted(used, key=lambda x: x.code)]
+        return {
+            'used_accounts': used,
+            'unused_accounts': unused,
+            }
 
 
 class ReportCurrentPeriods(ModelSQL):
@@ -559,7 +549,6 @@ class ReportLine(ModelSQL, ModelView):
                         value += getattr(child, getvalue)
 
                 else:
-
                     # We will use the context to filter the accounts by
                     # fiscalyear and periods.
                     getperiods = '%s_periods' % (fyear)
@@ -571,13 +560,15 @@ class ReportLine(ModelSQL, ModelView):
                         'cumulate': self.template_line.template.cumulate,
                         }
                     with Transaction().set_context(ctx):
-                        functions = {'balance': self.balance,
+                        functions = {
+                            'balance': self.balance,
                             'invert': self.invert,
                             'debit': self.debit,
                             'credit': self.credit,
                             'concept': partial(self.concept, getvalue),
                             'Decimal': Decimal,
-                            'percent': partial(self.percent, getvalue)}
+                            'percent': partial(self.percent, getvalue),
+                            }
                         try:
                             value = simple_eval(decistmt(template_value),
                             functions=functions)
@@ -657,8 +648,8 @@ class ReportLine(ModelSQL, ModelView):
                             ])
                     credit_debit = self._get_credit_debit(accounts)
                     for account in credit_debit['credit']:
-                        balance = credit_debit['debit'][account] - \
-                                credit_debit['credit'][account]
+                        balance = (credit_debit['debit'][account]
+                            - credit_debit['credit'][account])
                         value = {
                             'report_line': self,
                             'fiscal_year': context.get('period'),
@@ -670,8 +661,11 @@ class ReportLine(ModelSQL, ModelView):
                             res += balance * sign
                             value['credit'] = credit_debit['credit'][account]
                             value['debit'] = credit_debit['debit'][account]
-                        if value.get('credit') or value.get('debit'):
-                            vlist.append(value)
+                        # Although it would only be strictly necessary to store
+                        # lines where credit or debit are not zero, we store
+                        # all of them so the ViewAccounts wizard can compute which
+                        # accounts were used for the report
+                        vlist.append(value)
         ReportLineAccount.create(vlist)
         return res
 
@@ -1032,15 +1026,3 @@ class TemplateLine(ModelSQL, ModelView):
             cls.copy(record.children, default=new_default)
         return new_lines
 
-class AccountRelationshipUsed(ModelSQL):
-    'Used balance accounts'
-    __name__ = 'account.account-balance-used'
-    account = fields.Many2One('account.financial.statement.report.line.account', 'Account')
-    balance = fields.Many2One('account.financial.statement.report', 'Balance')
-
-
-class AccountRelationshipMissing(ModelSQL):
-    'Missing balance accounts'
-    __name__ = 'account.account-balance-missing'
-    account = fields.Many2One('account.financial.statement.report.line.account', 'Account')
-    balance = fields.Many2One('account.financial.statement.report', 'Balance')

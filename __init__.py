@@ -17,8 +17,6 @@ def register():
         report.ReportCurrentPeriods,
         report.ReportPreviousPeriods,
         report.ViewAccountsStart,
-        report.AccountRelationshipMissing,
-        report.AccountRelationshipUsed,
         module='account_financial_statement', type_='model')
     Pool.register(
         report.ReportLineDetail,
