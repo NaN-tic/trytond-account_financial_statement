@@ -176,6 +176,23 @@ copyright notices and license terms. -->
                 action="act_account_financial_statement_template"
                 sequence="100"/>
 
+        <record model="ir.ui.view" id="view_accounts_start_form">
+            <field name="model">account.financial.statement.report.accounts.start</field>
+            <field name="type">form</field>
+            <field name="name">view_accounts_start_form</field>
+        </record>
+
+        <record model="ir.action.wizard" id="act_view_accounts">
+            <field name="name">View Used and Unused Accounts</field>
+            <field name="wiz_name">account.financial.statement.report.accounts</field>
+        </record>
+
+        <record model="ir.action.keyword" id="act_view_accounts_keyword">
+            <field name="keyword">form_action</field>
+            <field name="model">account.financial.statement.report,-1</field>
+            <field name="action" ref="act_view_accounts"/>
+        </record>
+
         <!-- Permisions -->
         <record model="ir.model.access"
              id="access_account_financial_statement_report">
