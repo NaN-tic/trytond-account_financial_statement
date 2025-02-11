@@ -27,15 +27,17 @@
       {% for current in line.current_line_accounts %}
         <tr style="page-break-inside:avoid; {% if line.raw.page_break %} page-break-after:always;{% endif %} color: #A2A2A2;">
           {% set previous = line.previous_line_accounts | selectattr("account.raw.code", "equalto", current.account.raw.code) | first %}
+          {% if (current.raw.debit - current.raw.credit) != 0 or (record.raw.previous_fiscalyear and (previous.raw.debit - previous.raw.credit) != 0) %}
           <td>{{ current.account.render.code }} - {{ current.account.render.name }}</td>
           <td>{{ current.raw.debit - current.raw.credit }}</td>
           {% if record.raw.previous_fiscalyear %}
             <td>{{ previous.raw.debit - previous.raw.credit if previous else '' }}</td>
           {% endif %}
+          {% endif %}
         </tr>
       {% endfor %}
       {% for previous in line.previous_line_accounts %}
-        {% if record.raw.previous_fiscalyear and not line.current_line_accounts | selectattr("account.raw.code", "equalto", previous.account.raw.code) | first %}
+        {% if (record.raw.previous_fiscalyear and not line.current_line_accounts | selectattr("account.raw.code", "equalto", previous.account.raw.code) | first) and (previous.raw.debit - previous.raw.credit) != 0 %}
         <tr style="page-break-inside:avoid; {% if line.raw.page_break %} page-break-after:always;{% endif %} color: #A2A2A2;">
           <td>{{ previous.account.render.code }} - {{ previous.account.render.name }}</td>
           <td></td>
