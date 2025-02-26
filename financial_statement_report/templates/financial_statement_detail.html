@@ -27,7 +27,7 @@
       {% for current in line.current_line_accounts %}
         <tr style="page-break-inside:avoid; {% if line.raw.page_break %} page-break-after:always;{% endif %} color: #A2A2A2;">
           {% set previous = line.previous_line_accounts | selectattr("account.raw.code", "equalto", current.account.raw.code) | first %}
-          {% if ( ((current.raw.debit or 0) - (current.raw.credit or 0)) != 0) or (record.raw.previous_fiscalyear and ((previous.raw.debit or 0) - (previous.raw.credit or 0)) != 0) %}
+          {% if ( ((current.raw.debit or 0) - (current.raw.credit or 0)) != 0) or (record.raw.previous_fiscalyear and previous is defined and ((previous.raw.debit or 0) - (previous.raw.credit or 0)) != 0) %}
           <td>{{ current.account.render.code }} - {{ current.account.render.name }}</td>
           <td>{{ (current.raw.debit or 0) - (current.raw.credit or 0) }}</td>
           {% if record.raw.previous_fiscalyear %}
