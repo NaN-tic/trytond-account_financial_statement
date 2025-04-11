@@ -14,11 +14,11 @@
         </td>
     </tr>
     <tr>
-        <td colspan="2">{{ label('account.financial.statement.report', 'current_fiscalyear') + ' ' + record.current_fiscalyear.render.name + ': ' + record.raw.current_periods_start_date.strftime('%d-%m-%Y') + ' / ' + record.raw.current_periods_end_date.strftime('%d-%m-%Y') }}</td>
+        <td colspan="2">{{ label('account.financial.statement.report', 'current_fiscalyear') + ' ' + record.current_fiscalyear.render.name + ': ' + record.raw.current_periods_start_date and record.raw.current_periods_start_date.strftime('%d-%m-%Y') + ' / ' + record.raw.current_periods_end_date and record.raw.current_periods_end_date.strftime('%d-%m-%Y') }}</td>
     </tr>
     {% if record.raw.previous_fiscalyear and record.raw.previous_periods_start_date and record.raw.previous_periods_start_date%}
     <tr>
-        <td colspan="2">{{ label('account.financial.statement.report', 'previous_fiscalyear') + ' ' + record.previous_fiscalyear.render.name + ': ' + record.raw.previous_periods_start_date.strftime('%d-%m-%Y') + ' / ' + record.raw.previous_periods_end_date.strftime('%d-%m-%Y') }}</td>
+        <td colspan="2">{{ label('account.financial.statement.report', 'previous_fiscalyear') + ' ' + record.previous_fiscalyear.render.name + ': ' + record.raw.previous_periods_start_date and record.raw.previous_periods_start_date.strftime('%d-%m-%Y') + ' / ' + record.raw.previous_periods_end_date and record.raw.previous_periods_end_date.strftime('%d-%m-%Y') }}</td>
     </tr>
     {% endif %}
 </table>
