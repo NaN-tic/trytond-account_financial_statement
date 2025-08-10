@@ -361,10 +361,10 @@ class ReportLine(ModelSQL, ModelView):
     line_accounts = fields.One2Many(
         'account.financial.statement.report.line.account',
         'report_line', 'Line Accounts', states=_states)
-    current_line_accounts = fields.Function(fields.One2Many(
+    current_line_accounts = fields.Function(fields.Many2Many(
             'account.financial.statement.report.line.account', 'report_line',
             'Current Detail', states=_states), 'get_line_accounts')
-    previous_line_accounts = fields.Function(fields.One2Many(
+    previous_line_accounts = fields.Function(fields.Many2Many(
             'account.financial.statement.report.line.account', 'report_line',
             'Previous Detail', states=_states), 'get_line_accounts')
     report_state = fields.Function(fields.Selection(STATES, 'Report State'),
