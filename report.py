@@ -82,7 +82,7 @@ class Report(Workflow, ModelSQL, ModelView):
         'account_financial_statement-account_period_current', 'report',
         'period', 'Fiscal year 1 periods', states=_STATES, domain=[
             ('fiscalyear', '=', Eval('current_fiscalyear')),
-            ])
+            ], required=True)
     current_periods_list = fields.Function(fields.Char('Current Periods List'),
         'get_periods')
     current_periods_start_date = fields.Function(
@@ -95,7 +95,10 @@ class Report(Workflow, ModelSQL, ModelView):
             ])
     previous_periods = fields.Many2Many(
         'account_financial_statement-account_period_previous', 'report',
-        'period', 'Fiscal year 2 periods', states=_STATES, domain=[
+        'period', 'Fiscal year 2 periods', states={
+            'readonly': Eval('state') == 'calculated',
+            'required': Bool(Eval('previous_fiscalyear')),
+            }, domain=[
             ('fiscalyear', '=', Eval('previous_fiscalyear')),
             ])
     previous_periods_list = fields.Function(
