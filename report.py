@@ -689,7 +689,7 @@ class ReportLineAccount(ModelSQL, ModelView):
     __name__ = 'account.financial.statement.report.line.account'
     _table = 'account_financial_statement_rep_lin_acco'
     report_line = fields.Many2One('account.financial.statement.report.line',
-        'Report Line', ondelete='CASCADE')
+        'Report Line', ondelete='CASCADE', required=True)
     company = fields.Function(fields.Many2One('company.company', 'Company'),
         'on_change_with_company')
     account = fields.Many2One('account.account', 'Account', required=True, domain=[
