@@ -723,6 +723,9 @@ class ReportLineAccount(ModelSQL, ModelView):
             return self.report_line.currency.id
 
     def get_balance(self, name):
+        if None in (self.debit, self.credit):
+            return
+
         if self.report_line.report.template.mode[0:5] == 'debit':
             return self.debit - self.credit
         else:
