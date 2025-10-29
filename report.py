@@ -608,6 +608,8 @@ class ReportLine(ModelSQL, ModelView):
         Account = pool.get('account.account')
         ReportLineAccount = pool.get(
             'account.financial.statement.report.line.account')
+
+        company = self.report.company
         balance_mode = self.template_line.template.mode
         res = Decimal(0)
         vlist = []
@@ -641,13 +643,14 @@ class ReportLine(ModelSQL, ModelView):
 
                 # Search for the account (perfect match)
                 accounts = Account.search([
-                        ('company', '=', self.report.company.id),
+                        ('company', '=', company),
                         ('code', 'like', account_code + '%'),
                         ('type', '!=', None),
                         ])
                 if accounts:
                     accounts = Account.search([
                             ('parent', 'child_of', [a.id for a in accounts]),
+                            ('company', '=', company)
                             ])
                     credit_debit = self._get_credit_debit(accounts)
                     for account in credit_debit['credit']:
