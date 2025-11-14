@@ -277,6 +277,7 @@ class ViewAccounts(Wizard):
                 used.append(account.account)
 
         all_accounts = Account.search([
+                ('company', '=', self.record.company),
                 ('parent', '!=', None),
                 ('type', '!=', None),
                 ])
