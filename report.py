@@ -9,6 +9,7 @@ from trytond.pyson import Eval, PYSONEncoder, Bool
 from trytond.pool import Pool
 from trytond.tools import decistmt
 from trytond.exceptions import UserError
+from trytond.model.exceptions import ValidationError
 from trytond.i18n import gettext
 from trytond.modules.currency.fields import Monetary
 
@@ -955,7 +956,7 @@ class TemplateLine(ModelSQL, ModelView):
                 field_name = '{},{}'.format(self.__name__,value)
                 field_string = Translation.get_source(field_name, 'field',
                     language)
-                raise UserError(gettext('account_financial_statement.'
+                raise ValidationError(gettext('account_financial_statement.'
                         'msg_wrong_expression',
                     field=field_string, line=self.code))
 
