@@ -31,7 +31,7 @@
           <td>{{ current.account.render.code }} - {{ current.account.render.name }}</td>
           <td style="text-align: right">{{ (current.raw.debit or 0) - (current.raw.credit or 0) }}</td>
           {% if record.raw.previous_fiscalyear %}
-            <td style="text-align: right">{{ previous.raw.debit - previous.raw.credit if previous else '' }}</td>
+            <td style="text-align: right">{{ (previous.raw.debit or 0) - (previous.raw.credit or 0) if previous else '' }}</td>
           {% endif %}
           {% endif %}
         </tr>
@@ -41,7 +41,7 @@
         <tr style="page-break-inside:avoid; {% if line.raw.page_break %} page-break-after:always;{% endif %} color: #A2A2A2;">
           <td>{{ previous.account.render.code }} - {{ previous.account.render.name }}</td>
           <td></td>
-          <td style="text-align: right">{{ previous.raw.debit - previous.raw.credit if previous else '' }}</td>
+          <td style="text-align: right">{{ (previous.raw.debit or 0) - (previous.raw.credit or 0) if previous else '' }}</td>
         </tr>
         {% endif %}
       {% endfor %}
