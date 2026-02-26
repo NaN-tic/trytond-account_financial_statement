@@ -1,19 +1,15 @@
 from trytond.pool import PoolMeta
-from trytond.modules.html_report.dominate_report import DominateReportMixin
-from dominate.tags import style
+from trytond.modules.html_report.dominate_report import DominateReport
 from dominate.util import raw
 from dominate.tags import header as header_tag, table, thead, tbody, tr, td, th
 
 
-class FinancialStatementBase(DominateReportMixin):
+class FinancialStatementBase(DominateReport):
 
     @classmethod
     def header(cls, action, data, records):
         record, = records
         header_node = header_tag(id='header')
-        css = cls.css(action, data, records)
-        if css:
-            header_node.add(style(raw(css)))
         with header_node:
             with table(style='width:100%;'):
                 with tr():
