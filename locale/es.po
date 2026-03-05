@@ -559,6 +559,10 @@ msgctxt "report:account.financial.statement.report:"
 msgid "VAT"
 msgstr "NIF"
 
+msgctxt "html_report:h:"
+msgid "Concept"
+msgstr "Concepto"
+
 msgctxt "selection:account.financial.statement.report,state:"
 msgid "Calculated"
 msgstr "Calculado"

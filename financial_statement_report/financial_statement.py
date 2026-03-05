@@ -1,5 +1,6 @@
 from trytond.pool import PoolMeta
 from trytond.modules.html_report.dominate_report import DominateReport
+from trytond.modules.html_report.i18n import _
 from dominate.util import raw
 from dominate.tags import header as header_tag, table, thead, tbody, tr, td, th
 
@@ -59,7 +60,7 @@ class FinancialStatementBase(DominateReport):
         with table(style='page-break-inside: auto;') as table_node:
             with thead(style='border-bottom: 1px solid black; border-top: 1px solid black'):
                 with tr(style='page-break-inside:avoid;'):
-                    th('Concept', nowrap=True)
+                    th(_('Concept'), nowrap=True)
                     th('%s %s' % (
                         cls.label(
                             'account.financial.statement.report',

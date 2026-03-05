@@ -10,6 +10,7 @@ copyright notices and license terms. -->
             <field name="report_name">account.financial.statement.report</field>
             <field name="extension">pdf</field>
             <field name="template_extension">html</field>
+            <field name="html_side_margin">0.5</field>
             <field name="single" eval="True"/>
         </record>
         <record model="ir.action.keyword" id="html_report_financial_statement_keyword">
@@ -24,6 +25,7 @@ copyright notices and license terms. -->
             <field name="report_name">account.financial.statement.detail.report</field>
             <field name="extension">pdf</field>
             <field name="template_extension">html</field>
+            <field name="html_side_margin">0.5</field>
             <field name="single" eval="True"/>
         </record>
         <record model="ir.action.keyword" id="html_report_financial_statement_detail_keyword">
