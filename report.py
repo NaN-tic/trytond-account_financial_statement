@@ -77,7 +77,7 @@ class Report(Workflow, ModelSQL, ModelView):
         readonly=True, required=True)
     current_fiscalyear = fields.Many2One('account.fiscalyear', 'Fiscal year 1',
         required=True, states=_STATES, domain=[
-            ('company', '=', Eval('company')),
+            ('company', '=', Eval('company', -1)),
             ])
     current_periods = fields.Many2Many(
         'account_financial_statement-account_period_current', 'report',
@@ -92,7 +92,7 @@ class Report(Workflow, ModelSQL, ModelView):
         fields.Char('Current Periods Dates'), 'get_dates')
     previous_fiscalyear = fields.Many2One('account.fiscalyear',
         'Fiscal year 2', states=_STATES, domain=[
-            ('company', '=', Eval('company')),
+            ('company', '=', Eval('company', -1)),
             ])
     previous_periods = fields.Many2Many(
         'account_financial_statement-account_period_previous', 'report',
@@ -698,7 +698,7 @@ class ReportLineAccount(ModelSQL, ModelView):
     company = fields.Function(fields.Many2One('company.company', 'Company'),
         'on_change_with_company')
     account = fields.Many2One('account.account', 'Account', required=True, domain=[
-            ('company', '=', Eval('company')),
+            ('company', '=', Eval('company', -1)),
             ])
     currency = fields.Function(fields.Many2One('currency.currency', 'Currency'),
         'on_change_with_currency')
