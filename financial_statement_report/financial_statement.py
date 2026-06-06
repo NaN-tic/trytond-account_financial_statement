@@ -8,6 +8,113 @@ from dominate.tags import header as header_tag, table, thead, tbody, tr, td, th
 class FinancialStatementBase(DominateReport):
 
     @classmethod
+    def _header_rows(cls, record):
+        rows = []
+        label_current = cls.label(
+            'account.financial.statement.report', 'current_fiscalyear')
+        rows.append(
+            ('%s %s: %s / %s' % (
+                label_current,
+                record.current_fiscalyear.render.name,
+                record.render.current_periods_start_date
+                    if record.raw.current_periods_start_date else '',
+                record.render.current_periods_end_date
+                    if record.raw.current_periods_end_date else ''),
+             2))
+        if (record.raw.previous_fiscalyear
+                and record.raw.previous_periods_start_date
+                and record.raw.previous_periods_start_date):
+            label_previous = cls.label(
+                'account.financial.statement.report',
+                'previous_fiscalyear')
+            rows.append(
+                ('%s %s: %s / %s' % (
+                    label_previous,
+                    record.previous_fiscalyear.render.name,
+                    record.render.previous_periods_start_date
+                        if record.raw.previous_periods_start_date else '',
+                    record.render.previous_periods_end_date
+                        if record.raw.previous_periods_end_date else ''),
+                 2))
+        return rows
+
+    @classmethod
+    def _table_columns(cls, record):
+        columns = [{
+                'id': 'current',
+                'label': '%s %s' % (
+                    cls.label(
+                        'account.financial.statement.report',
+                        'current_fiscalyear'),
+                    record.current_fiscalyear.render.name),
+                'value_attr': 'current_value',
+                }]
+        if record.raw.previous_fiscalyear:
+            columns.append({
+                    'id': 'previous',
+                    'label': '%s %s' % (
+                        cls.label(
+                            'account.financial.statement.report',
+                            'previous_fiscalyear'),
+                        record.previous_fiscalyear.render.name),
+                    'value_attr': 'previous_value',
+                    })
+        return columns
+
+    @classmethod
+    def _line_column_value(cls, line, column):
+        return getattr(line.render, column['value_attr'])
+
+    @classmethod
+    def _detail_rows(cls, line, record, columns):
+        rows = []
+        previous_by_code = {}
+        for previous in line.previous_line_accounts:
+            previous_by_code[previous.account.raw.code] = previous
+        for current in line.current_line_accounts:
+            previous = previous_by_code.get(current.account.raw.code)
+            current_value = ((current.raw.debit or 0)
+                - (current.raw.credit or 0))
+            previous_value = None
+            if previous:
+                previous_value = ((previous.raw.debit or 0)
+                    - (previous.raw.credit or 0))
+            if (current_value != 0
+                    or (record.raw.previous_fiscalyear
+                        and previous_value is not None
+                        and previous_value != 0)):
+                values = {'current': current_value}
+                if record.raw.previous_fiscalyear:
+                    values['previous'] = previous_value if previous else ''
+                rows.append({
+                        'label': '%s - %s' % (
+                            current.account.render.code,
+                            current.account.render.name),
+                        'values': values,
+                        })
+        if record.raw.previous_fiscalyear:
+            for previous in line.previous_line_accounts:
+                current = None
+                for current_line in line.current_line_accounts:
+                    if (current_line.account.raw.code
+                            == previous.account.raw.code):
+                        current = current_line
+                        break
+                previous_value = ((previous.raw.debit or 0)
+                    - (previous.raw.credit or 0))
+                if not current and previous_value != 0:
+                    rows.append({
+                            'label': '%s - %s' % (
+                                previous.account.render.code,
+                                previous.account.render.name),
+                            'values': {
+                                'current': '',
+                                'previous': previous_value,
+                                },
+                            })
+        return rows
+
+    @classmethod
     def header(cls, action, data, records):
         record, = records
         header_node = header_tag(id='header')
@@ -22,32 +129,9 @@ class FinancialStatementBase(DominateReport):
                             or '-'))
                     with td():
                         raw('<h1>%s</h1>' % record.render.rec_name)
-                with tr():
-                    label_current = cls.label(
-                        'account.financial.statement.report',
-                        'current_fiscalyear')
-                    current_line = '%s %s: %s / %s' % (
-                        label_current,
-                        record.current_fiscalyear.render.name,
-                        record.render.current_periods_start_date
-                            if record.raw.current_periods_start_date else '',
-                        record.render.current_periods_end_date
-                            if record.raw.current_periods_end_date else '')
-                    td(current_line, colspan='2')
-                if (record.raw.previous_fiscalyear
-                        and record.raw.previous_periods_start_date
-                        and record.raw.previous_periods_start_date):
-                    label_previous = cls.label(
-                        'account.financial.statement.report',
-                        'previous_fiscalyear')
-                    previous_line = '%s %s: %s / %s' % (
-                        label_previous,
-                        record.previous_fiscalyear.render.name,
-                        record.render.previous_periods_start_date
-                            if record.raw.previous_periods_start_date else '',
-                        record.render.previous_periods_end_date
-                            if record.raw.previous_periods_end_date else '')
-                    td(previous_line, colspan='2')
+                for value, colspan in cls._header_rows(record):
+                    with tr():
+                        td(value, colspan=str(colspan))
         return header_node
 
     @classmethod
@@ -57,23 +141,13 @@ class FinancialStatementBase(DominateReport):
 
     @classmethod
     def _build_table(cls, record, include_details):
+        columns = cls._table_columns(record)
         with table(style='page-break-inside: auto;') as table_node:
             with thead(style='border-bottom: 1px solid black; border-top: 1px solid black'):
                 with tr(style='page-break-inside:avoid;'):
                     th(_('Concept'), nowrap=True)
-                    th('%s %s' % (
-                        cls.label(
-                            'account.financial.statement.report',
-                            'current_fiscalyear'),
-                        record.current_fiscalyear.render.name),
-                        nowrap=True)
-                    if record.raw.previous_fiscalyear:
-                        th('%s %s' % (
-                            cls.label(
-                                'account.financial.statement.report',
-                                'previous_fiscalyear'),
-                            record.previous_fiscalyear.render.name),
-                            nowrap=True)
+                    for column in columns:
+                        th(column['label'], nowrap=True)
             with tbody():
                 for line in record.lines:
                     if not line.raw.visible:
@@ -86,58 +160,22 @@ class FinancialStatementBase(DominateReport):
                             th(line.render.name)
                         else:
                             td(line.render.name)
-                        td(line.render.current_value, style='text-align: right')
-                        if record.raw.previous_fiscalyear:
-                            td(line.render.previous_value, style='text-align: right')
+                        for column in columns:
+                            td(
+                                cls._line_column_value(line, column),
+                                style='text-align: right')
                     if include_details:
-                        previous_by_code = {}
-                        for previous in line.previous_line_accounts:
-                            previous_by_code[previous.account.raw.code] = previous
-                        for current in line.current_line_accounts:
-                            previous = previous_by_code.get(current.account.raw.code)
-                            current_value = ((current.raw.debit or 0)
-                                - (current.raw.credit or 0))
-                            previous_value = None
-                            if previous:
-                                previous_value = ((previous.raw.debit or 0)
-                                    - (previous.raw.credit or 0))
-                            if (current_value != 0
-                                    or (record.raw.previous_fiscalyear
-                                        and previous_value is not None
-                                        and previous_value != 0)):
-                                detail_style = (
-                                    'page-break-inside:avoid; color: #A2A2A2;')
-                                if line.raw.page_break:
-                                    detail_style += ' page-break-after:always;'
-                                with tr(style=detail_style):
-                                    td('%s - %s' % (
-                                        current.account.render.code,
-                                        current.account.render.name))
-                                    td(current_value, style='text-align: right')
-                                    if record.raw.previous_fiscalyear:
-                                        td(previous_value if previous else '',
-                                            style='text-align: right')
-                        if record.raw.previous_fiscalyear:
-                            for previous in line.previous_line_accounts:
-                                current = None
-                                for current_line in line.current_line_accounts:
-                                    if (current_line.account.raw.code
-                                            == previous.account.raw.code):
-                                        current = current_line
-                                        break
-                                previous_value = ((previous.raw.debit or 0)
-                                    - (previous.raw.credit or 0))
-                                if (not current and previous_value != 0):
-                                    detail_style = (
-                                        'page-break-inside:avoid; color: #A2A2A2;')
-                                    if line.raw.page_break:
-                                        detail_style += ' page-break-after:always;'
-                                    with tr(style=detail_style):
-                                        td('%s - %s' % (
-                                            previous.account.render.code,
-                                            previous.account.render.name))
-                                        td('')
-                                        td(previous_value, style='text-align: right')
+                        for detail in cls._detail_rows(line, record, columns):
+                            detail_style = (
+                                'page-break-inside:avoid; color: #A2A2A2;')
+                            if line.raw.page_break:
+                                detail_style += ' page-break-after:always;'
+                            with tr(style=detail_style):
+                                td(detail['label'])
+                                for column in columns:
+                                    td(
+                                        detail['values'].get(column['id'], ''),
+                                        style='text-align: right')
         return table_node
 
 

@@ -154,28 +154,45 @@ class Report(Workflow, ModelSQL, ModelView):
         return result
 
     @classmethod
+    def _get_date_period_data(cls, report):
+        return {
+            'current_periods': (report.current_periods, report.current_fiscalyear),
+            'previous_periods': (report.previous_periods, report.previous_fiscalyear),
+            }
+
+    @classmethod
     def get_dates(cls, reports, names):
         result = {}
         for report in reports:
+            period_data = cls._get_date_period_data(report)
             if 'current_periods_start_date' in names:
-                if report.current_periods:
-                    start = min(p.start_date for p in report.current_periods)
+                periods, fiscalyear = period_data['current_periods']
+                if periods:
+                    start = min(p.start_date for p in periods)
+                elif fiscalyear:
+                    start = fiscalyear.start_date
                 else:
-                    start = report.current_fiscalyear.start_date
+                    start = None
                 result.setdefault('current_periods_start_date',
-                    {})[report.id] = datetime.combine(start,
-                        datetime.min.time())
+                    {})[report.id] = (datetime.combine(start,
+                        datetime.min.time()) if start else None)
             if 'current_periods_end_date' in names:
-                if report.current_periods:
-                    end = max(p.end_date for p in report.current_periods)
+                periods, fiscalyear = period_data['current_periods']
+                if periods:
+                    end = max(p.end_date for p in periods)
+                elif fiscalyear:
+                    end = fiscalyear.end_date
                 else:
-                    end = report.current_fiscalyear.end_date
+                    end = None
                 result.setdefault('current_periods_end_date',
-                    {})[report.id] = datetime.combine(end,
-                        datetime.min.time())
+                    {})[report.id] = (datetime.combine(end,
+                        datetime.min.time()) if end else None)
             if 'previous_periods_start_date' in names:
-                if report.previous_periods:
-                    start = min(p.start_date for p in report.previous_periods)
+                periods, fiscalyear = period_data['previous_periods']
+                if periods:
+                    start = min(p.start_date for p in periods)
+                elif fiscalyear:
+                    start = fiscalyear.start_date
                 else:
                     start = None
                 if start:
@@ -186,11 +203,14 @@ class Report(Workflow, ModelSQL, ModelView):
                     result.setdefault('previous_periods_start_date',
                         {})[report.id] = None
             if 'previous_periods_end_date' in names:
-                if report.previous_periods:
-                    end = max(p.end_date for p in report.previous_periods)
+                periods, fiscalyear = period_data['previous_periods']
+                if periods:
+                    end = max(p.end_date for p in periods)
+                elif fiscalyear:
+                    end = fiscalyear.end_date
                 else:
-                    start = None
-                if start:
+                    end = None
+                if end:
                     result.setdefault('previous_periods_end_date',
                         {})[report.id] = datetime.combine(end,
                             datetime.min.time())
@@ -596,7 +616,7 @@ class ReportLine(ModelSQL, ModelView):
         self.calculation_date = self.report.calculation_date
         self.save()
 
-    def _get_account_(self, code, mode, invert=False):
+    def _get_account_values(self, code, mode, invert=False):
         """
         It returns the (debit, credit, *) tuple for a account with the
         given code, or the sum of those values for a set of accounts
@@ -608,8 +628,6 @@ class ReportLine(ModelSQL, ModelView):
         context = Transaction().context
         pool = Pool()
         Account = pool.get('account.account')
-        ReportLineAccount = pool.get(
-            'account.financial.statement.report.line.account')
 
         company = self.report.company
         balance_mode = self.template_line.template.mode
@@ -674,6 +692,13 @@ class ReportLine(ModelSQL, ModelView):
                         # all of them so the ViewAccounts wizard can compute which
                         # accounts were used for the report
                         vlist.append(value)
+        return res, vlist
+
+    def _get_account_(self, code, mode, invert=False):
+        pool = Pool()
+        ReportLineAccount = pool.get(
+            'account.financial.statement.report.line.account')
+        res, vlist = self._get_account_values(code, mode, invert=invert)
         ReportLineAccount.create(vlist)
         return res
 
@@ -1038,4 +1063,3 @@ class TemplateLine(ModelSQL, ModelView):
             new_default['parent'] = new_line.id
             cls.copy(record.children, default=new_default)
         return new_lines
-
