@@ -920,3 +920,7 @@ msgstr "Informe de balanç comptable (Excel)"
 msgctxt "html_report:h:"
 msgid "Full fiscal year"
 msgstr "Exercici complet"
+
+msgctxt "html_report:h:"
+msgid "Name"
+msgstr "Nom"

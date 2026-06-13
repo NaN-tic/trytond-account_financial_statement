@@ -262,7 +262,7 @@ class FinancialStatementExport(FinancialStatementBase):
     def _add_sheet(cls, workbook, record):
         sheet = workbook.create_sheet(cls._sheet_title(record))
         columns = cls._table_columns(record)
-        headers = ['Name'] + [column['label'] for column in columns]
+        headers = [_('Name')] + [column['label'] for column in columns]
         title = cls._display_value(record, 'name', fallback='rec_name') or 'Report'
         border_side = Side(style='thin')
 
