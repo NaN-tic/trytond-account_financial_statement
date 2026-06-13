@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!-- This file is part account_financial_statement module for Tryton.
+The COPYRIGHT file at the top level of this repository contains the full
+copyright notices and license terms. -->
+<form col="8">
+    <label name="code"/>
+    <field name="code" xfill="0" xexpand="0"/>
+    <label name="name"/>
+    <field name="name" colspan="3"/>
+    <label name="value"/>
+    <field name="value"/>
+    <field name="line_accounts" colspan="8" mode="tree,form"
+        view_ids="account_financial_statement.report_line_account_period_view_tree,account_financial_statement.report_line_account_period_view_form"
+        height="250"/>
+    <group id="style" string="Style" colspan="8" col="8">
+        <label name="visible"/>
+        <field name="visible"/>
+        <label name="sequence"/>
+        <field name="sequence"/>
+        <label name="css_class"/>
+        <field name="css_class"/>
+        <label name="page_break"/>
+        <field name="page_break"/>
+    </group>
+</form>

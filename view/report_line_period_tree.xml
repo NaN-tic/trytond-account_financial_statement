@@ -3,11 +3,9 @@
 The COPYRIGHT file at the top level of this repository contains the full
 copyright notices and license terms. -->
 <tree>
+    <field name="visible"/>
+    <field name="sequence"/>
+    <field name="code"/>
     <field name="name" expand="2"/>
-    <field name="template"/>
-    <field name="comparison_fiscalyears"/>
-    <field name="state"/>
-    <field name="company"/>
-    <button name="calculate" tree_invisible="1"/>
-    <button name="draft" tree_invisible="1"/>
+    <field name="value"/>
 </tree>

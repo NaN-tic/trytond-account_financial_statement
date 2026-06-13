@@ -245,8 +245,8 @@ msgid "CSS Class"
 msgstr "Clase CSS"
 
 msgctxt "field:account.financial.statement.template.line,current_value:"
-msgid "Fiscal year 1 formula"
-msgstr "Fórmula del ejercicio fiscal 1"
+msgid "First fiscal year formula"
+msgstr "Fórmula del primer ejercicio fiscal"
 
 msgctxt "field:account.financial.statement.template.line,name:"
 msgid "Name"
@@ -265,8 +265,8 @@ msgid "Parent"
 msgstr "Padre"
 
 msgctxt "field:account.financial.statement.template.line,previous_value:"
-msgid "Fiscal year 2 formula"
-msgstr "Fórmula del ejercicio fiscal 2"
+msgid "Remaining fiscal years formula"
+msgstr "Fórmula del resto de ejercicios fiscales"
 
 msgctxt "field:account.financial.statement.template.line,sequence:"
 msgid "Sequence"
@@ -484,7 +484,7 @@ msgstr "Informe de balance contable"
 
 msgctxt "model:ir.action,name:html_report_financial_statement_detail"
 msgid "Account Financial Statement Detail"
-msgstr "Detalle del estado financiero de la cuenta"
+msgstr "Informe de balance contable detallado"
 
 msgctxt "model:ir.message,text:msg_code_unique_per_report"
 msgid "The code must be unique for this report."
@@ -705,14 +705,6 @@ msgctxt "view:account.financial.statement.report:"
 msgid "Configuration"
 msgstr "Configuración"
 
-msgctxt "view:account.financial.statement.report:"
-msgid "Period 1"
-msgstr "Primer periodo"
-
-msgctxt "view:account.financial.statement.report:"
-msgid "Period 2"
-msgstr "Segundo periodo"
-
 msgctxt "view:account.financial.statement.template.line:"
 msgid "Style"
 msgstr "Estilo"
@@ -738,3 +730,227 @@ msgctxt ""
 "wizard_button:account.financial.statement.report.line.detail,start,select:"
 msgid "Open"
 msgstr "Abrir"
+
+msgctxt "field:account.financial.statement.report,comparison_fiscalyears:"
+msgid "Fiscal Years"
+msgstr "Ejercicios fiscales"
+
+msgctxt "field:account.financial.statement.report,comparison_periods:"
+msgid "Comparison Periods"
+msgstr "Periodos de comparación"
+
+msgctxt "field:account.financial.statement.report.line.account.period,account:"
+msgid "Account"
+msgstr "Cuenta"
+
+msgctxt "field:account.financial.statement.report.line.account.period,balance:"
+msgid "Balance"
+msgstr "Saldo"
+
+msgctxt "field:account.financial.statement.report.line.account.period,company:"
+msgid "Company"
+msgstr "Empresa"
+
+msgctxt "field:account.financial.statement.report.line.account.period,credit:"
+msgid "Credit"
+msgstr "Haber"
+
+msgctxt "field:account.financial.statement.report.line.account.period,currency:"
+msgid "Currency"
+msgstr "Moneda"
+
+msgctxt "field:account.financial.statement.report.line.account.period,debit:"
+msgid "Debit"
+msgstr "Debe"
+
+msgctxt "field:account.financial.statement.report.line.account.period,report_line:"
+msgid "Report Line"
+msgstr "Línea del informe"
+
+msgctxt "field:account.financial.statement.report.line.period,children:"
+msgid "Children"
+msgstr "Hijos"
+
+msgctxt "field:account.financial.statement.report.line.period,code:"
+msgid "Code"
+msgstr "Código"
+
+msgctxt "field:account.financial.statement.report.line.period,company:"
+msgid "Company"
+msgstr "Compañía"
+
+msgctxt "field:account.financial.statement.report.line.period,css_class:"
+msgid "CSS Class"
+msgstr "Clase CSS"
+
+msgctxt "field:account.financial.statement.report.line.period,currency:"
+msgid "Currency"
+msgstr "Moneda"
+
+msgctxt "field:account.financial.statement.report.line.period,line_accounts:"
+msgid "Line Accounts"
+msgstr "Líneas de detalle"
+
+msgctxt "field:account.financial.statement.report.line.period,name:"
+msgid "Name"
+msgstr "Nombre"
+
+msgctxt "field:account.financial.statement.report.line.period,notes:"
+msgid "Notes"
+msgstr "Notas"
+
+msgctxt "field:account.financial.statement.report.line.period,page_break:"
+msgid "Page Break"
+msgstr "Salto de página"
+
+msgctxt "field:account.financial.statement.report.line.period,parent:"
+msgid "Parent"
+msgstr "Línea madre"
+
+msgctxt "field:account.financial.statement.report.line.period,report_period:"
+msgid "Comparison Period"
+msgstr "Periodo de comparación"
+
+msgctxt "field:account.financial.statement.report.line.period,sequence:"
+msgid "Sequence"
+msgstr "Secuencia"
+
+msgctxt "field:account.financial.statement.report.line.period,template_line:"
+msgid "Line template"
+msgstr "Línea de plantilla"
+
+msgctxt "field:account.financial.statement.report.line.period,value:"
+msgid "Value"
+msgstr "Valor"
+
+msgctxt "field:account.financial.statement.report.line.period,visible:"
+msgid "Visible"
+msgstr "Visible"
+
+msgctxt "field:account.financial.statement.report.period,company:"
+msgid "Company"
+msgstr "Empresa"
+
+msgctxt "field:account.financial.statement.report.period,end_period:"
+msgid "End Period"
+msgstr "Periodo final"
+
+msgctxt "field:account.financial.statement.report.period,fiscalyear:"
+msgid "Fiscal Year"
+msgstr "Ejercicio fiscal"
+
+msgctxt "field:account.financial.statement.report.period,lines:"
+msgid "Lines"
+msgstr "Líneas"
+
+msgctxt "field:account.financial.statement.report.period,report:"
+msgid "Report"
+msgstr "Informe"
+
+msgctxt "field:account.financial.statement.report.period,sequence:"
+msgid "Sequence"
+msgstr "Secuencia"
+
+msgctxt "field:account.financial.statement.report.period,start_period:"
+msgid "Start Period"
+msgstr "Periodo inicial"
+
+msgctxt "model:account.financial.statement.report.line.account.period,string:"
+msgid "Account Financial Statement Report Line Account Period"
+msgstr "Línea de detalle de informe de balance contable para un período"
+
+msgctxt "model:account.financial.statement.report.line.period,string:"
+msgid "Account Financial Statement Report Line Period"
+msgstr "Línea de informe de balance contable para un período"
+
+msgctxt "model:account.financial.statement.report.period,string:"
+msgid "Account Financial Statement Report Period"
+msgstr "Período de informe de balance contable"
+
+msgctxt "model:ir.message,text:msg_financial_statement_max_periods"
+msgid "Financial statements can compare at most 20 fiscal years."
+msgstr "Los informes financieros pueden comparar como máximo 20 ejercicios fiscales."
+
+msgctxt "model:ir.message,text:msg_financial_statement_missing_periods"
+msgid "You must configure at least one fiscal year before calculating the financial statement."
+msgstr "Debe configurar al menos un ejercicio fiscal antes de calcular el informe financiero."
+
+msgctxt "model:ir.message,text:msg_financial_statement_period_order"
+msgid "Start Period must be before or equal to End Period."
+msgstr "El periodo inicial debe ser anterior o igual al periodo final."
+
+msgctxt "model:ir.message,text:msg_financial_statement_period_pair"
+msgid "Start Period and End Period must both be set or both be empty."
+msgstr "El periodo inicial y el periodo final deben estar ambos informados o ambos vacíos."
+
+msgctxt "report:account.financial.statement.detail.report:"
+msgid "Full fiscal year"
+msgstr "Ejercicio completo"
+
+msgctxt "report:account.financial.statement.report:"
+msgid "Full fiscal year"
+msgstr "Ejercicio completo"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Default"
+msgstr "Por defecto"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Level 1"
+msgstr "Nivel 1"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Level 2"
+msgstr "Nivel 2"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Level 3"
+msgstr "Nivel 3"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Level 4"
+msgstr "Nivel 4"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Level 5"
+msgstr "Nivel 5"
+
+msgctxt "view:account.financial.statement.report.line.period:"
+msgid "Style"
+msgstr "Estilo"
+
+msgctxt "view:account.financial.statement.report.line.period:"
+msgid "Values"
+msgstr "Valores"
+
+msgctxt "model:ir.rule.group,name:rule_group_account_financial_statement_report_companies"
+msgid "User in companies"
+msgstr "Usuario en empresas"
+
+msgctxt "model:ir.rule.group,name:rule_group_account_financial_statement_report_line_companies"
+msgid "User in companies"
+msgstr "Usuario en empresas"
+
+msgctxt "model:ir.rule.group,name:rule_group_account_financial_statement_report_line_account_companies"
+msgid "User in companies"
+msgstr "Usuario en empresas"
+
+msgctxt "model:ir.rule.group,name:rule_group_account_financial_statement_report_line_account_period_companies"
+msgid "User in companies"
+msgstr "Usuario en empresas"
+
+msgctxt "model:ir.rule.group,name:rule_group_account_financial_statement_report_line_period_companies"
+msgid "User in companies"
+msgstr "Usuario en empresas"
+
+msgctxt "model:ir.rule.group,name:rule_group_account_financial_statement_report_period_companies"
+msgid "User in companies"
+msgstr "Usuario en empresas"
+
+msgctxt "model:ir.action,name:report_xlsx_financial_statement"
+msgid "Financial Statement Spreadsheet"
+msgstr "Informe de balance contable (Excel)"
+
+msgctxt "html_report:h:"
+msgid "Full fiscal year"
+msgstr "Ejercicio completo"
