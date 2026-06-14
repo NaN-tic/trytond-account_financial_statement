@@ -15,13 +15,11 @@ from trytond.model import ModelSQL, ModelView, Unique, Workflow, fields
 from trytond.model.exceptions import ValidationError
 from trytond.modules.currency.fields import Monetary
 from trytond.pool import Pool
-from trytond.pyson import Bool, Eval, PYSONEncoder
+from trytond.pyson import Eval
 from trytond.tools import decistmt
 from trytond.transaction import Transaction
 from trytond.wizard import (
     Button,
-    StateAction,
-    StateTransition,
     StateView,
     Wizard,
 )
@@ -80,44 +78,12 @@ class Report(Workflow, ModelSQL, ModelView):
     calculation_date = fields.DateTime('Calculation date', readonly=True)
     company = fields.Many2One('company.company', 'Company', ondelete='CASCADE',
         readonly=True, required=True)
-    current_fiscalyear = fields.Many2One('account.fiscalyear', 'Fiscal year 1',
-        states=_STATES, domain=[
-            ('company', '=', Eval('company', -1)),
-            ])
-    current_periods = fields.Many2Many(
-        'account_financial_statement-account_period_current', 'report',
-        'period', 'Fiscal year 1 periods', states=_STATES, domain=[
-            ('fiscalyear', '=', Eval('current_fiscalyear')),
-            ])
-    current_periods_list = fields.Function(fields.Char('Current Periods List'),
-        'get_periods')
-    current_periods_start_date = fields.Function(
-        fields.Char('Current Periods Dates'), 'get_dates')
-    current_periods_end_date = fields.Function(
-        fields.Char('Current Periods Dates'), 'get_dates')
-    previous_fiscalyear = fields.Many2One('account.fiscalyear',
-        'Fiscal year 2', states=_STATES, domain=[
-            ('company', '=', Eval('company', -1)),
-            ])
-    previous_periods = fields.Many2Many(
-        'account_financial_statement-account_period_previous', 'report',
-        'period', 'Fiscal year 2 periods', states=_STATES, domain=[
-            ('fiscalyear', '=', Eval('previous_fiscalyear')),
-            ])
-    previous_periods_list = fields.Function(
-        fields.Char('Previous Periods List'), 'get_periods')
-    previous_periods_start_date = fields.Function(
-        fields.Char('Previous Periods Dates'), 'get_dates')
-    previous_periods_end_date = fields.Function(
-        fields.Char('Previous Periods Dates'), 'get_dates')
     comparison_fiscalyears = fields.Function(
         fields.Char('Fiscal Years'), 'get_comparison_fiscalyears')
     comparison_periods = fields.One2Many(
         'account.financial.statement.report.period', 'report',
         'Comparison Periods', states=_STATES,
         order=[('sequence', 'ASC'), ('id', 'ASC')])
-    lines = fields.One2Many('account.financial.statement.report.line',
-        'report', 'Lines', readonly=True)
 
     @classmethod
     def __setup__(cls):
@@ -138,6 +104,14 @@ class Report(Workflow, ModelSQL, ModelView):
                     'icon': 'tryton-back',
                     },
                 })
+
+    @classmethod
+    def __register__(cls, module_name):
+        super().__register__(module_name)
+        table = cls.__table_handler__(module_name)
+        for column in ['current_fiscalyear', 'previous_fiscalyear']:
+            if table.column_exist(column):
+                table.not_null_action(column, action='remove')
 
     @staticmethod
     def default_company():
@@ -163,23 +137,8 @@ class Report(Workflow, ModelSQL, ModelView):
             default = {}
         default = default.copy()
         default.setdefault('comparison_periods')
-        default.setdefault('lines', None)
         default.setdefault('calculation_date', None)
         return super(Report, cls).copy(reports, default=default)
-
-    @classmethod
-    def get_periods(cls, reports, names):
-        result = {}
-        for report in reports:
-            if 'current_periods_list' in names:
-                result.setdefault('current_periods_list',
-                    {})[report.id] = ", ".join([p.rec_name
-                        for p in report.current_periods])
-            if 'previous_periods_list' in names:
-                result.setdefault('previous_periods_list',
-                    {})[report.id] = ", ".join([p.rec_name
-                        for p in report.previous_periods])
-        return result
 
     @classmethod
     def get_comparison_fiscalyears(cls, reports, name):
@@ -187,10 +146,9 @@ class Report(Workflow, ModelSQL, ModelView):
         for report in reports:
             periods = sorted(report.comparison_periods,
                 key=lambda p: (
-                    p.fiscalyear.start_date if p.fiscalyear else datetime.min.date(),
-                    p.fiscalyear.end_date if p.fiscalyear else datetime.min.date(),
-                    p.fiscalyear.rec_name if p.fiscalyear else '',
-                    p.id or 0))
+                    p.fiscalyear.start_date,
+                    p.fiscalyear.end_date,
+                    p.id))
             names = [p.fiscalyear.rec_name for p in periods if p.fiscalyear]
             if len(names) > 5:
                 values[report.id] = '%s ... %s' % (names[0], names[-1])
@@ -205,110 +163,6 @@ class Report(Workflow, ModelSQL, ModelView):
                 p.id or 0))
 
     @classmethod
-    def _legacy_period_values(cls, periods):
-        periods = sorted([period for period in periods if period.type == 'standard'],
-            key=lambda p: (p.start_date, p.end_date, p.id))
-        values = {}
-        if periods:
-            values['start_period'] = periods[0].id
-            values['end_period'] = periods[-1].id
-        return values
-
-    @classmethod
-    def ensure_comparison_periods(cls, report):
-        periods = cls._ordered_periods(report)
-        if periods:
-            return periods
-
-        ReportPeriod = Pool().get('account.financial.statement.report.period')
-        to_create = []
-        if report.current_fiscalyear:
-            values = {
-                'report': report.id,
-                'fiscalyear': report.current_fiscalyear.id,
-                'sequence': 0,
-                }
-            values.update(cls._legacy_period_values(report.current_periods))
-            to_create.append(values)
-        if report.previous_fiscalyear:
-            values = {
-                'report': report.id,
-                'fiscalyear': report.previous_fiscalyear.id,
-                'sequence': 1,
-                }
-            values.update(cls._legacy_period_values(report.previous_periods))
-            to_create.append(values)
-        if to_create:
-            ReportPeriod.create(to_create)
-            report = cls(report.id)
-        return cls._ordered_periods(report)
-
-    @classmethod
-    def _get_date_period_data(cls, report):
-        periods = cls._ordered_periods(report)
-        return {
-            'current_periods': (
-                periods[0].get_periods() if len(periods) >= 1 else [],
-                periods[0].fiscalyear if len(periods) >= 1 else None,
-                ),
-            'previous_periods': (
-                periods[1].get_periods() if len(periods) >= 2 else [],
-                periods[1].fiscalyear if len(periods) >= 2 else None,
-                ),
-            }
-
-    @classmethod
-    def get_dates(cls, reports, names):
-        result = {}
-        for report in reports:
-            period_data = cls._get_date_period_data(report)
-            if 'current_periods_start_date' in names:
-                periods, fiscalyear = period_data['current_periods']
-                if periods:
-                    start = min(p.start_date for p in periods)
-                elif fiscalyear:
-                    start = fiscalyear.start_date
-                else:
-                    start = None
-                result.setdefault('current_periods_start_date',
-                    {})[report.id] = (datetime.combine(start,
-                        datetime.min.time()) if start else None)
-            if 'current_periods_end_date' in names:
-                periods, fiscalyear = period_data['current_periods']
-                if periods:
-                    end = max(p.end_date for p in periods)
-                elif fiscalyear:
-                    end = fiscalyear.end_date
-                else:
-                    end = None
-                result.setdefault('current_periods_end_date',
-                    {})[report.id] = (datetime.combine(end,
-                        datetime.min.time()) if end else None)
-            if 'previous_periods_start_date' in names:
-                periods, fiscalyear = period_data['previous_periods']
-                if periods:
-                    start = min(p.start_date for p in periods)
-                elif fiscalyear:
-                    start = fiscalyear.start_date
-                else:
-                    start = None
-                result.setdefault('previous_periods_start_date',
-                    {})[report.id] = (datetime.combine(start,
-                        datetime.min.time()) if start else None)
-            if 'previous_periods_end_date' in names:
-                periods, fiscalyear = period_data['previous_periods']
-                if periods:
-                    end = max(p.end_date for p in periods)
-                elif fiscalyear:
-                    end = fiscalyear.end_date
-                else:
-                    end = None
-                result.setdefault('previous_periods_end_date',
-                    {})[report.id] = (datetime.combine(end,
-                        datetime.min.time()) if end else None)
-        return result
-
-    @classmethod
     @ModelView.button
     @Workflow.transition('calculated')
     def calculate(cls, reports):
@@ -317,7 +171,7 @@ class Report(Workflow, ModelSQL, ModelView):
         TemplateLine = pool.get('account.financial.statement.template.line')
 
         for report in reports:
-            periods = cls.ensure_comparison_periods(report)
+            periods = cls._ordered_periods(report)
             if not periods:
                 raise UserError(
                     gettext(
@@ -325,7 +179,7 @@ class Report(Workflow, ModelSQL, ModelView):
                         'msg_financial_statement_missing_periods'))
 
             existing_lines = ReportLinePeriod.search([
-                    ('report_period', 'in', [period.id for period in periods]),
+                    ('report_period', 'in', periods),
                     ], order=[])
             if existing_lines:
                 ReportLinePeriod.delete(existing_lines)
@@ -351,7 +205,7 @@ class Report(Workflow, ModelSQL, ModelView):
         ReportLinePeriod = pool.get('account.financial.statement.report.line.period')
 
         for report in reports:
-            periods = cls.ensure_comparison_periods(report)
+            periods = cls._ordered_periods(report)
             existing_lines = ReportLinePeriod.search([
                     ('report_period', 'in', [period.id for period in periods]),
                     ], order=[])
@@ -463,10 +317,6 @@ class ViewAccounts(Wizard):
             for line in report_period.lines:
                 for account in line.line_accounts:
                     used.append(account.account)
-        if not used:
-            for line in self.record.lines:
-                for account in line.line_accounts:
-                    used.append(account.account)
 
         all_accounts = Account.search([
                 ('company', '=', self.record.company),
@@ -480,346 +330,6 @@ class ViewAccounts(Wizard):
             'used_accounts': used,
             'unused_accounts': unused,
             }
-
-
-class ReportCurrentPeriods(ModelSQL):
-    'Financial Statement Report - Current Periods'
-    __name__ = 'account_financial_statement-account_period_current'
-    _table = 'account_financial_statement_current_period_rel'
-    report = fields.Many2One('account.financial.statement.report',
-        'Account Report', ondelete='CASCADE', required=True)
-    period = fields.Many2One('account.period', 'Period',
-        ondelete='CASCADE', required=True)
-
-
-class ReportPreviousPeriods(ModelSQL):
-    'Financial Statement Report - Previous Periods'
-    __name__ = 'account_financial_statement-account_period_previous'
-    _table = 'account_financial_statement_previous_period_rel'
-    report = fields.Many2One('account.financial.statement.report',
-        'Account Report', ondelete='CASCADE', required=True)
-    period = fields.Many2One('account.period', 'Period',
-        ondelete='CASCADE', required=True)
-
-
-class ReportLine(ModelSQL, ModelView):
-    """
-    Financial Statement Report Line
-    One line of detail of the report representing an accounting concept with
-    its values.
-    The accounting concepts follow a parent-children hierarchy.
-    Its values (current and previous) are calculated based on the 'value'
-    formula of the linked template line.
-    """
-    __name__ = 'account.financial.statement.report.line'
-    _states = {
-        'readonly': Eval('report_state') != 'draft',
-        }
-
-    name = fields.Char('Name', required=True, states=_states)
-    report = fields.Many2One('account.financial.statement.report', 'Report',
-        required=True, ondelete='CASCADE',
-        states={
-            'readonly': _states['readonly'] & Bool(Eval('report')),
-            })
-    code = fields.Char('Code', required=True, states=_states)
-    notes = fields.Text('Notes')
-    currency = fields.Function(fields.Many2One('currency.currency', 'Currency'),
-        'on_change_with_currency')
-    current_value = Monetary('Current Value',
-        digits='currency', currency='currency')
-    previous_value = Monetary('Previous value',
-        digits='currency', currency='currency')
-    calculation_date = fields.DateTime('Calculation date', readonly=True)
-    template_line = fields.Many2One('account.financial.statement.template.line',
-        'Line template', ondelete='SET NULL')
-    parent = fields.Many2One('account.financial.statement.report.line',
-        'Parent', ondelete='CASCADE',
-        domain=[
-            ('report', '=', Eval('report')),
-            ],
-        states=_states)
-    children = fields.One2Many('account.financial.statement.report.line',
-        'parent', 'Children',
-        domain=[
-            ('report', '=', Eval('report')),
-            ],
-        states=_states)
-    visible = fields.Boolean('Visible')
-    sequence = fields.Char('Sequence', states=_states)
-    css_class = fields.Selection(CSS_CLASSES, 'CSS Class', states=_states)
-    line_accounts = fields.One2Many(
-        'account.financial.statement.report.line.account',
-        'report_line', 'Line Accounts', states=_states)
-    current_line_accounts = fields.Function(fields.Many2Many(
-            'account.financial.statement.report.line.account', None, None,
-            'Current Detail', states=_states), 'get_line_accounts')
-    previous_line_accounts = fields.Function(fields.Many2Many(
-            'account.financial.statement.report.line.account', None, None,
-            'Previous Detail', states=_states), 'get_line_accounts')
-    report_state = fields.Function(fields.Selection(STATES, 'Report State'),
-        'on_change_with_report_state')
-    page_break = fields.Boolean('Page Break')
-
-    @fields.depends('report', '_parent_report.company')
-    def on_change_with_currency(self, name=None):
-        if self.report and self.report.company:
-            return self.report.company.currency.id
-
-    @classmethod
-    def get_line_accounts(cls, report_lines, names):
-        result = {}
-        for report_line in report_lines:
-            if 'current_line_accounts' in names:
-                result.setdefault('current_line_accounts',
-                    {})[report_line.id] = [x.id
-                        for x in report_line.line_accounts
-                        if x.fiscal_year == 'current']
-            if 'previous_line_accounts' in names:
-                result.setdefault('previous_line_accounts',
-                    {})[report_line.id] = [x.id
-                        for x in report_line.line_accounts
-                        if x.fiscal_year == 'previous']
-        return result
-
-    @classmethod
-    def __setup__(cls):
-        super().__setup__()
-        cls.__access__.add('report')
-        cls._order.insert(0, ('sequence', 'ASC'))
-        cls._order.insert(1, ('code', 'ASC'))
-        t = cls.__table__()
-        cls._sql_constraints += [
-            ('report_code_uniq', Unique(t, t.report, t.code),
-                'account_financial_statement.msg_code_unique_per_report'),
-            ]
-        cls._buttons.update({
-                'open_details': {},
-                })
-
-    @fields.depends('_parent_report.id', 'report')
-    def on_change_with_report_state(self, name=None):
-        if self.report:
-            return self.report.state
-
-    @staticmethod
-    def default_css_class():
-        return 'default'
-
-    @staticmethod
-    def default_visible():
-        return True
-
-    def get_rec_name(self, name):
-        if self.code:
-            return '[%s] %s' % (self.code, self.name)
-        return self.name
-
-    @classmethod
-    def search_rec_name(cls, name, clause):
-        ids = [x.id for x in cls.search([('code',) + tuple(clause[1:])],
-                order=[])]
-        if ids:
-            ids += [x.id for x in cls.search([('name',) + tuple(clause[1:])],
-                    order=[])]
-            return [('id', 'in', ids)]
-        return [('name',) + tuple(clause[1:])]
-
-    def balance(self, *account_codes):
-        result = 0
-        for account_code in account_codes:
-            result += self._get_account_(str(account_code), mode='balance')
-        return result
-
-    def invert(self, *account_codes):
-        result = 0
-        for account_code in account_codes:
-            result += self._get_account_(str(account_code), mode='balance',
-                invert=True)
-        return result
-
-    def debit(self, *account_codes):
-        result = 0
-        for account_code in account_codes:
-            result += self._get_account_(str(account_code), mode='debit')
-        return result
-
-    def credit(self, *account_codes):
-        result = 0
-        for account_code in account_codes:
-            result += self._get_account_(str(account_code), mode='credit')
-        return result
-
-    def concept(self, value, *concepts):
-        result = 0
-        for concept in concepts:
-            try:
-                int_concept = int(concept)
-            except ValueError:
-                int_concept = 0
-            if int_concept < 0:
-                sign = -Decimal('1.0')
-                concept = abs(concept)
-            else:
-                sign = Decimal('1.0')
-            concept = str(concept)
-            lines = self.search([
-                    ('report', '=', self.report.id),
-                    ('code', '=', concept),
-                    ])
-            for child in lines:
-                if child.calculation_date != child.report.calculation_date:
-                    child.refresh_values()
-                result += getattr(child, value) * sign
-        return result
-
-    def percent(self, value, *concepts):
-        result = 0
-        if len(concepts) != 2:
-            return result
-        divisior = self.search([
-                ('report', '=', self.report.id),
-                ('code', '=', concepts[0]),
-                ])
-        dividend = self.search([
-                ('report', '=', self.report.id),
-                ('code', '=', concepts[1]),
-                ])
-        if divisior and dividend:
-            divisior[0].refresh_values()
-            dividend[0].refresh_values()
-            if getattr(divisior[0], value) == 0:
-                return result
-            result = getattr(divisior[0], value) / getattr(dividend[0], value)
-        return result
-
-    def refresh_values(self):
-        for child in self.children:
-            child.refresh_values()
-        for fyear in ('current', 'previous'):
-            value = 0
-            getvalue = '%s_value' % (fyear)
-            template_value = getattr(self.template_line, getvalue)
-            if template_value and len(template_value):
-                template_value = template_value.split(';')[0]
-            getfiscalyear = '%s_fiscalyear' % (fyear)
-            if not getattr(self.report, getfiscalyear):
-                value = 0
-            elif not template_value or not len(template_value):
-                for child in self.children:
-                    if child.calculation_date != child.report.calculation_date:
-                        child.refresh_values()
-                    value += getattr(child, getvalue)
-            else:
-                getperiods = '%s_periods' % (fyear)
-                ctx = {
-                    'fiscalyear': getattr(self.report, getfiscalyear).id,
-                    'periods': [p.id for p in getattr(self.report, getperiods)],
-                    'period': fyear,
-                    'cumulate': self.template_line.template.cumulate,
-                    }
-                with Transaction().set_context(ctx):
-                    functions = {
-                        'balance': self.balance,
-                        'invert': self.invert,
-                        'debit': self.debit,
-                        'credit': self.credit,
-                        'concept': partial(self.concept, getvalue),
-                        'Decimal': Decimal,
-                        'percent': partial(self.percent, getvalue),
-                        }
-                    try:
-                        value = simple_eval(decistmt(template_value),
-                            functions=functions)
-                    except Exception as e:
-                        raise UserError(gettext('account_financial_statement.'
-                                'msg_wrong_expression',
-                                expression=template_value,
-                                template=self.template_line.name,
-                                traceback=e,
-                            ))
-                    if isinstance(value, Decimal):
-                        value = value.quantize(
-                            Decimal(10) ** -self.currency.digits)
-            if self.template_line.negate:
-                value = -value
-            setattr(self, getvalue, value)
-        self.calculation_date = self.report.calculation_date
-        self.save()
-
-    def _get_account_values(self, code, mode, invert=False):
-        context = Transaction().context
-        pool = Pool()
-        Account = pool.get('account.account')
-
-        company = self.report.company
-        balance_mode = self.template_line.template.mode
-        res = Decimal(0)
-        vlist = []
-        for account_code in re.findall(r'(-?\w*\(?[0-9a-zA-Z_\.]*\)?)', code):
-            if len(account_code) > 0:
-                if account_code.startswith('-'):
-                    sign = Decimal('-1.0')
-                    account_code = account_code[1:]
-                else:
-                    sign = Decimal('1.0')
-                if balance_mode == 'credit-debit' and mode != 'balance':
-                    sign = Decimal('-1.0') * sign
-                else:
-                    if balance_mode == 'debit-credit-reversed':
-                        if invert:
-                            sign = Decimal('-1.0') * sign
-                    elif balance_mode == 'credit-debit':
-                        sign = Decimal('-1.0') * sign
-                    elif balance_mode == 'credit-debit-reversed':
-                        if not invert:
-                            sign = Decimal('-1.0') * sign
-
-                accounts = Account.search([
-                        ('company', '=', company),
-                        ('code', 'like', account_code + '%'),
-                        ('type', '!=', None),
-                        ])
-                if accounts:
-                    accounts = Account.search([
-                            ('parent', 'child_of', [a.id for a in accounts]),
-                            ('company', '=', company)
-                            ])
-                    credit_debit = self._get_credit_debit(accounts)
-                    for account in credit_debit['credit']:
-                        balance = (credit_debit['debit'][account]
-                            - credit_debit['credit'][account])
-                        value = {
-                            'report_line': self,
-                            'fiscal_year': context.get('period'),
-                            'account': account,
-                            }
-                        if mode == 'debit' and balance > 0.0 or \
-                                mode == 'credit' and balance < 0.0 or \
-                                mode == 'balance':
-                            res += balance * sign
-                            value['credit'] = credit_debit['credit'][account]
-                            value['debit'] = credit_debit['debit'][account]
-                        vlist.append(value)
-        return res, vlist
-
-    def _get_account_(self, code, mode, invert=False):
-        pool = Pool()
-        ReportLineAccount = pool.get(
-            'account.financial.statement.report.line.account')
-        res, vlist = self._get_account_values(code, mode, invert=invert)
-        ReportLineAccount.create(vlist)
-        return res
-
-    def _get_credit_debit(self, accounts):
-        pool = Pool()
-        Account = pool.get('account.account')
-        return Account.get_credit_debit(accounts, ['debit', 'credit'])
-
-    @classmethod
-    @ModelView.button_action('account_financial_statement.act_open_detail')
-    def open_details(cls, lines):
-        pass
 
 
 class ReportLinePeriod(ModelSQL, ModelView):
@@ -973,7 +483,7 @@ class ReportLinePeriod(ModelSQL, ModelView):
                 sign = Decimal('1.0')
             concept = str(concept)
             lines = self.search([
-                    ('report_period', '=', self.report_period.id),
+                    ('report_period', '=', self.report_period),
                     ('code', '=', concept),
                     ])
             for line in lines:
@@ -984,11 +494,11 @@ class ReportLinePeriod(ModelSQL, ModelView):
         if len(concepts) != 2:
             return Decimal(0)
         divisor_lines = self.search([
-                ('report_period', '=', self.report_period.id),
+                ('report_period', '=', self.report_period),
                 ('code', '=', str(concepts[0])),
                 ], limit=1)
         dividend_lines = self.search([
-                ('report_period', '=', self.report_period.id),
+                ('report_period', '=', self.report_period),
                 ('code', '=', str(concepts[1])),
                 ], limit=1)
         if not divisor_lines or not dividend_lines:
@@ -1011,7 +521,7 @@ class ReportLinePeriod(ModelSQL, ModelView):
             periods = Report._ordered_periods(self.report_period.report)
             if periods:
                 first_period = periods[0]
-                if self.report_period.id != first_period.id:
+                if self.report_period != first_period:
                     formula_field = 'previous_value'
 
         value = Decimal(0)
@@ -1125,7 +635,7 @@ class ReportLinePeriod(ModelSQL, ModelView):
             if 'credit' not in value:
                 continue
             detail_lines.append({
-                    'report_line': self.id,
+                    'report_line': self,
                     'account': value['account'],
                     'credit': value['credit'],
                     'debit': value['debit'],
@@ -1138,53 +648,6 @@ class ReportLinePeriod(ModelSQL, ModelView):
         pool = Pool()
         Account = pool.get('account.account')
         return Account.get_credit_debit(accounts, ['debit', 'credit'])
-
-
-class ReportLineAccount(ModelSQL, ModelView):
-    'Financial Statement Report Account'
-    __name__ = 'account.financial.statement.report.line.account'
-    _table = 'account_financial_statement_rep_lin_acco'
-    report_line = fields.Many2One('account.financial.statement.report.line',
-        'Report Line', ondelete='CASCADE', required=True)
-    company = fields.Function(fields.Many2One('company.company', 'Company'),
-        'on_change_with_company')
-    account = fields.Many2One('account.account', 'Account', required=True, domain=[
-            ('company', '=', Eval('company', -1)),
-            ])
-    currency = fields.Function(fields.Many2One('currency.currency', 'Currency'),
-        'on_change_with_currency')
-    credit = Monetary('Credit', digits='currency', currency='currency')
-    debit = Monetary('Debit', digits='currency', currency='currency')
-    balance = fields.Function(Monetary('Balance',
-        digits='currency', currency='currency'), 'get_balance')
-    fiscal_year = fields.Selection([
-            ('current', 'Current'),
-            ('previous', 'Previous'),
-        ], 'Fiscal Year')
-
-    @fields.depends('report_line', '_parent_report_line.id')
-    def on_change_with_company(self, name=None):
-        if (self.report_line and self.report_line.report
-                and self.report_line.report.company):
-            return self.report_line.report.company.id
-
-    @classmethod
-    def __setup__(cls):
-        super().__setup__()
-        cls.__access__.add('report_line')
-
-    @fields.depends('report_line', '_parent_report_line.currency')
-    def on_change_with_currency(self, name=None):
-        if self.report_line and self.report_line.currency:
-            return self.report_line.currency.id
-
-    def get_balance(self, name):
-        if None in (self.debit, self.credit):
-            return
-        if self.report_line.report.template.mode[0:5] == 'debit':
-            return self.debit - self.credit
-        else:
-            return self.credit - self.debit
 
 
 class ReportLineAccountPeriod(ModelSQL, ModelView):
@@ -1231,93 +694,6 @@ class ReportLineAccountPeriod(ModelSQL, ModelView):
         if None in (self.debit, self.credit):
             return None
         return self.debit - self.credit
-
-
-class ReportLineDetailStart(ModelView):
-    'Financial Statement Report Account Line Detail Start'
-    __name__ = 'account.financial.statement.report.line.detail.start'
-
-    detail = fields.Selection([
-            ('account', 'Account'),
-            ('move', 'Move'),
-            ], 'Detail Level', required=True)
-    fiscalyear = fields.Selection([
-            ('current', 'Current'),
-            ('previous', 'Previous'),
-            ], 'Fiscal Year', required=True)
-
-    @staticmethod
-    def default_detail():
-        return 'account'
-
-    @staticmethod
-    def default_fiscalyear():
-        return 'current'
-
-
-class ReportLineDetail(Wizard):
-    'Financial Statement Report Account Line Detail'
-    __name__ = 'account.financial.statement.report.line.detail'
-
-    start = StateView('account.financial.statement.report.line.detail.start',
-        'account_financial_statement.report_line_detail_start_form', [
-            Button('Cancel', 'end', 'tryton-cancel'),
-            Button('Open', 'select', 'tryton-forward', default=True),
-            ])
-    select = StateTransition()
-    account = StateAction(
-        'account_financial_statement.act_report_line_account')
-    move = StateAction('account.act_move_line_form')
-
-    def transition_select(self):
-        return self.start.detail
-
-    def do_account(self, action):
-        pool = Pool()
-        Line = pool.get('account.financial.statement.report.line')
-        lines = Line.search([
-                ('parent', 'child_of', Transaction().context['active_id']),
-                ])
-        action['pyson_domain'] = PYSONEncoder().encode([
-                ('report_line', 'in', [l.id for l in lines]),
-                ('fiscal_year', '=', self.start.fiscalyear),
-                ])
-        return action, {}
-
-    def do_move(self, action):
-        pool = Pool()
-        Line = pool.get('account.financial.statement.report.line')
-        LineAccount = pool.get(
-            'account.financial.statement.report.line.account')
-
-        line = Line(Transaction().context['active_id'])
-        report = line.report
-
-        lines = Line.search([
-                ('parent', 'child_of', line.id),
-                ])
-        accounts = list(set(l.account.id for l in LineAccount.search([
-                        ('report_line', 'in', lines)
-                        ])))
-
-        periods = []
-        if self.start.fiscalyear == 'current':
-            periods = [p.id for p in report.current_periods]
-            fiscalyear = report.current_fiscalyear
-        else:
-            periods = [p.id for p in report.previous_periods]
-            fiscalyear = report.previous_fiscalyear
-
-        domain = [
-            ('account', 'in', accounts),
-            ('period.fiscalyear', '=', fiscalyear.id),
-            ]
-
-        if periods:
-            domain.append(('period', 'in', periods))
-
-        action['pyson_domain'] = PYSONEncoder().encode(domain)
-        return action, {}
 
 
 class Template(ModelSQL, ModelView):
@@ -1475,37 +851,6 @@ class TemplateLine(ModelSQL, ModelView):
                     order=[])))
             return [('id', 'in', ids)]
         return [('name',) + tuple(clause[1:])]
-
-    def _get_line(self):
-        pool = Pool()
-        ReportLine = pool.get('account.financial.statement.report.line')
-        return ReportLine(
-            code=self.code,
-            name=self.name,
-            template_line=self,
-            parent=None,
-            current_value=None,
-            previous_value=None,
-            visible=self.visible,
-            sequence=self.sequence,
-            css_class=self.css_class,
-            page_break=self.page_break,
-            )
-
-    def create_report_line(self, report, template2line=None, parent=None):
-        if template2line is None:
-            template2line = {}
-
-        if self.id not in template2line:
-            line = self._get_line()
-            line.parent = parent
-            line.report = report
-            line.save()
-            template2line[self.id] = line.id
-        for child in self.children:
-            child.create_report_line(report, template2line=template2line,
-                parent=line)
-        return line
 
     @classmethod
     def copy(cls, records, default=None):

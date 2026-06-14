@@ -7,15 +7,26 @@ from openpyxl.styles import Alignment, Border, Font, Side
 from openpyxl.utils import get_column_letter
 
 from trytond.modules.html_report.dominate_report import DominateReport
+from trytond.tools import file_open
+from trytond.transaction import Transaction
 from trytond.modules.html_report.i18n import _
 from trytond.modules.html_report.tools import save_virtual_workbook
-from trytond.pool import PoolMeta
 
 from ..report import Report
 
 
 class FinancialStatementBase(DominateReport):
     _landscape_threshold = 5
+    side_margin = 0.5
+
+    @classmethod
+    def language(cls, records):
+        return Transaction().language or 'en'
+
+    @classmethod
+    def _base_css(cls):
+        with file_open('account_financial_statement/financial_statement_report/financial_statement.css') as css_file:
+            return css_file.read()
 
     @staticmethod
     def _raw(record):
@@ -43,7 +54,7 @@ class FinancialStatementBase(DominateReport):
 
     @classmethod
     def css(cls, action, data, records):
-        css = super().css(action, data, records) or ''
+        css = cls._base_css()
         if records:
             record, = records
             if len(cls._comparison_periods(record)) > cls._landscape_threshold:
@@ -308,7 +319,7 @@ class FinancialStatementExport(FinancialStatementBase):
             sheet.column_dimensions[get_column_letter(index)].width = width
 
 
-class FinancialStatementReport(FinancialStatementBase, metaclass=PoolMeta):
+class FinancialStatementReport(FinancialStatementBase):
     'Financial Statement Report'
     __name__ = 'account.financial.statement.report'
 
@@ -318,7 +329,7 @@ class FinancialStatementReport(FinancialStatementBase, metaclass=PoolMeta):
         return cls._build_table(record, include_details=False)
 
 
-class FinancialStatementDetailReport(FinancialStatementBase, metaclass=PoolMeta):
+class FinancialStatementDetailReport(FinancialStatementBase):
     'Financial Statement Detail Report'
     __name__ = 'account.financial.statement.detail.report'
 

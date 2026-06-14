@@ -1,0 +1,60 @@
+@page {
+  @bottom-right {
+    content: "Creado por ERP - Consultora NARABIS     " counter(page)
+      " / " counter(pages);
+    text-align: right;
+    font-family: 'Arial';
+    bottom: 0;
+    font-size: 10px;
+    padding-bottom: 3cm;
+  }
+}
+
+h4, h3 {
+  text-align: center;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+table th {
+  width: 150px;
+  text-align: center;
+  font-size: 13px;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+td.text {
+  text-align: center;
+  padding: 5px;
+}
+
+table table, table table td {
+  border: 1px solid #000;
+  font-size: 10px;
+  word-wrap: break-word;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+th {
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+td.cuenta, p.cuenta {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 9px;
+}
+
+.tab {
+  display: inline-block;
+  margin-left: 350px;
+}
+
+.tab1 {
+  display: inline-block;
+  margin-left: 107px;
+}
+
+.tab3 {
+  display: inline-block;
+  margin-left: 12px;
+}

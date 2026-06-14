@@ -237,7 +237,7 @@ msgstr "Classe CSS"
 
 msgctxt "field:account.financial.statement.template.line,current_value:"
 msgid "First fiscal year formula"
-msgstr "Fórmula del primer ejercicio fiscal"
+msgstr "Fórmula del primer exercici fiscal"
 
 msgctxt "field:account.financial.statement.template.line,name:"
 msgid "Name"
@@ -257,7 +257,7 @@ msgstr "Pare"
 
 msgctxt "field:account.financial.statement.template.line,previous_value:"
 msgid "Remaining fiscal years formula"
-msgstr "Fórmula del resto de ejercicios fiscales"
+msgstr "Fórmula de la resta d'exercicis fiscals"
 
 msgctxt "field:account.financial.statement.template.line,sequence:"
 msgid "Sequence"

@@ -1,3 +1,7 @@
+from sql import Literal, Table
+from sql.aggregate import Max
+
+
 if "pool" not in globals():
     # Prevent pyflakes warnings when the script is not executed by Tryton.
     pool = None
@@ -12,179 +16,320 @@ DRY_RUN = False
 
 Report = pool.get("account.financial.statement.report")
 ReportPeriod = pool.get("account.financial.statement.report.period")
-LegacyLine = pool.get("account.financial.statement.report.line")
 NewLine = pool.get("account.financial.statement.report.line.period")
 NewDetail = pool.get("account.financial.statement.report.line.account.period")
 
+report = Report.__table__()
+report_handler = Report.__table_handler__()
+report_period = ReportPeriod.__table__()
+new_line = NewLine.__table__()
+new_detail = NewDetail.__table__()
 
-def ordered_periods(report):
-    return sorted(
-        report.comparison_periods,
-        key=lambda period: (
-            period.sequence if period.sequence is not None else 0,
-            period.id or 0,
-        ),
-    )
+current_period_rel = Table("account_financial_statement_current_period_rel")
+previous_period_rel = Table("account_financial_statement_previous_period_rel")
+legacy_line = Table("account_financial_statement_report_line")
+legacy_detail = Table("account_financial_statement_rep_lin_acco")
+period = Table("account_period")
+
+cursor = transaction.connection.cursor()
+database = transaction.database
+table_exist = type(report_handler).table_exist
+_next_ids = {}
+_manual_tables = set()
 
 
-def period_values(legacy_periods):
-    periods = sorted(
-        [period for period in legacy_periods if period.type == "standard"],
-        key=lambda p: (p.start_date, p.end_date, p.id),
-    )
-    values = {}
+def next_id(sql_table):
+    table_name = sql_table._name
+    current = database.nextid(transaction.connection, table_name)
+    if current is not None:
+        return current
+    if table_name not in _next_ids:
+        _manual_tables.add(table_name)
+        cursor.execute(*sql_table.select(Max(sql_table.id)))
+        row = cursor.fetchone()
+        _next_ids[table_name] = (row[0] or 0) + 1
+    value = _next_ids[table_name]
+    _next_ids[table_name] += 1
+    return value
+
+
+def sync_next_id(sql_table, values):
+    if values and sql_table._name in _manual_tables:
+        database.setnextid(
+            transaction.connection, sql_table._name,
+            max(value[0] for value in values) + 1)
+
+
+def ordered_period_rows(report_id):
+    cursor.execute(*report_period.select(
+            report_period.id,
+            report_period.sequence,
+            where=report_period.report == report_id,
+            order_by=[
+                report_period.sequence.asc.nulls_first,
+                report_period.id.asc,
+                ]))
+    return cursor.fetchall()
+
+
+def legacy_period_bounds(report_id, fiscalyear_id, relation):
+    query = relation.join(period, condition=relation.period == period.id).select(
+        period.id,
+        period.start_date,
+        period.end_date,
+        where=(relation.report == report_id)
+        & (period.fiscalyear == fiscalyear_id)
+        & (period.type == "standard"),
+        order_by=[period.start_date.asc, period.end_date.asc, period.id.asc])
+    cursor.execute(*query)
+    periods = cursor.fetchall()
     if periods:
-        values["start_period"] = periods[0].id
-        values["end_period"] = periods[-1].id
-    return values
+        return periods[0][0], periods[-1][0]
+    return None, None
 
 
-def ensure_comparison_periods(report):
-    periods = ordered_periods(report)
+def ensure_comparison_periods(report_row):
+    periods = ordered_period_rows(report_row[0])
     if periods:
         return periods
 
     to_create = []
-    if report.current_fiscalyear:
-        values = {
-            "report": report.id,
-            "fiscalyear": report.current_fiscalyear.id,
-            "sequence": 0,
-        }
-        values.update(period_values(report.current_periods))
+    if (report_handler.column_exist("current_fiscalyear")
+            and table_exist(current_period_rel._name) and report_row[1]):
+        start_period, end_period = legacy_period_bounds(
+            report_row[0], report_row[1], current_period_rel)
+        values = [
+            next_id(report_period),
+            report_row[0],
+            report_row[1],
+            0,
+            start_period,
+            end_period,
+            ]
         to_create.append(values)
-    if report.previous_fiscalyear:
-        values = {
-            "report": report.id,
-            "fiscalyear": report.previous_fiscalyear.id,
-            "sequence": 1,
-        }
-        values.update(period_values(report.previous_periods))
+    if (report_handler.column_exist("previous_fiscalyear")
+            and table_exist(previous_period_rel._name) and report_row[2]):
+        start_period, end_period = legacy_period_bounds(
+            report_row[0], report_row[2], previous_period_rel)
+        values = [
+            next_id(report_period),
+            report_row[0],
+            report_row[2],
+            1,
+            start_period,
+            end_period,
+            ]
         to_create.append(values)
     if to_create:
-        ReportPeriod.create(to_create)
-    return ordered_periods(Report(report.id))
+        cursor.execute(*report_period.insert(
+                columns=[
+                    report_period.id,
+                    report_period.report,
+                    report_period.fiscalyear,
+                    report_period.sequence,
+                    report_period.start_period,
+                    report_period.end_period,
+                    ],
+                values=to_create))
+        sync_next_id(report_period, to_create)
+    return ordered_period_rows(report_row[0])
 
 
-def delete_existing_lines(report):
-    lines = NewLine.search(
-        [("report_period.report", "=", report.id)],
-        order=[],
-    )
-    if lines:
-        NewLine.delete(lines)
+def delete_existing_lines(report_id):
+    line_ids = new_line.join(
+        report_period, condition=new_line.report_period == report_period.id
+        ).select(new_line.id, where=report_period.report == report_id)
+    cursor.execute(*new_detail.delete(
+            where=new_detail.report_line.in_(line_ids)))
+    cursor.execute(*new_line.delete(
+            where=new_line.report_period.in_(
+                report_period.select(
+                    report_period.id,
+                    where=report_period.report == report_id))))
 
 
-def target_periods(report):
-    periods = ordered_periods(report)
+def periods_by_year(report_id):
+    periods = ordered_period_rows(report_id)
     return {
-        "current": periods[0] if len(periods) >= 1 else None,
-        "previous": periods[1] if len(periods) >= 2 else None,
+        "current": periods[0][0] if len(periods) >= 1 else None,
+        "previous": periods[1][0] if len(periods) >= 2 else None,
     }
 
 
-def value_for_period(legacy_line, fiscal_year):
-    if fiscal_year == "current":
-        return legacy_line.current_value
-    return legacy_line.previous_value
+def legacy_line_rows(report_id):
+    cursor.execute(*legacy_line.select(
+            legacy_line.id,
+            legacy_line.name,
+            legacy_line.code,
+            legacy_line.notes,
+            legacy_line.current_value,
+            legacy_line.previous_value,
+            legacy_line.template_line,
+            legacy_line.parent,
+            legacy_line.visible,
+            legacy_line.sequence,
+            legacy_line.css_class,
+            legacy_line.page_break,
+            where=legacy_line.report == report_id,
+            order_by=[
+                legacy_line.sequence.asc,
+                legacy_line.code.asc,
+                legacy_line.id.asc,
+                ]))
+    return cursor.fetchall()
 
 
-def create_new_lines(report, periods_by_year):
-    legacy_lines = LegacyLine.search(
-        [("report", "=", report.id)],
-        order=[("sequence", "ASC"), ("code", "ASC"), ("id", "ASC")],
-    )
+def create_new_lines(report_id, target_periods):
+    rows = legacy_line_rows(report_id)
     mapping = {}
-    for legacy_line in legacy_lines:
-        for fiscal_year in ("current", "previous"):
-            report_period = periods_by_year.get(fiscal_year)
-            if not report_period:
+    values = []
+    for row in rows:
+        for fiscal_year, period_id, value in [
+                ("current", target_periods.get("current"), row[4]),
+                ("previous", target_periods.get("previous"), row[5])]:
+            if not period_id:
                 continue
-            line = NewLine(
-                report_period=report_period,
-                name=legacy_line.name,
-                code=legacy_line.code,
-                notes=legacy_line.notes,
-                value=value_for_period(legacy_line, fiscal_year),
-                template_line=legacy_line.template_line,
-                visible=legacy_line.visible,
-                sequence=legacy_line.sequence,
-                css_class=legacy_line.css_class,
-                page_break=legacy_line.page_break,
-            )
-            line.save()
-            mapping[(fiscal_year, legacy_line.id)] = line
-    return legacy_lines, mapping
+            line_id = next_id(new_line)
+            values.append([
+                    line_id,
+                    period_id,
+                    row[1],
+                    row[2],
+                    row[3],
+                    value,
+                    row[6],
+                    None,
+                    row[8],
+                    row[9],
+                    row[10],
+                    row[11],
+                    ])
+            mapping[(fiscal_year, row[0])] = line_id
+    if values:
+        cursor.execute(*new_line.insert(
+                columns=[
+                    new_line.id,
+                    new_line.report_period,
+                    new_line.name,
+                    new_line.code,
+                    new_line.notes,
+                    new_line.value,
+                    new_line.template_line,
+                    new_line.parent,
+                    new_line.visible,
+                    new_line.sequence,
+                    new_line.css_class,
+                    new_line.page_break,
+                    ],
+                values=values))
+        sync_next_id(new_line, values)
+    return rows, mapping
 
 
-def attach_parents(legacy_lines, mapping):
-    to_save = []
-    for legacy_line in legacy_lines:
-        if not legacy_line.parent:
+def attach_parents(legacy_rows, mapping):
+    for row in legacy_rows:
+        if not row[7]:
             continue
         for fiscal_year in ("current", "previous"):
-            line = mapping.get((fiscal_year, legacy_line.id))
-            parent = mapping.get((fiscal_year, legacy_line.parent.id))
-            if not line or not parent:
+            line_id = mapping.get((fiscal_year, row[0]))
+            parent_id = mapping.get((fiscal_year, row[7]))
+            if not line_id or not parent_id:
                 continue
-            line.parent = parent
-            to_save.append(line)
-    if to_save:
-        NewLine.save(to_save)
+            cursor.execute(*new_line.update(
+                    columns=[new_line.parent],
+                    values=[parent_id],
+                    where=new_line.id == line_id))
 
 
-def copy_details(legacy_lines, mapping):
-    to_create = []
-    for legacy_line in legacy_lines:
-        for detail in legacy_line.line_accounts:
-            line = mapping.get((detail.fiscal_year, legacy_line.id))
-            if not line:
-                continue
-            to_create.append(
-                {
-                    "report_line": line.id,
-                    "account": detail.account.id,
-                    "credit": detail.credit,
-                    "debit": detail.debit,
-                }
-            )
-    if to_create:
-        NewDetail.create(to_create)
+def copy_details(legacy_rows, mapping):
+    values = []
+    legacy_ids = [row[0] for row in legacy_rows]
+    if not legacy_ids:
+        return
+    cursor.execute(*legacy_detail.select(
+            legacy_detail.report_line,
+            legacy_detail.account,
+            legacy_detail.credit,
+            legacy_detail.debit,
+            legacy_detail.fiscal_year,
+            where=legacy_detail.report_line.in_(legacy_ids)))
+    for report_line_id, account_id, credit, debit, fiscal_year in cursor.fetchall():
+        line_id = mapping.get((fiscal_year, report_line_id))
+        if not line_id:
+            continue
+        values.append([
+                next_id(new_detail),
+                line_id,
+                account_id,
+                credit,
+                debit,
+                ])
+    if values:
+        cursor.execute(*new_detail.insert(
+                columns=[
+                    new_detail.id,
+                    new_detail.report_line,
+                    new_detail.account,
+                    new_detail.credit,
+                    new_detail.debit,
+                    ],
+                values=values))
+        sync_next_id(new_detail, values)
 
 
-def migrate_report(report):
-    periods = ensure_comparison_periods(report)
+def migrate_report(report_row):
+    periods = ensure_comparison_periods(report_row)
     if len(periods) > 2:
         return "skipped_more_than_two_periods"
     if not periods:
         return "skipped_no_target_periods"
-
-    legacy_lines = LegacyLine.search([("report", "=", report.id)], order=[], limit=1)
-    if not legacy_lines:
+    if not table_exist(legacy_line._name):
         return "migrated_periods_only"
 
-    existing_lines = NewLine.search(
-        [("report_period.report", "=", report.id)],
-        order=[],
-        limit=1,
-    )
-    if existing_lines and not REPLACE_EXISTING:
-        return "skipped_existing_target_lines"
-    if existing_lines:
-        delete_existing_lines(report)
+    cursor.execute(*legacy_line.select(
+            legacy_line.id,
+            where=legacy_line.report == report_row[0],
+            limit=1))
+    if not cursor.fetchone():
+        return "migrated_periods_only"
 
-    fresh_report = Report(report.id)
-    periods_by_year = target_periods(fresh_report)
-    legacy_lines, mapping = create_new_lines(fresh_report, periods_by_year)
-    attach_parents(legacy_lines, mapping)
-    copy_details(legacy_lines, mapping)
+    cursor.execute(*new_line.join(
+            report_period, condition=new_line.report_period == report_period.id
+            ).select(
+                new_line.id,
+                where=report_period.report == report_row[0],
+                limit=1))
+    if cursor.fetchone() and not REPLACE_EXISTING:
+        return "skipped_existing_target_lines"
+    if REPLACE_EXISTING:
+        delete_existing_lines(report_row[0])
+
+    target_period_ids = periods_by_year(report_row[0])
+    legacy_rows, mapping = create_new_lines(report_row[0], target_period_ids)
+    attach_parents(legacy_rows, mapping)
+    if table_exist(legacy_detail._name):
+        copy_details(legacy_rows, mapping)
     return "migrated"
 
 
-domain = []
+report_columns = [report.id]
+if report_handler.column_exist("current_fiscalyear"):
+    report_columns.append(report.current_fiscalyear)
+else:
+    report_columns.append(Literal(None))
+if report_handler.column_exist("previous_fiscalyear"):
+    report_columns.append(report.previous_fiscalyear)
+else:
+    report_columns.append(Literal(None))
+
+where = None
 if REPORT_IDS:
-    domain.append(("id", "in", REPORT_IDS))
-reports = Report.search(domain, order=[("id", "ASC")])
+    where = report.id.in_(REPORT_IDS)
+cursor.execute(*report.select(
+        *report_columns,
+        where=where,
+        order_by=[report.id.asc]))
+reports = cursor.fetchall()
 
 results = {
     "migrated": 0,
@@ -195,11 +340,14 @@ results = {
     "skipped_existing_target_lines": 0,
 }
 
-for report in reports:
-    outcome = migrate_report(report)
+for report_row in reports:
+    outcome = migrate_report(report_row)
     results.setdefault(outcome, 0)
     results[outcome] += 1
-    print("%s: %s" % (report.rec_name, outcome))
+    cursor.execute(*report.select(
+            report.name,
+            where=report.id == report_row[0]))
+    print("%s: %s" % (cursor.fetchone()[0], outcome))
     if not DRY_RUN and COMMIT_EACH_REPORT and outcome == "migrated":
         transaction.commit()
 

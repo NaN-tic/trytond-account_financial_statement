@@ -52,7 +52,6 @@ class TestFinancialStatementMultiPeriod(unittest.TestCase):
         Party = Model.get('party.party', config=self.config)
         Journal = Model.get('account.journal', config=self.config)
         Period = Model.get('account.period', config=self.config)
-        self.Period = Period
         Template = Model.get('account.financial.statement.template',
             config=self.config)
         TemplateLine = Model.get('account.financial.statement.template.line',
@@ -134,20 +133,6 @@ class TestFinancialStatementMultiPeriod(unittest.TestCase):
         report.save()
         report.click('calculate')
 
-        legacy_report = Report()
-        legacy_report.name = 'Legacy Two Year Report'
-        legacy_report.template = self.template
-        legacy_report.current_fiscalyear = self.fiscalyears[0]
-        legacy_report.current_periods.extend([
-                self.Period(p.id) for p in self.fiscalyears[0].periods
-                if p.type == 'standard'])
-        legacy_report.previous_fiscalyear = self.fiscalyears[1]
-        legacy_report.previous_periods.extend([
-                self.Period(p.id) for p in self.fiscalyears[1].periods
-                if p.type == 'standard'])
-        legacy_report.save()
-        legacy_report.click('calculate')
-
         ranged_standard_report = Report()
         ranged_standard_report.name = 'Ranged Standard Report'
         ranged_standard_report.template = self.template
@@ -203,14 +188,10 @@ class TestFinancialStatementMultiPeriod(unittest.TestCase):
                 self.config.database_name, self.config.user,
                 context=self.config.context):
             report_record = ReportModel(report.id)
-            legacy_report_record = ReportModel(legacy_report.id)
             ranged_standard_report_record = ReportModel(ranged_standard_report.id)
             ranged_adjustment_report_record = ReportModel(
                 ranged_adjustment_report.id)
             summary_report_record = ReportModel(summary_report.id)
-
-            self.assertFalse(report_record.lines)
-            self.assertFalse(legacy_report_record.lines)
 
             report_period_values = {}
             for period in report_record.comparison_periods:
@@ -225,21 +206,6 @@ class TestFinancialStatementMultiPeriod(unittest.TestCase):
                 Decimal('200.00'))
             self.assertEqual(report_period_values[self.fiscalyears[2].id],
                 Decimal('300.00'))
-
-            legacy_period_values = {}
-            for period in legacy_report_record.comparison_periods:
-                revenue_line, = [line for line in period.lines if line.code == 'R']
-                legacy_period_values[period.fiscalyear.id] = revenue_line.value
-            self.assertEqual(legacy_period_values, {
-                    self.fiscalyears[0].id: Decimal('100.00'),
-                    self.fiscalyears[1].id: Decimal('200.00'),
-                    })
-            self.assertEqual(
-                ReportModel._get_date_period_data(legacy_report_record)['current_periods'][1].id,
-                self.fiscalyears[0].id)
-            self.assertEqual(
-                ReportModel._get_date_period_data(legacy_report_record)['previous_periods'][1].id,
-                self.fiscalyears[1].id)
 
             ranged_standard_period_record, = (
                 ranged_standard_report_record.comparison_periods)
