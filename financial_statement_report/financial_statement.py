@@ -24,9 +24,14 @@ class FinancialStatementBase(DominateReport):
         return Transaction().language or 'en'
 
     @classmethod
-    def _base_css(cls):
+    def css(cls, action, data, records):
         with file_open('account_financial_statement/financial_statement_report/financial_statement.css') as css_file:
-            return css_file.read()
+            css = css_file.read()
+        if records:
+            record, = records
+            if len(cls._comparison_periods(record)) > cls._landscape_threshold:
+                css += '\n@page { size: A4 landscape; }\n'
+        return css
 
     @staticmethod
     def _raw(record):
@@ -51,15 +56,6 @@ class FinancialStatementBase(DominateReport):
     @classmethod
     def _comparison_periods(cls, record):
         return Report._ordered_periods(cls._raw(record))
-
-    @classmethod
-    def css(cls, action, data, records):
-        css = cls._base_css()
-        if records:
-            record, = records
-            if len(cls._comparison_periods(record)) > cls._landscape_threshold:
-                css += '\n@page { size: A4 landscape; }\n'
-        return css
 
     @classmethod
     def _period_label(cls, period):
