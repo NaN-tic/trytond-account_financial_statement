@@ -236,8 +236,8 @@ msgid "CSS Class"
 msgstr "Classe CSS"
 
 msgctxt "field:account.financial.statement.template.line,current_value:"
-msgid "Fiscal year 1 formula"
-msgstr "Fórmula de l'exercici fiscal 1"
+msgid "Formula"
+msgstr "Fórmula"
 
 msgctxt "field:account.financial.statement.template.line,name:"
 msgid "Name"
@@ -254,10 +254,6 @@ msgstr "Salt de pàgina"
 msgctxt "field:account.financial.statement.template.line,parent:"
 msgid "Parent"
 msgstr "Pare"
-
-msgctxt "field:account.financial.statement.template.line,previous_value:"
-msgid "Fiscal year 2 formula"
-msgstr "Fórmula de l'exercici fiscal 2"
 
 msgctxt "field:account.financial.statement.template.line,sequence:"
 msgid "Sequence"
@@ -345,41 +341,6 @@ msgctxt "help:account.financial.statement.template.line,negate:"
 msgid "Negate the value (change the sign of the )"
 msgstr "Nega el valor (canvia el valor del signe)."
 
-msgctxt "help:account.financial.statement.template.line,previous_value:"
-msgid ""
-"Value calculation formula: Depending on this formula the final value is calculated as follows:\n"
-"- Empy template value: sum of (this concept) children values.\n"
-"- Number with decimal point (\"10.2\"): that value (constant).\n"
-"- A matematic formula with following helpers:\n"
-"  * balance() with comma-separated account numbers. Sum of the accounts (the sign of the depends on the mode).\n"
-"  * invert() with comma-separated account numbers. Sum of the account (the sign is inverted if reversed modes are used).\n"
-"  * credit() with comma-separeted account numbers. Sum of the credit of the account if the total amount is negative. Zero otherwise.\n"
-"  * debit() with comma-separeted account numbers. Sum of the debit of the account if the total amount is positive. Zero otherwise.\n"
-"  * concept() with comma-separated concept codes in quotes of the report itself (column Code). Sum of the concept values.\n"
-"Examples:\n"
-"balance(430, 431) + invert(437)\n"
-"balance(5305, 5315) + invert(5325, 5335) + debit(551, 5525)\n"
-"balance(5103) + credit(5523)\n"
-"concept(\"11000\", \"12000\")\n"
-"balance(7) - 1.25 * balance(6)\n"
-"concept(\"101\") / 2"
-msgstr ""
-"Fórmula de càlcul del valor: En funció d'aquesta fórmula el valor final es calcula de la següent manera:\n"
-"- Valor de plantilla buida: suma dels valors fills (aquest concepte).\n"
-"- Nombre amb coma decimal (\"10,2\"): aquest valor (constant).\n"
-"- Una fórmula matemàtica amb els següents ajudants:\n"
-"* balance() amb números de compte separats per comes. Suma dels comptes (el signe del depèn de la modalitat).\n"
-"* invert() amb números de compte separats per comes. Suma del compte (el signe s'inverteix si s'utilitzen modes invertits).\n"
-"* credit() amb números de compte separats per comes. Suma del crèdit del compte si l'import total és negatiu. Zero en cas contrari.\n"
-"* dèbit() amb números de compte separats per comes. Suma del dèbit del compte si l'import total és positiu. Zero en cas contrari.\n"
-"* concept() amb codis de concepte separats per comes entre cometes del propi informe (columna Codi). Suma dels valors del concepte.\n"
-"Exemples:\n"
-"balance(430, 431) + invert(437)\n"
-"balance(5305, 5315) + invert(5325, 5335) + debit(551, 5525)\n"
-"balance(5103) + credit(5523)\n"
-"concept(\"11000\", \"12000\")\n"
-"balance(7) - 1.25 * balance(6)\n"
-"concept(\"101\") / 2"
 
 msgctxt "help:account.financial.statement.template.line,sequence:"
 msgid "Lines will be sorted/grouped by this field"
@@ -671,14 +632,6 @@ msgctxt "view:account.financial.statement.report:"
 msgid "Configuration"
 msgstr "Configuració"
 
-msgctxt "view:account.financial.statement.report:"
-msgid "Period 1"
-msgstr "Primer període"
-
-msgctxt "view:account.financial.statement.report:"
-msgid "Period 2"
-msgstr "Segon període"
-
 msgctxt "view:account.financial.statement.template.line:"
 msgid "Style"
 msgstr "Estil"
@@ -704,3 +657,231 @@ msgctxt ""
 "wizard_button:account.financial.statement.report.line.detail,start,select:"
 msgid "Open"
 msgstr "Obrir"
+
+msgctxt "field:account.financial.statement.report,comparison_fiscalyears:"
+msgid "Fiscal Years"
+msgstr "Exercicis fiscals"
+
+msgctxt "field:account.financial.statement.report,comparison_periods:"
+msgid "Comparison Periods"
+msgstr "Períodes de comparació"
+
+msgctxt "field:account.financial.statement.report.line.account.period,account:"
+msgid "Account"
+msgstr "Compte"
+
+msgctxt "field:account.financial.statement.report.line.account.period,balance:"
+msgid "Balance"
+msgstr "Saldo"
+
+msgctxt "field:account.financial.statement.report.line.account.period,company:"
+msgid "Company"
+msgstr "Empresa"
+
+msgctxt "field:account.financial.statement.report.line.account.period,credit:"
+msgid "Credit"
+msgstr "Haver"
+
+msgctxt "field:account.financial.statement.report.line.account.period,currency:"
+msgid "Currency"
+msgstr "Moneda"
+
+msgctxt "field:account.financial.statement.report.line.account.period,debit:"
+msgid "Debit"
+msgstr "Deure"
+
+msgctxt "field:account.financial.statement.report.line.account.period,report_line:"
+msgid "Report Line"
+msgstr "Línia de l'informe"
+
+msgctxt "field:account.financial.statement.report.line.period,children:"
+msgid "Children"
+msgstr "Fills"
+
+msgctxt "field:account.financial.statement.report.line.period,code:"
+msgid "Code"
+msgstr "Codi"
+
+msgctxt "field:account.financial.statement.report.line.period,company:"
+msgid "Company"
+msgstr "Empresa"
+
+msgctxt "field:account.financial.statement.report.line.period,css_class:"
+msgid "CSS Class"
+msgstr "Classe CSS"
+
+msgctxt "field:account.financial.statement.report.line.period,currency:"
+msgid "Currency"
+msgstr "Moneda"
+
+msgctxt "field:account.financial.statement.report.line.period,line_accounts:"
+msgid "Line Accounts"
+msgstr "Línies de detall"
+
+msgctxt "field:account.financial.statement.report.line.period,name:"
+msgid "Name"
+msgstr "Nom"
+
+msgctxt "field:account.financial.statement.report.line.period,notes:"
+msgid "Notes"
+msgstr "Notes"
+
+msgctxt "field:account.financial.statement.report.line.period,page_break:"
+msgid "Page Break"
+msgstr "Salt de pàgina"
+
+msgctxt "field:account.financial.statement.report.line.period,parent:"
+msgid "Parent"
+msgstr "Línia mare"
+
+msgctxt "field:account.financial.statement.report.line.period,report_period:"
+msgid "Comparison Period"
+msgstr "Període de comparació"
+
+msgctxt "field:account.financial.statement.report.line.period,sequence:"
+msgid "Sequence"
+msgstr "Seqüència"
+
+msgctxt "field:account.financial.statement.report.line.period,template_line:"
+msgid "Line template"
+msgstr "Línia de plantilla"
+
+msgctxt "field:account.financial.statement.report.line.period,value:"
+msgid "Value"
+msgstr "Valor"
+
+msgctxt "field:account.financial.statement.report.line.period,visible:"
+msgid "Visible"
+msgstr "Visible"
+
+msgctxt "field:account.financial.statement.report.period,company:"
+msgid "Company"
+msgstr "Empresa"
+
+msgctxt "field:account.financial.statement.report.period,end_period:"
+msgid "End Period"
+msgstr "Període final"
+
+msgctxt "field:account.financial.statement.report.period,fiscalyear:"
+msgid "Fiscal Year"
+msgstr "Exercici fiscal"
+
+msgctxt "field:account.financial.statement.report.period,lines:"
+msgid "Lines"
+msgstr "Línies"
+
+msgctxt "field:account.financial.statement.report.period,report:"
+msgid "Report"
+msgstr "Informe"
+
+msgctxt "field:account.financial.statement.report.period,sequence:"
+msgid "Sequence"
+msgstr "Seqüència"
+
+msgctxt "field:account.financial.statement.report.period,start_period:"
+msgid "Start Period"
+msgstr "Període inicial"
+
+msgctxt "model:account.financial.statement.report.line.account.period,string:"
+msgid "Account Financial Statement Report Line Account Period"
+msgstr "Línia de detall d'informe de balanç comptable per un període"
+
+msgctxt "model:account.financial.statement.report.line.period,string:"
+msgid "Account Financial Statement Report Line Period"
+msgstr "Línia d'informe de balanç comptable per un període"
+
+msgctxt "model:account.financial.statement.report.period,string:"
+msgid "Account Financial Statement Report Period"
+msgstr "Període d'informe de balanç comptable"
+
+msgctxt "model:ir.message,text:msg_financial_statement_max_periods"
+msgid "Financial statements can compare at most 20 fiscal years."
+msgstr "Els informes financers poden comparar com a màxim 20 exercicis fiscals."
+
+msgctxt "model:ir.message,text:msg_financial_statement_missing_periods"
+msgid "You must configure at least one fiscal year before calculating the financial statement."
+msgstr "Heu de configurar almenys un exercici fiscal abans de calcular l'informe financer."
+
+msgctxt "model:ir.message,text:msg_financial_statement_period_order"
+msgid "Start Period must be before or equal to End Period."
+msgstr "El període inicial ha de ser anterior o igual al període final."
+
+msgctxt "model:ir.message,text:msg_financial_statement_period_pair"
+msgid "Start Period and End Period must both be set or both be empty."
+msgstr "El període inicial i el període final han d'estar tots dos informats o tots dos buits."
+
+msgctxt "report:account.financial.statement.detail.report:"
+msgid "Full fiscal year"
+msgstr "Exercici complet"
+
+msgctxt "report:account.financial.statement.report:"
+msgid "Full fiscal year"
+msgstr "Exercici complet"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Default"
+msgstr "Per defecte"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Level 1"
+msgstr "Nivell 1"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Level 2"
+msgstr "Nivell 2"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Level 3"
+msgstr "Nivell 3"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Level 4"
+msgstr "Nivell 4"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Level 5"
+msgstr "Nivell 5"
+
+msgctxt "view:account.financial.statement.report.line.period:"
+msgid "Style"
+msgstr "Estil"
+
+msgctxt "view:account.financial.statement.report.line.period:"
+msgid "Values"
+msgstr "Valors"
+
+msgctxt "model:ir.rule.group,name:rule_group_account_financial_statement_report_companies"
+msgid "User in companies"
+msgstr "Usuari en empreses"
+
+msgctxt "model:ir.rule.group,name:rule_group_account_financial_statement_report_line_companies"
+msgid "User in companies"
+msgstr "Usuari en empreses"
+
+msgctxt "model:ir.rule.group,name:rule_group_account_financial_statement_report_line_account_companies"
+msgid "User in companies"
+msgstr "Usuari en empreses"
+
+msgctxt "model:ir.rule.group,name:rule_group_account_financial_statement_report_line_account_period_companies"
+msgid "User in companies"
+msgstr "Usuario en empresas"
+
+msgctxt "model:ir.rule.group,name:rule_group_account_financial_statement_report_line_period_companies"
+msgid "User in companies"
+msgstr "Usuario en empresas"
+
+msgctxt "model:ir.rule.group,name:rule_group_account_financial_statement_report_period_companies"
+msgid "User in companies"
+msgstr "Usuario en empresas"
+
+msgctxt "model:ir.action,name:report_xlsx_financial_statement"
+msgid "Financial Statement Spreadsheet"
+msgstr "Informe de balanç comptable (Excel)"
+
+msgctxt "html_report:h:"
+msgid "Full fiscal year"
+msgstr "Exercici complet"
+
+msgctxt "html_report:h:"
+msgid "Name"
+msgstr "Nom"
