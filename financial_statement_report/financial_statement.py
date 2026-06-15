@@ -7,7 +7,6 @@ from openpyxl.styles import Alignment, Border, Font, Side
 from openpyxl.utils import get_column_letter
 
 from trytond.modules.html_report.dominate_report import DominateReport
-from trytond.tools import file_open
 from trytond.transaction import Transaction
 from trytond.modules.html_report.i18n import _
 from trytond.modules.html_report.tools import save_virtual_workbook
@@ -25,8 +24,7 @@ class FinancialStatementBase(DominateReport):
 
     @classmethod
     def css(cls, action, data, records):
-        with file_open('account_financial_statement/financial_statement_report/financial_statement.css') as css_file:
-            css = css_file.read()
+        css = super().css(action, data, records) or ''
         if records:
             record, = records
             if len(cls._comparison_periods(record)) > cls._landscape_threshold:
