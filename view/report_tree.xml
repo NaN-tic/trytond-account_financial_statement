@@ -5,8 +5,7 @@ copyright notices and license terms. -->
 <tree>
     <field name="name" expand="2"/>
     <field name="template"/>
-    <field name="current_fiscalyear"/>
-    <field name="previous_fiscalyear"/>
+    <field name="comparison_fiscalyears"/>
     <field name="state"/>
     <field name="company"/>
     <button name="calculate" tree_invisible="1"/>

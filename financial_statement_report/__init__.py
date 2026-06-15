@@ -4,6 +4,7 @@ from . import financial_statement
 
 def register(module):
     Pool.register(
+        financial_statement.FinancialStatementExport,
         financial_statement.FinancialStatementReport,
         financial_statement.FinancialStatementDetailReport,
         module=module, type_='report')

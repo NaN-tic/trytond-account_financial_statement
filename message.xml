@@ -12,5 +12,17 @@
         <record model="ir.message" id="msg_wrong_expression">
             <field name="text">The expression "%(expression)s" from "%(template)s" it not valid: "%(traceback)s".</field>
         </record>
+        <record model="ir.message" id="msg_financial_statement_max_periods">
+            <field name="text">Financial statements are limited to 20 fiscal years.</field>
+        </record>
+        <record model="ir.message" id="msg_financial_statement_missing_periods">
+            <field name="text">At least one comparison period is required.</field>
+        </record>
+        <record model="ir.message" id="msg_financial_statement_period_pair">
+            <field name="text">Start period and end period must be set together.</field>
+        </record>
+        <record model="ir.message" id="msg_financial_statement_period_order">
+            <field name="text">Start period must not be later than end period.</field>
+        </record>
     </data>
 </tryton>
