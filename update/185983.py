@@ -163,6 +163,7 @@ def legacy_line_rows(report_id):
             legacy_line.code,
             legacy_line.notes,
             legacy_line.current_value,
+            legacy_line.previous_value,
             legacy_line.template_line,
             legacy_line.parent,
             legacy_line.visible,
@@ -183,9 +184,9 @@ def create_new_lines(report_id, target_periods):
     mapping = {}
     values = []
     for row in rows:
-        for fiscal_year, period_id in [
-                ("current", target_periods.get("current")),
-                ("previous", target_periods.get("previous"))]:
+        for fiscal_year, period_id, value in [
+                ("current", target_periods.get("current"), row[4]),
+                ("previous", target_periods.get("previous"), row[5])]:
             if not period_id:
                 continue
             line_id = next_id(new_line)
@@ -195,13 +196,14 @@ def create_new_lines(report_id, target_periods):
                     row[1],
                     row[2],
                     row[3],
-                    row[4],
-                    row[5],
+                    value,
+                    row[6],
                     None,
                     row[7],
                     row[8],
                     row[9],
                     row[10],
+                    row[11],
                     ])
             mapping[(fiscal_year, row[0])] = line_id
     if values:
@@ -227,11 +229,11 @@ def create_new_lines(report_id, target_periods):
 
 def attach_parents(legacy_rows, mapping):
     for row in legacy_rows:
-        if not row[6]:
+        if not row[7]:
             continue
         for fiscal_year in ("current", "previous"):
             line_id = mapping.get((fiscal_year, row[0]))
-            parent_id = mapping.get((fiscal_year, row[6]))
+            parent_id = mapping.get((fiscal_year, row[7]))
             if not line_id or not parent_id:
                 continue
             cursor.execute(*new_line.update(
