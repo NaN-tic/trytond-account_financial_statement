@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!-- This file is part account_financial_statement module for Tryton.
+The COPYRIGHT file at the top level of this repository contains the full
+copyright notices and license terms. -->
+<form col="6">
+    <label name="fiscalyear"/>
+    <field name="fiscalyear"/>
+    <label name="start_period"/>
+    <field name="start_period"/>
+    <label name="end_period"/>
+    <field name="end_period"/>
+    <field name="lines" colspan="6" mode="tree,form"
+        view_ids="account_financial_statement.report_line_period_view_tree,account_financial_statement.report_line_period_view_form"
+        height="350"/>
+</form>

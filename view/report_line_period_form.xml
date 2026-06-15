@@ -2,22 +2,17 @@
 <!-- This file is part account_financial_statement module for Tryton.
 The COPYRIGHT file at the top level of this repository contains the full
 copyright notices and license terms. -->
-<form col="4">
-    <label name="template"/>
-    <field name="template" colspan="3"/>
+<form col="8">
     <label name="code"/>
-    <field name="code"/>
+    <field name="code" xfill="0" xexpand="0"/>
     <label name="name"/>
-    <field name="name"/>
-    <label name="parent"/>
-    <field name="parent"/>
-    <label name="negate"/>
-    <field name="negate"/>
-    <group id="value" yexpand="1" yfill="1" colspan="4" col="1">
-        <label name="current_value" xalign="0"/>
-        <field name="current_value"/>
-    </group>
-    <group id="style" string="Style"  colspan="4">
+    <field name="name" colspan="3"/>
+    <label name="value"/>
+    <field name="value"/>
+    <field name="line_accounts" colspan="8" mode="tree,form"
+        view_ids="account_financial_statement.report_line_account_period_view_tree,account_financial_statement.report_line_account_period_view_form"
+        height="250"/>
+    <group id="style" string="Style" colspan="8" col="8">
         <label name="visible"/>
         <field name="visible"/>
         <label name="sequence"/>

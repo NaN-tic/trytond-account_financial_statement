@@ -2,13 +2,10 @@
 <!-- This file is part account_financial_statement module for Tryton.
 The COPYRIGHT file at the top level of this repository contains the full
 copyright notices and license terms. -->
-<tree editable="1">
-    <field name="template"/>
-    <field name="code"/>
-    <field name="name"/>
-    <field name="parent"/>
-    <field name="negate"/>
-    <field name="current_value"/>
+<tree>
     <field name="visible"/>
     <field name="sequence"/>
+    <field name="code"/>
+    <field name="name" expand="2"/>
+    <field name="value"/>
 </tree>

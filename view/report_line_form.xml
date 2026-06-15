@@ -14,8 +14,6 @@ copyright notices and license terms. -->
     <group id="values" string="Values" colspan="4">
         <label name="current_value"/>
         <field name="current_value"/>
-        <label name="previous_value"/>
-        <field name="previous_value"/>
     </group>
     <field name="current_line_accounts" colspan="2"/>
     <field name="previous_line_accounts" colspan="2"/>

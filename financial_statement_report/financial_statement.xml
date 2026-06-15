@@ -34,6 +34,19 @@ copyright notices and license terms. -->
             <field name="action" ref="html_report_financial_statement_detail"/>
         </record>
 
+        <record model="ir.action.report" id="report_xlsx_financial_statement">
+            <field name="name">Financial Statement Spreadsheet</field>
+            <field name="model">account.financial.statement.report</field>
+            <field name="report_name">account.financial.statement.export</field>
+            <field name="extension">xlsx</field>
+            <field name="single" eval="True"/>
+        </record>
+        <record model="ir.action.keyword" id="report_xlsx_financial_statement_keyword">
+            <field name="keyword">form_print</field>
+            <field name="model">account.financial.statement.report,-1</field>
+            <field name="action" ref="report_xlsx_financial_statement"/>
+        </record>
+
         <!-- Deactivate standard account reports -->
         <record model="ir.ui.menu" id="account.menu_open_balance_sheet">
             <field name="active" eval="False"/>
