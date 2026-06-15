@@ -98,12 +98,10 @@ class TestFinancialStatementMultiPeriod(unittest.TestCase):
         line.code = '1'
         line.name = 'Fixed'
         line.current_value = '12.00'
-        line.previous_value = '10.00'
         line = self.template.lines.new()
         line.code = '2'
         line.name = 'Total'
         line.current_value = 'concept("0","1")'
-        line.previous_value = 'concept("0","1")'
         self.template.save()
 
         revenue_line = TemplateLine()
@@ -112,7 +110,6 @@ class TestFinancialStatementMultiPeriod(unittest.TestCase):
         revenue_line.code = 'R'
         revenue_line.name = 'Revenue'
         revenue_line.current_value = 'balance("%s")' % self.revenue.code
-        revenue_line.previous_value = 'balance("%s")' % self.revenue.code
         revenue_line.save()
 
     def test(self):
@@ -196,7 +193,11 @@ class TestFinancialStatementMultiPeriod(unittest.TestCase):
             report_period_values = {}
             for period in report_record.comparison_periods:
                 revenue_line, = [line for line in period.lines if line.code == 'R']
+                fixed_line, = [line for line in period.lines if line.code == '1']
+                total_line, = [line for line in period.lines if line.code == '2']
                 report_period_values[period.fiscalyear.id] = revenue_line.value
+                self.assertEqual(fixed_line.value, Decimal('12.00'))
+                self.assertEqual(total_line.value, revenue_line.value + Decimal('12.00'))
                 self.assertTrue(all(
                         detail.debit is not None and detail.credit is not None
                         for detail in revenue_line.line_accounts))

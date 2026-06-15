@@ -5,7 +5,6 @@ copyright notices and license terms. -->
 <tree>
     <field name="rec_name"/>
     <field name="current_value"/>
-    <field name="previous_value"/>
     <field name="parent" tree_invisible="1"/>
     <field name="children" tree_invisible="1"/>
 </tree>

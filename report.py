@@ -191,11 +191,10 @@ class Report(Workflow, ModelSQL, ModelView):
                     ('template', '=', report.template),
                     ('parent', '=', None),
                     ])
-            for index, report_period in enumerate(periods):
-                formula_field = 'current_value' if index == 0 else 'previous_value'
+            for report_period in periods:
                 for template_line in template_lines:
                     ReportLinePeriod.create_from_template(report_period,
-                        template_line, formula_field)
+                        template_line)
 
     @classmethod
     @ModelView.button
@@ -380,24 +379,6 @@ class ReportLinePeriod(ModelSQL, ModelView):
                 'account_financial_statement.msg_code_unique_per_report'),
             ]
 
-    @classmethod
-    def __register__(cls, module_name):
-        super().__register__(module_name)
-        table = cls.__table_handler__(module_name)
-        for name, kind in [
-                ('name', 'VARCHAR'),
-                ('code', 'VARCHAR'),
-                ('notes', 'TEXT'),
-                ('template_line', 'INTEGER'),
-                ('parent', 'INTEGER'),
-                ('visible', 'BOOLEAN'),
-                ('sequence', 'VARCHAR'),
-                ('css_class', 'VARCHAR'),
-                ('page_break', 'BOOLEAN'),
-                ]:
-            if not table.column_exist(name):
-                table.add_column(name, kind)
-
     @staticmethod
     def default_css_class():
         return 'default'
@@ -422,8 +403,8 @@ class ReportLinePeriod(ModelSQL, ModelView):
         return self.name
 
     @classmethod
-    def create_from_template(cls, report_period, template_line, formula_field,
-            parent=None, cache=None):
+    def create_from_template(cls, report_period, template_line, parent=None,
+            cache=None):
         if cache is None:
             cache = {}
         line = cls(
@@ -439,9 +420,9 @@ class ReportLinePeriod(ModelSQL, ModelView):
             )
         line.save()
         for child in template_line.children:
-            cls.create_from_template(report_period, child, formula_field,
-                parent=line, cache=cache)
-        line.refresh_value(formula_field, cache)
+            cls.create_from_template(report_period, child, parent=line,
+                cache=cache)
+        line.refresh_value(cache=cache)
         return line
 
     def balance(self, *account_codes):
@@ -487,7 +468,7 @@ class ReportLinePeriod(ModelSQL, ModelView):
                     ('code', '=', concept),
                     ])
             for line in lines:
-                result += line.refresh_value(None, cache=cache) * sign
+                result += line.refresh_value(cache=cache) * sign
         return result
 
     def _percent_value(self, cache, *concepts):
@@ -503,36 +484,28 @@ class ReportLinePeriod(ModelSQL, ModelView):
                 ], limit=1)
         if not divisor_lines or not dividend_lines:
             return Decimal(0)
-        divisor_value = divisor_lines[0].refresh_value(None, cache=cache)
+        divisor_value = divisor_lines[0].refresh_value(cache=cache)
         if divisor_value == 0:
             return Decimal(0)
-        dividend_value = dividend_lines[0].refresh_value(None, cache=cache)
+        dividend_value = dividend_lines[0].refresh_value(cache=cache)
         return divisor_value / dividend_value
 
-    def refresh_value(self, formula_field=None, cache=None):
+    def refresh_value(self, cache=None):
         if cache is None:
             cache = {}
         cache_key = self.id
         if cache_key in cache:
             return cache[cache_key]
 
-        if formula_field is None:
-            formula_field = 'current_value'
-            periods = Report._ordered_periods(self.report_period.report)
-            if periods:
-                first_period = periods[0]
-                if self.report_period != first_period:
-                    formula_field = 'previous_value'
-
         value = Decimal(0)
-        template_value = getattr(self.template_line, formula_field)
+        template_value = self.template_line.current_value
         if template_value:
             template_value = template_value.split(';', 1)[0]
 
         if not self.report_period.fiscalyear:
             value = Decimal(0)
         elif not template_value:
-            value = sum(child.refresh_value(formula_field, cache=cache)
+            value = sum(child.refresh_value(cache=cache)
                 for child in self.children)
         else:
             ctx = {
@@ -778,10 +751,7 @@ class TemplateLine(ModelSQL, ModelView):
         help='Concept code, may be used in formulas to reference this line')
     name = fields.Char('Name', required=True, translate=True,
         help='Concept name/description')
-    current_value = fields.Text('First fiscal year formula',
-        help=_VALUE_FORMULA_HELP)
-    previous_value = fields.Text('Remaining fiscal years formula',
-        help=_VALUE_FORMULA_HELP)
+    current_value = fields.Text('Formula', help=_VALUE_FORMULA_HELP)
     negate = fields.Boolean('Negate',
         help='Negate the value (change the sign of the )')
     parent = fields.Many2One('account.financial.statement.template.line',
@@ -805,6 +775,13 @@ class TemplateLine(ModelSQL, ModelView):
             ]
 
     @classmethod
+    def __register__(cls, module_name):
+        super().__register__(module_name)
+        table = cls.__table_handler__(module_name)
+        if table.column_exist('previous_value'):
+            table.drop_column('previous_value')
+
+    @classmethod
     def validate(cls, records):
         super(TemplateLine, cls).validate(records)
         for record in records:
@@ -815,16 +792,15 @@ class TemplateLine(ModelSQL, ModelView):
         Translation = pool.get('ir.translation')
         language = Transaction().language
 
-        for value in ['current_value', 'previous_value']:
-            try:
-                parse((getattr(self, value) or '').split(';')[0])
-            except SyntaxError:
-                field_name = '{},{}'.format(self.__name__, value)
-                field_string = Translation.get_source(field_name, 'field',
-                    language)
-                raise ValidationError(gettext('account_financial_statement.'
-                        'msg_invalid_syntax',
-                    field=field_string, line=self.code))
+        try:
+            parse((self.current_value or '').split(';')[0])
+        except SyntaxError:
+            field_name = '{},current_value'.format(self.__name__)
+            field_string = Translation.get_source(field_name, 'field',
+                language)
+            raise ValidationError(gettext('account_financial_statement.'
+                    'msg_invalid_syntax',
+                field=field_string, line=self.code))
 
     @staticmethod
     def default_negate():
