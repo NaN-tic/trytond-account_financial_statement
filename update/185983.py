@@ -199,7 +199,6 @@ def create_new_lines(report_id, target_periods):
                     value,
                     row[6],
                     None,
-                    row[7],
                     row[8],
                     row[9],
                     row[10],
