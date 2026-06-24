@@ -13,6 +13,7 @@ from trytond.exceptions import UserError
 from trytond.i18n import gettext
 from trytond.model import ModelSQL, ModelView, Unique, Workflow, fields
 from trytond.model.exceptions import ValidationError
+from trytond.model import DeactivableMixin
 from trytond.modules.currency.fields import Monetary
 from trytond.pool import Pool
 from trytond.pyson import Eval
@@ -669,7 +670,7 @@ class ReportLineAccountPeriod(ModelSQL, ModelView):
         return self.debit - self.credit
 
 
-class Template(ModelSQL, ModelView):
+class Template(DeactivableMixin, ModelSQL, ModelView):
     """
     Financial Statement Template
     It stores the header fields of an account report template,
