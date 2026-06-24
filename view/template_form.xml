@@ -13,6 +13,8 @@ copyright notices and license terms. -->
     <field name="mode"/>
     <label name="cumulate"/>
     <field name="cumulate"/>
+    <label name="active"/>
+    <field name="active"/>
     <notebook colspan="6">
         <page name="lines">
             <field name="lines" colspan="4" height="450"/>
