@@ -5,6 +5,7 @@ from io import BytesIO
 
 from openpyxl import load_workbook
 from proteus import Model
+from trytond.exceptions import UserError
 from trytond.modules.account.tests.tools import (
     create_chart,
     create_fiscalyear,
@@ -120,6 +121,9 @@ class TestFinancialStatementMultiPeriod(unittest.TestCase):
         report = Report()
         report.name = 'Three Year Report'
         report.template = self.template
+        first_fiscalyear_standard_periods = [
+            period for period in self.fiscalyears[0].periods
+            if period.type == 'standard']
         for sequence, fiscalyear in [
                 (2, self.fiscalyears[2]),
                 (0, self.fiscalyears[0]),
@@ -127,6 +131,9 @@ class TestFinancialStatementMultiPeriod(unittest.TestCase):
             period = report.comparison_periods.new()
             period.sequence = sequence
             period.fiscalyear = fiscalyear
+            if fiscalyear == self.fiscalyears[0]:
+                period.start_period = first_fiscalyear_standard_periods[0]
+                period.end_period = first_fiscalyear_standard_periods[-1]
         report.save()
         report.click('calculate')
 
@@ -173,6 +180,27 @@ class TestFinancialStatementMultiPeriod(unittest.TestCase):
             period.fiscalyear = fiscalyear
         summary_report.save()
 
+        overflowing_report = Report()
+        overflowing_report.name = 'Eleven Year Report'
+        overflowing_report.template = self.template
+        for year in range(2021, 2032):
+            fiscalyear = next(
+                (fiscalyear for fiscalyear in self.fiscalyears + extra_fiscalyears
+                    if fiscalyear.start_date.year == year),
+                None)
+            if fiscalyear is None:
+                fiscalyear = create_fiscalyear(
+                    company=self.company,
+                    today=(date(year, 1, 1), date(year, 12, 31)),
+                    config=self.config)
+                fiscalyear.save()
+                fiscalyear.click('create_period')
+                extra_fiscalyears.append(fiscalyear)
+            period = overflowing_report.comparison_periods.new()
+            period.fiscalyear = fiscalyear
+        with self.assertRaises(UserError):
+            overflowing_report.save()
+
         pool = Pool(self.config.database_name)
         ReportModel = pool.get('account.financial.statement.report')
         ReportLineModel = pool.get('account.financial.statement.report.line.period')
@@ -180,6 +208,8 @@ class TestFinancialStatementMultiPeriod(unittest.TestCase):
             'account.financial.statement.export', type='report')
         FinancialStatementReport = pool.get(
             'account.financial.statement.report', type='report')
+        FinancialStatementDetailReport = pool.get(
+            'account.financial.statement.detail.report', type='report')
 
         with Transaction().start(
                 self.config.database_name, self.config.user,
@@ -242,9 +272,12 @@ class TestFinancialStatementMultiPeriod(unittest.TestCase):
             workbook = load_workbook(BytesIO(content))
             sheet = workbook.active
             self.assertEqual(sheet.title, report_record.name)
+            exported_headers = ['Name'] + [
+                FinancialStatementExport._period_range(period)
+                for period in report_record.comparison_periods]
             self.assertEqual(
                 [sheet.cell(2, column).value for column in range(1, 5)],
-                ['Name', '2022', '2023', '2024'])
+                exported_headers)
             rows = {
                 sheet.cell(row, 1).value: [sheet.cell(row, column).value
                     for column in range(2, 5)]
@@ -254,6 +287,20 @@ class TestFinancialStatementMultiPeriod(unittest.TestCase):
                 rows['Revenue'],
                 [Decimal('100.00'), Decimal('200.00'), Decimal('300.00')])
             self.assertEqual(sheet.cell(4, 2).number_format, '#,##0.00')
+            body = str(FinancialStatementReport.body(
+                    None, None, [report_record]))
+            expected_header = FinancialStatementReport._period_range(
+                report_record.comparison_periods[1])
+            self.assertIn(
+                '<th nowrap="nowrap" style="text-align: right">%s</th>'
+                % expected_header,
+                body)
+            detail_body = str(FinancialStatementDetailReport.body(
+                    None, None, [report_record]))
+            self.assertIn(
+                '<th nowrap="nowrap" style="text-align: right">%s</th>'
+                % expected_header,
+                detail_body)
             self.assertNotIn(
                 '@page { size: A4 landscape; }',
                 FinancialStatementReport.css(None, None, [report_record]))

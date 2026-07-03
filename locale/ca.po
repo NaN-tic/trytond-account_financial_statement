@@ -885,3 +885,7 @@ msgstr "Exercici complet"
 msgctxt "html_report:h:"
 msgid "Name"
 msgstr "Nom"
+
+msgctxt "html_report:h:"
+msgid "Period"
+msgstr "Període"
