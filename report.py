@@ -126,7 +126,7 @@ class Report(Workflow, ModelSQL, ModelView):
     def validate(cls, reports):
         super().validate(reports)
         for report in reports:
-            if len(report.comparison_periods) > 20:
+            if len(report.comparison_periods) > 10:
                 raise ValidationError(
                     gettext(
                         'account_financial_statement.'
@@ -285,10 +285,8 @@ class ReportPeriod(ModelSQL, ModelView):
 
     def get_rec_name(self, name):
         if self.start_period and self.end_period:
-            return '%s: %s - %s' % (self.fiscalyear.rec_name,
-                self.start_period.rec_name, self.end_period.rec_name)
+            return '%s - %s' % (self.start_period.rec_name, self.end_period.rec_name)
         return self.fiscalyear.rec_name
-
 
 class ViewAccountsStart(ModelView):
     'View Used And Unused Accounts Start'

@@ -61,10 +61,9 @@ class FinancialStatementBase(DominateReport):
 
     @classmethod
     def _period_header_label(cls, index, period):
-        return '%s %s %s' % (
-            cls.label('account.financial.statement.report.period', 'fiscalyear'),
+        return '%s %s' % (
+            _('Period'),
             index,
-            cls._period_label(period),
             )
 
     @classmethod
@@ -75,18 +74,10 @@ class FinancialStatementBase(DominateReport):
                 cls._display_value(period.start_period, 'rec_name', fallback='name'),
                 cls._display_value(period.end_period, 'rec_name', fallback='name'),
                 )
-        return _('Full fiscal year')
-
-    @classmethod
-    def _header_rows(cls, record):
-        return [
-            ('%s: %s' % (
-                    cls._period_header_label(index, period),
-                    cls._period_range(period)),
-                2)
-            for index, period in enumerate(
-                cls._comparison_periods(record), start=1)
-            ]
+        return '%s (%s)' % (
+            cls._display_value(period.fiscalyear, 'rec_name', fallback='name'),
+            _('Full fiscal year'),
+            )
 
     @classmethod
     def _format_amount(cls, value, currency):
@@ -170,9 +161,6 @@ class FinancialStatementBase(DominateReport):
                             or '-'))
                     with td():
                         raw('<h1>%s</h1>' % record.render.rec_name)
-                for value, colspan in cls._header_rows(record):
-                    with tr():
-                        td(value, colspan=str(colspan))
         return header_node
 
     @classmethod
@@ -184,7 +172,7 @@ class FinancialStatementBase(DominateReport):
     def _table_columns(cls, record):
         return [{
                 'id': cls._record_id(period),
-                'label': cls._period_label(period),
+                'label': cls._period_range(period),
                 'period': period,
                 'lookup': cls._period_line_lookup(period),
                 }
@@ -198,7 +186,8 @@ class FinancialStatementBase(DominateReport):
                 with tr(style='page-break-inside:avoid;'):
                     th(_('Concept'), nowrap=True)
                     for column in columns:
-                        th(column['label'], nowrap=True)
+                        th(column['label'], nowrap=True,
+                            style='text-align: right')
             with tbody():
                 for line in cls._structural_lines(record):
                     raw_line = cls._raw(line)
@@ -267,7 +256,10 @@ class FinancialStatementExport(FinancialStatementBase):
     def _add_sheet(cls, workbook, record):
         sheet = workbook.create_sheet(cls._sheet_title(record))
         columns = cls._table_columns(record)
-        headers = [_('Name')] + [column['label'] for column in columns]
+        headers = [_('Name')] + [
+            cls._period_range(column['period'])
+            or column['label']
+            for column in columns]
         title = cls._display_value(record, 'name', fallback='rec_name') or 'Report'
         border_side = Side(style='thin')
 
