@@ -341,7 +341,6 @@ msgctxt "help:account.financial.statement.template.line,negate:"
 msgid "Negate the value (change the sign of the )"
 msgstr "Nega el valor (canvia el valor del signe)."
 
-
 msgctxt "help:account.financial.statement.template.line,sequence:"
 msgid "Lines will be sorted/grouped by this field"
 msgstr "Les línies s'ordenaran/agruparan per aquest camp."
@@ -549,16 +548,6 @@ msgctxt ""
 "selection:account.financial.statement.report.line.detail.start,detail:"
 msgid "Move"
 msgstr "Assentament"
-
-msgctxt ""
-"selection:account.financial.statement.report.line.detail.start,fiscalyear:"
-msgid "Current"
-msgstr "Actual"
-
-msgctxt ""
-"selection:account.financial.statement.report.line.detail.start,fiscalyear:"
-msgid "Previous"
-msgstr "Anterior"
 
 msgctxt "selection:account.financial.statement.template,mode:"
 msgid "Credit-Debit"
