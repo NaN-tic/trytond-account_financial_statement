@@ -507,7 +507,7 @@ msgctxt "report:account.financial.statement.report:"
 msgid "VAT"
 msgstr "NIF"
 
-msgctxt "html_report:h:"
+msgctxt "xgettext:x:"
 msgid "Concept"
 msgstr "Concepto"
 
@@ -889,14 +889,14 @@ msgctxt "model:ir.action,name:report_xlsx_financial_statement"
 msgid "Financial Statement Spreadsheet"
 msgstr "Informe de balance contable (Excel)"
 
-msgctxt "html_report:h:"
+msgctxt "xgettext:x:"
 msgid "Full fiscal year"
 msgstr "Ejercicio completo"
 
-msgctxt "html_report:h:"
+msgctxt "xgettext:x:"
 msgid "Name"
 msgstr "Nombre"
 
-msgctxt "html_report:h:"
+msgctxt "xgettext:x:"
 msgid "Period"
 msgstr "Período"

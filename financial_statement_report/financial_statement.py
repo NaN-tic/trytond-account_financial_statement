@@ -8,11 +8,11 @@ from openpyxl.utils import get_column_letter
 
 from trytond.modules.html_report.dominate_report import DominateReport
 from trytond.transaction import Transaction
-from trytond.modules.html_report.i18n import _
+from trytond.modules.xgettext import _
+
 from trytond.modules.html_report.tools import save_virtual_workbook
 
 from ..report import Report
-
 
 class FinancialStatementBase(DominateReport):
     _landscape_threshold = 5
@@ -228,7 +228,6 @@ class FinancialStatementBase(DominateReport):
             return None
         return cls._raw(period_line).value
 
-
 class FinancialStatementExport(FinancialStatementBase):
     __name__ = 'account.financial.statement.export'
     _number_format = '#,##0.00'
@@ -304,7 +303,6 @@ class FinancialStatementExport(FinancialStatementBase):
         for index, width in widths.items():
             sheet.column_dimensions[get_column_letter(index)].width = width
 
-
 class FinancialStatementReport(FinancialStatementBase):
     'Financial Statement Report'
     __name__ = 'account.financial.statement.report'
@@ -313,7 +311,6 @@ class FinancialStatementReport(FinancialStatementBase):
     def body(cls, action, data, records):
         record, = records
         return cls._build_table(record, include_details=False)
-
 
 class FinancialStatementDetailReport(FinancialStatementBase):
     'Financial Statement Detail Report'
