@@ -8,7 +8,7 @@ from openpyxl.utils import get_column_letter
 
 from trytond.modules.html_report.dominate_report import DominateReport
 from trytond.transaction import Transaction
-from trytond.modules.html_report.i18n import _
+from trytond.modules.xgettext import _
 from trytond.modules.html_report.tools import save_virtual_workbook
 
 from ..report import Report
