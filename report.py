@@ -82,7 +82,7 @@ class Report(Workflow, ModelSQL, ModelView):
         fields.Char('Fiscal Years'), 'get_comparison_fiscalyears')
     comparison_periods = fields.One2Many(
         'account.financial.statement.report.period', 'report',
-        'Comparison Periods', states=_STATES,
+        'Comparison Periods', states=_STATES, size=13,
         order=[('sequence', 'ASC'), ('id', 'ASC')])
 
     @classmethod
@@ -120,16 +120,6 @@ class Report(Workflow, ModelSQL, ModelView):
     @staticmethod
     def default_state():
         return 'draft'
-
-    @classmethod
-    def validate(cls, reports):
-        super().validate(reports)
-        for report in reports:
-            if len(report.comparison_periods) > 10:
-                raise ValidationError(
-                    gettext(
-                        'account_financial_statement.'
-                        'msg_financial_statement_max_periods'))
 
     @classmethod
     def copy(cls, reports, default=None):

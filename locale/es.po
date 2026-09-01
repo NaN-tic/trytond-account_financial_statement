@@ -805,10 +805,6 @@ msgctxt "model:account.financial.statement.report.period,string:"
 msgid "Account Financial Statement Report Period"
 msgstr "Período de informe de balance contable"
 
-msgctxt "model:ir.message,text:msg_financial_statement_max_periods"
-msgid "Financial statements can compare at most 20 fiscal years."
-msgstr "Los informes financieros pueden comparar como máximo 20 ejercicios fiscales."
-
 msgctxt "model:ir.message,text:msg_financial_statement_missing_periods"
 msgid "You must configure at least one fiscal year before calculating the financial statement."
 msgstr "Debe configurar al menos un ejercicio fiscal antes de calcular el informe financiero."
