@@ -11,7 +11,7 @@ copyright notices and license terms. -->
     <field name="company"/>
     <field name="comparison_periods" colspan="6" mode="tree,form"
         view_ids="account_financial_statement.report_period_view_tree,account_financial_statement.report_period_view_form"
-        height="300"/>
+        height="500"/>
     <label name="state"/>
     <field name="state"/>
     <label name="calculation_date"/>
