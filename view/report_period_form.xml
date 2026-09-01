@@ -11,5 +11,5 @@ copyright notices and license terms. -->
     <field name="end_period"/>
     <field name="lines" colspan="6" mode="tree,form"
         view_ids="account_financial_statement.report_line_period_view_tree,account_financial_statement.report_line_period_view_form"
-        height="350"/>
+        height="480"/>
 </form>
