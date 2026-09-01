@@ -137,7 +137,6 @@ class Report(Workflow, ModelSQL, ModelView):
         if default is None:
             default = {}
         default = default.copy()
-        default.setdefault('comparison_periods')
         default.setdefault('calculation_date', None)
         return super(Report, cls).copy(reports, default=default)
 
@@ -248,6 +247,15 @@ class ReportPeriod(ModelSQL, ModelView):
         cls.__access__.add('report')
 
     @classmethod
+    def copy(cls, periods, default=None):
+        if default is None:
+            default = {}
+        else:
+            default = default.copy()
+        default.setdefault('lines', None)
+        super().copy(periods, default=default)
+
+    @classmethod
     def validate(cls, periods):
         super().validate(periods)
         for period in periods:
@@ -287,6 +295,7 @@ class ReportPeriod(ModelSQL, ModelView):
         if self.start_period and self.end_period:
             return '%s - %s' % (self.start_period.rec_name, self.end_period.rec_name)
         return self.fiscalyear.rec_name
+
 
 class ViewAccountsStart(ModelView):
     'View Used And Unused Accounts Start'
