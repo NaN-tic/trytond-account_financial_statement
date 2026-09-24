@@ -103,6 +103,12 @@ class TestFinancialStatementMultiPeriod(unittest.TestCase):
         line.code = '2'
         line.name = 'Total'
         line.current_value = 'concept("0","1")'
+        line = self.template.lines.new()
+        line.code = '3'
+        line.name = 'Account helpers'
+        line.current_value = (
+            'balance("{0}") + invert("{0}") + credit("{0}") + debit("{0}")'
+            ).format(self.revenue.code)
         self.template.save()
 
         revenue_line = TemplateLine()
@@ -226,6 +232,9 @@ class TestFinancialStatementMultiPeriod(unittest.TestCase):
                 fixed_line, = [line for line in period.lines if line.code == '1']
                 total_line, = [line for line in period.lines if line.code == '2']
                 report_period_values[period.fiscalyear.id] = revenue_line.value
+                helpers_line, = [line for line in period.lines if line.code == '3']
+                self.assertEqual(helpers_line.value, revenue_line.value * 3)
+                self.assertEqual(len(helpers_line.line_accounts), 3)
                 self.assertEqual(fixed_line.value, Decimal('12.00'))
                 self.assertEqual(total_line.value, revenue_line.value + Decimal('12.00'))
                 self.assertTrue(all(
