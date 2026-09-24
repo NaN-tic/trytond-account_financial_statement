@@ -182,9 +182,10 @@ class Report(Workflow, ModelSQL, ModelView):
                     ('parent', '=', None),
                     ])
             for report_period in periods:
+                cache = {}
                 for template_line in template_lines:
                     ReportLinePeriod.create_from_template(report_period,
-                        template_line)
+                        template_line, cache=cache)
 
     @classmethod
     @ModelView.button
@@ -423,29 +424,32 @@ class ReportLinePeriod(ModelSQL, ModelView):
         line.refresh_value(cache=cache)
         return line
 
-    def balance(self, *account_codes):
-        result = Decimal(0)
-        for account_code in account_codes:
-            result += self._get_account_(str(account_code), mode='balance')
-        return result
-
-    def invert(self, *account_codes):
+    def balance(self, *account_codes, cache=None):
         result = Decimal(0)
         for account_code in account_codes:
             result += self._get_account_(str(account_code), mode='balance',
-                invert=True)
+                cache=cache)
         return result
 
-    def debit(self, *account_codes):
+    def invert(self, *account_codes, cache=None):
         result = Decimal(0)
         for account_code in account_codes:
-            result += self._get_account_(str(account_code), mode='debit')
+            result += self._get_account_(str(account_code), mode='balance',
+                invert=True, cache=cache)
         return result
 
-    def credit(self, *account_codes):
+    def debit(self, *account_codes, cache=None):
         result = Decimal(0)
         for account_code in account_codes:
-            result += self._get_account_(str(account_code), mode='credit')
+            result += self._get_account_(str(account_code), mode='debit',
+                cache=cache)
+        return result
+
+    def credit(self, *account_codes, cache=None):
+        result = Decimal(0)
+        for account_code in account_codes:
+            result += self._get_account_(str(account_code), mode='credit',
+                cache=cache)
         return result
 
     def _concept_value(self, cache, *concepts):
@@ -506,17 +510,21 @@ class ReportLinePeriod(ModelSQL, ModelView):
             value = sum(child.refresh_value(cache=cache)
                 for child in self.children)
         else:
+            periods_key = ('periods', self.report_period.id)
+            if periods_key not in cache:
+                cache[periods_key] = [
+                    p.id for p in self.report_period.get_periods()]
             ctx = {
                 'fiscalyear': self.report_period.fiscalyear.id,
-                'periods': [p.id for p in self.report_period.get_periods()],
+                'periods': cache[periods_key],
                 'cumulate': self.template_line.template.cumulate,
                 }
             with Transaction().set_context(ctx):
                 functions = {
-                    'balance': self.balance,
-                    'invert': self.invert,
-                    'debit': self.debit,
-                    'credit': self.credit,
+                    'balance': partial(self.balance, cache=cache),
+                    'invert': partial(self.invert, cache=cache),
+                    'debit': partial(self.debit, cache=cache),
+                    'credit': partial(self.credit, cache=cache),
                     'concept': partial(self._concept_value, cache),
                     'percent': partial(self._percent_value, cache),
                     'Decimal': Decimal,
@@ -543,10 +551,12 @@ class ReportLinePeriod(ModelSQL, ModelView):
         cache[cache_key] = value
         return value
 
-    def _get_account_values(self, code, mode, invert=False):
+    def _get_account_values(self, code, mode, invert=False, cache=None):
         pool = Pool()
         Account = pool.get('account.account')
 
+        if cache is None:
+            cache = {}
         company = self.report_period.report.company
         balance_mode = self.template_line.template.mode
         result = Decimal(0)
@@ -571,19 +581,33 @@ class ReportLinePeriod(ModelSQL, ModelView):
                 elif balance_mode == 'credit-debit-reversed' and not invert:
                     sign = Decimal('-1.0') * sign
 
-            accounts = Account.search([
-                    ('company', '=', company),
-                    ('code', 'like', account_code + '%'),
-                    ('type', '!=', None),
-                    ])
+            accounts_key = ('accounts', company.id, account_code)
+            if accounts_key not in cache:
+                accounts = Account.search([
+                        ('company', '=', company),
+                        ('code', 'like', account_code + '%'),
+                        ('type', '!=', None),
+                        ])
+                if accounts:
+                    accounts = Account.search([
+                            ('parent', 'child_of', [a.id for a in accounts]),
+                            ('company', '=', company),
+                            ])
+                cache[accounts_key] = accounts
+            accounts = cache[accounts_key]
             if not accounts:
                 continue
-            accounts = Account.search([
-                    ('parent', 'child_of', [a.id for a in accounts]),
-                    ('company', '=', company)
-                    ])
-            credit_debit = self._get_credit_debit(accounts)
-            for account in credit_debit['credit']:
+            totals_key = ('credit_debit', self.report_period.id)
+            if totals_key not in cache:
+                # Aggregate journal entries once per comparison period, using
+                # the accounting API to preserve rounding and fiscal deferrals.
+                all_accounts = Account.search([
+                        ('company', '=', company),
+                        ], order=[])
+                cache[totals_key] = self._get_credit_debit(all_accounts)
+            credit_debit = cache[totals_key]
+            for account_record in accounts:
+                account = account_record.id
                 balance = (credit_debit['debit'][account]
                     - credit_debit['credit'][account])
                 value = {'account': account}
@@ -596,11 +620,12 @@ class ReportLinePeriod(ModelSQL, ModelView):
                 values.append(value)
         return result, values
 
-    def _get_account_(self, code, mode, invert=False):
+    def _get_account_(self, code, mode, invert=False, cache=None):
         pool = Pool()
         LineAccount = pool.get(
             'account.financial.statement.report.line.account.period')
-        result, values = self._get_account_values(code, mode, invert=invert)
+        result, values = self._get_account_values(
+            code, mode, invert=invert, cache=cache)
         detail_lines = []
         for value in values:
             if 'credit' not in value:
