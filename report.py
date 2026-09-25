@@ -2,11 +2,11 @@
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
 import re
-from ast import parse
+from ast import Call, Name, parse, unparse, walk
+from bisect import bisect_left, bisect_right
 from datetime import datetime
 from decimal import Decimal
 from functools import partial
-
 from simpleeval import simple_eval
 
 from trytond.exceptions import UserError
@@ -18,6 +18,7 @@ from trytond.modules.currency.fields import Monetary
 from trytond.pool import Pool
 from trytond.pyson import Eval
 from trytond.tools import decistmt
+from trytond.tools.domain_inversion import like
 from trytond.transaction import Transaction
 from trytond.wizard import (
     Button,
@@ -159,6 +160,8 @@ class Report(Workflow, ModelSQL, ModelView):
         pool = Pool()
         ReportLinePeriod = pool.get('account.financial.statement.report.line.period')
         TemplateLine = pool.get('account.financial.statement.template.line')
+        LineAccount = pool.get(
+            'account.financial.statement.report.line.account.period')
 
         for report in reports:
             periods = cls._ordered_periods(report)
@@ -182,10 +185,12 @@ class Report(Workflow, ModelSQL, ModelView):
                     ('parent', '=', None),
                     ])
             for report_period in periods:
-                cache = {}
+                cache = {'pending_details': []}
                 for template_line in template_lines:
                     ReportLinePeriod.create_from_template(report_period,
                         template_line, cache=cache)
+                if cache['pending_details']:
+                    LineAccount.create(cache['pending_details'])
 
     @classmethod
     @ModelView.button
@@ -551,13 +556,83 @@ class ReportLinePeriod(ModelSQL, ModelView):
         cache[cache_key] = value
         return value
 
-    def _get_account_values(self, code, mode, invert=False, cache=None):
-        pool = Pool()
-        Account = pool.get('account.account')
+    def _get_accounts_by_code(self, code, cache):
+        Account = Pool().get('account.account')
+        company = self.report_period.report.company
+        rows_key = ('account_rows', self.report_period.id)
+        if rows_key not in cache:
+            accounts = Account.search([
+                    ('company', '=', company),
+                    ], order=[])
+            rows = Account.read([account.id for account in accounts],
+                ['code', 'type', 'left', 'right'])
+            rows.sort(key=lambda row: row['left'])
+            cache[rows_key] = rows
+            cache[('account_lefts', self.report_period.id)] = [
+                row['left'] for row in rows]
+        rows = cache[rows_key]
+        key = ('accounts', self.report_period.id, code)
+        if key not in cache:
+            lefts = cache[('account_lefts', self.report_period.id)]
+            ids = []
+            covered_right = -1
+            for row in rows:
+                if row['left'] <= covered_right or not row['type']:
+                    continue
+                account_code = row['code']
+                if account_code is None:
+                    continue
+                if '_' in code:
+                    matches = like(account_code, code + '%')
+                else:
+                    matches = account_code.startswith(code)
+                if matches:
+                    # Nested-set bounds include descendants even when their
+                    # codes differ, without counting overlapping roots twice.
+                    start = bisect_left(lefts, row['left'])
+                    end = bisect_right(lefts, row['right'])
+                    ids.extend(child['id'] for child in rows[start:end])
+                    covered_right = row['right']
+            cache[key] = ids
+        return cache[key]
 
+    def _get_required_accounts(self, cache):
+        Account = Pool().get('account.account')
+        prefixes = set()
+        try:
+            for line in self.template_line.template.lines:
+                formula = (line.current_value or '').split(';', 1)[0]
+                for node in walk(parse(formula)):
+                    if not (isinstance(node, Call)
+                            and isinstance(node.func, Name)
+                            and node.func.id in {
+                                'balance', 'invert', 'debit', 'credit'}):
+                        continue
+                    for argument in node.args:
+                        code = str(simple_eval(decistmt(unparse(argument)),
+                                functions={'Decimal': Decimal}))
+                        for prefix in re.findall(
+                                r'(-?\w*\(?[0-9a-zA-Z_\.]*\)?)', code):
+                            if prefix:
+                                prefixes.add(prefix.lstrip('-'))
+        except Exception:
+            # Dynamic arguments (for example concept()) cannot be resolved
+            # before evaluation. Preserve them by aggregating the whole chart.
+            return Account.browse([row['id'] for row in
+                    cache[('account_rows', self.report_period.id)]])
+        ids = set()
+        for prefix in prefixes:
+            ids.update(self._get_accounts_by_code(prefix, cache))
+        # Include explicit helper calls even if not present in the template.
+        for key, accounts in cache.items():
+            if (isinstance(key, tuple)
+                    and key[:2] == ('accounts', self.report_period.id)):
+                ids.update(accounts)
+        return Account.browse(sorted(ids))
+
+    def _get_account_values(self, code, mode, invert=False, cache=None):
         if cache is None:
             cache = {}
-        company = self.report_period.report.company
         balance_mode = self.template_line.template.mode
         result = Decimal(0)
         values = []
@@ -581,33 +656,22 @@ class ReportLinePeriod(ModelSQL, ModelView):
                 elif balance_mode == 'credit-debit-reversed' and not invert:
                     sign = Decimal('-1.0') * sign
 
-            accounts_key = ('accounts', company.id, account_code)
-            if accounts_key not in cache:
-                accounts = Account.search([
-                        ('company', '=', company),
-                        ('code', 'like', account_code + '%'),
-                        ('type', '!=', None),
-                        ])
-                if accounts:
-                    accounts = Account.search([
-                            ('parent', 'child_of', [a.id for a in accounts]),
-                            ('company', '=', company),
-                            ])
-                cache[accounts_key] = accounts
-            accounts = cache[accounts_key]
+            accounts = self._get_accounts_by_code(account_code, cache)
             if not accounts:
                 continue
             totals_key = ('credit_debit', self.report_period.id)
             if totals_key not in cache:
-                # Aggregate journal entries once per comparison period, using
-                # the accounting API to preserve rounding and fiscal deferrals.
-                all_accounts = Account.search([
-                        ('company', '=', company),
-                        ], order=[])
-                cache[totals_key] = self._get_credit_debit(all_accounts)
+                # One aggregation of only the accounts used by the template.
+                required_accounts = self._get_required_accounts(cache)
+                cache[totals_key] = self._get_credit_debit(required_accounts)
             credit_debit = cache[totals_key]
-            for account_record in accounts:
-                account = account_record.id
+            missing = set(accounts) - credit_debit['credit'].keys()
+            if missing:
+                Account = Pool().get('account.account')
+                extra = self._get_credit_debit(Account.browse(sorted(missing)))
+                for name in ('credit', 'debit'):
+                    credit_debit[name].update(extra[name])
+            for account in accounts:
                 balance = (credit_debit['debit'][account]
                     - credit_debit['credit'][account])
                 value = {'account': account}
@@ -637,13 +701,17 @@ class ReportLinePeriod(ModelSQL, ModelView):
                     'debit': value['debit'],
                     })
         if detail_lines:
-            LineAccount.create(detail_lines)
+            if cache is not None and 'pending_details' in cache:
+                cache['pending_details'].extend(detail_lines)
+            else:
+                LineAccount.create(detail_lines)
         return result
 
     def _get_credit_debit(self, accounts):
         pool = Pool()
         Account = pool.get('account.account')
-        return Account.get_credit_debit(accounts, ['debit', 'credit'])
+        result = Account.get_credit_debit(accounts, ['debit', 'credit'])
+        return result
 
 
 class ReportLineAccountPeriod(ModelSQL, ModelView):
