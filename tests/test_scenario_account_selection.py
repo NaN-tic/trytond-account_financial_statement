@@ -3,7 +3,11 @@ from datetime import date
 from decimal import Decimal
 from unittest.mock import patch
 
-from proteus import Model
+from io import BytesIO
+
+from openpyxl import load_workbook
+from pypdf import PdfReader
+from proteus import Model, Wizard
 from trytond import backend
 from trytond.modules.account.tests.tools import (
     create_chart, create_fiscalyear, get_accounts)
@@ -25,10 +29,15 @@ class TestFinancialStatementAccountSelection(unittest.TestCase):
         super().tearDown()
 
     def test(self):
-        config = activate_modules('account_financial_statement')
+        config = activate_modules(['account_financial_statement', 'account_code_digits'])
         create_company(config=config)
         company = get_company(config=config)
         create_chart(company=company, config=config)
+        Configuration = Model.get('account.configuration', config=config)
+        configuration = Configuration(1)
+        configuration.force_digits = False
+        configuration.default_account_code_digits = 3
+        configuration.save()
         accounts = get_accounts(company=company, config=config)
         revenue = accounts['revenue']
         revenue.code = '900'
@@ -82,6 +91,30 @@ class TestFinancialStatementAccountSelection(unittest.TestCase):
             period.fiscalyear = fiscalyear
         report.save()
         report.click('calculate')
+
+        wizard = Wizard('account.financial.statement.print', [report])
+        self.assertTrue(wizard.form.has_account_code_digits)
+        self.assertEqual(wizard.form.digits, 3)
+        wizard.form.include_details = True
+        wizard.form.output_format = 'xlsx'
+        wizard.form.digits = 2
+        wizard.execute('print_')
+        extension, content, _, _ = wizard.actions[0]
+        self.assertEqual(extension, 'xlsx')
+        sheet = load_workbook(BytesIO(content)).active
+        grouped, = [row for row in sheet.iter_rows(values_only=True)
+            if row[0] and row[0].startswith('90 - ')]
+        self.assertEqual(grouped[1:], (-30, 0))
+        wizard = Wizard('account.financial.statement.print', [report])
+        wizard.form.include_details = True
+        wizard.form.digits = 2
+        wizard.execute('print_')
+        self.assertEqual(wizard.actions[0][0], 'pdf')
+        reader = PdfReader(BytesIO(wizard.actions[0][1]))
+        text = '\n'.join(page.extract_text() for page in reader.pages)
+        self.assertIn('90 - ', text)
+        self.assertIn('-30.00', text)
+        self.assertNotIn('900 - ', text)
 
         receivable_code = accounts['receivable'].code
         pool = Pool(config.database_name)

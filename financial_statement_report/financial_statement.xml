@@ -13,11 +13,6 @@ copyright notices and license terms. -->
             <field name="html_side_margin">0.5</field>
             <field name="single" eval="True"/>
         </record>
-        <record model="ir.action.keyword" id="html_report_financial_statement_keyword">
-            <field name="keyword">form_print</field>
-            <field name="model">account.financial.statement.report,-1</field>
-            <field name="action" ref="html_report_financial_statement"/>
-        </record>
 
         <record model="ir.action.report" id="html_report_financial_statement_detail">
             <field name="name">Account Financial Statement Detail</field>
@@ -28,11 +23,6 @@ copyright notices and license terms. -->
             <field name="html_side_margin">0.5</field>
             <field name="single" eval="True"/>
         </record>
-        <record model="ir.action.keyword" id="html_report_financial_statement_detail_keyword">
-            <field name="keyword">form_print</field>
-            <field name="model">account.financial.statement.report,-1</field>
-            <field name="action" ref="html_report_financial_statement_detail"/>
-        </record>
 
         <record model="ir.action.report" id="report_xlsx_financial_statement">
             <field name="name">Financial Statement Spreadsheet</field>
@@ -41,10 +31,21 @@ copyright notices and license terms. -->
             <field name="extension">xlsx</field>
             <field name="single" eval="True"/>
         </record>
-        <record model="ir.action.keyword" id="report_xlsx_financial_statement_keyword">
+
+        <record model="ir.ui.view" id="print_start_view_form">
+            <field name="model">account.financial.statement.print.start</field>
+            <field name="type">form</field>
+            <field name="name">print_start_form</field>
+        </record>
+        <record model="ir.action.wizard" id="print_financial_statement">
+            <field name="name">Account Financial Statement</field>
+            <field name="wiz_name">account.financial.statement.print</field>
+            <field name="model">account.financial.statement.report</field>
+        </record>
+        <record model="ir.action.keyword" id="print_financial_statement_keyword">
             <field name="keyword">form_print</field>
             <field name="model">account.financial.statement.report,-1</field>
-            <field name="action" ref="report_xlsx_financial_statement"/>
+            <field name="action" ref="print_financial_statement"/>
         </record>
 
         <!-- Deactivate standard account reports -->

@@ -896,3 +896,35 @@ msgstr "Nombre"
 msgctxt "xgettext:x:"
 msgid "Period"
 msgstr "Período"
+
+msgctxt "field:account.financial.statement.print.start,include_details:"
+msgid "Include Account Details"
+msgstr "Incluir detalle de cuentas"
+
+msgctxt "field:account.financial.statement.print.start,output_format:"
+msgid "Output Format"
+msgstr "Formato de salida"
+
+msgctxt "field:account.financial.statement.print.start,digits:"
+msgid "Digits"
+msgstr "Dígitos"
+
+msgctxt "wizard_button:account.financial.statement.print,start,end:"
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgctxt "wizard_button:account.financial.statement.print,start,print_:"
+msgid "Print"
+msgstr "Imprimir"
+
+msgctxt "model:ir.action,name:print_financial_statement"
+msgid "Account Financial Statement"
+msgstr "Informe financiero"
+
+msgctxt "model:account.financial.statement.print.start,string:"
+msgid "Print Financial Statement"
+msgstr "Imprimir informe financiero"
+
+msgctxt "help:account.financial.statement.print.start,digits:"
+msgid "Group accounts by this number of digits. Zero shows all digits."
+msgstr "Agrupa las cuentas por este número de dígitos. El valor cero muestra todos los dígitos."
