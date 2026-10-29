@@ -1,35 +1,87 @@
 from decimal import Decimal
 
-from dominate.tags import header as header_tag, table, tbody, td, th, thead, tr
-from dominate.util import raw
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, Side
 from openpyxl.utils import get_column_letter
 
-from trytond.modules.html_report.dominate_report import DominateReport
+from trytond.modules.html_report.engine import HTMLReportMixin
+from trytond.report import Report as TrytonReport
+from trytond.model import ModelView, fields
+from trytond.pool import Pool
+from trytond.pyson import Eval
+from trytond.wizard import Button, StateReport, StateView, Wizard
 from trytond.transaction import Transaction
 from trytond.modules.xgettext import _
 
 from trytond.modules.html_report.tools import save_virtual_workbook
 
 from ..report import Report
+from .pdf import FinancialStatementPDF
 
-class FinancialStatementBase(DominateReport):
+class PrintStart(ModelView):
+    'Print Financial Statement'
+    __name__ = 'account.financial.statement.print.start'
+
+    include_details = fields.Boolean('Include Account Details')
+    output_format = fields.Selection([
+        ('pdf', 'PDF'), ('xlsx', 'Excel')], 'Output Format', required=True)
+    has_account_code_digits = fields.Boolean('Account Code Digits Available')
+    digits = fields.Integer('Digits', domain=[
+        'OR', ('digits', '=', None), ('digits', '>=', 0)],
+        states={'invisible': (~Eval('include_details')
+            | ~Eval('has_account_code_digits'))},
+        help='Group accounts by this number of digits. Zero shows all digits.')
+
+    @staticmethod
+    def default_output_format():
+        return 'pdf'
+
+
+class PrintFinancialStatement(Wizard):
+    'Print Financial Statement'
+    __name__ = 'account.financial.statement.print'
+
+    start = StateView('account.financial.statement.print.start',
+        'account_financial_statement.print_start_view_form', [
+            Button('Cancel', 'end', 'tryton-cancel'),
+            Button('Print', 'print_', 'tryton-print', default=True),
+            ])
+    print_ = StateReport('account.financial.statement.report')
+
+    def default_start(self, fields):
+        pool = Pool()
+        Configuration = pool.get('account.configuration')
+        Statement = pool.get('account.financial.statement.report')
+        available = hasattr(Configuration, 'default_account_code_digits')
+        defaults = {'has_account_code_digits': available}
+        if available:
+            statement = Statement(Transaction().context['active_id'])
+            with Transaction().set_context(company=statement.company.id):
+                defaults['digits'] = Configuration(1).default_account_code_digits
+        return defaults
+
+    def do_print_(self, action):
+        if self.start.output_format == 'xlsx':
+            pool = Pool()
+            ModelData = pool.get('ir.model.data')
+            ActionReport = pool.get('ir.action.report')
+            report = ActionReport(ModelData.get_id(
+                'account_financial_statement', 'report_xlsx_financial_statement'))
+            action = report.action.get_action_value()
+        available = hasattr(Pool().get('account.configuration'),
+            'default_account_code_digits')
+        return action, {
+            'ids': Transaction().context.get('active_ids', []),
+            'model': 'account.financial.statement.report',
+            'include_details': self.start.include_details,
+            'digits': (self.start.digits
+                if self.start.include_details and available else None),
+            }
+
+
+class FinancialStatementBase(HTMLReportMixin, TrytonReport):
     _landscape_threshold = 5
     side_margin = 0.5
-
-    @classmethod
-    def language(cls, records):
-        return Transaction().language or 'en'
-
-    @classmethod
-    def css(cls, action, data, records):
-        css = super().css(action, data, records) or ''
-        if records:
-            record, = records
-            if len(cls._comparison_periods(record)) > cls._landscape_threshold:
-                css += '\n@page { size: A4 landscape; }\n'
-        return css
 
     @staticmethod
     def _raw(record):
@@ -112,7 +164,7 @@ class FinancialStatementBase(DominateReport):
         return cls._format_amount(cls._raw(period_line).value, currency)
 
     @classmethod
-    def _detail_rows(cls, line, record, columns):
+    def _detail_rows(cls, line, record, columns, digits=None):
         by_account = {}
         for column in columns:
             period_line = column['lookup'].get(cls._line_key(line))
@@ -120,53 +172,25 @@ class FinancialStatementBase(DominateReport):
                 continue
             for value in period_line.line_accounts:
                 amount = cls._raw(value).balance or Decimal(0)
-                key = cls._record_id(value.account)
+                account = cls._raw(value.account)
+                code = account.code or ''
+                key = code[:digits] if digits else account.id
+                name_account = account
+                if digits:
+                    while (name_account.parent
+                            and len(name_account.code or '') > digits):
+                        name_account = name_account.parent
                 entry = by_account.setdefault(key, {
-                        'label': '%s - %s' % (
-                            getattr(value.account, 'render', value.account).code,
-                            getattr(value.account, 'render', value.account).name,
-                            ),
-                        'values': {},
-                        })
-                entry['values'][column['id']] = amount
-        rows = []
-        for entry in sorted(by_account.values(),
-                key=lambda item: item['label']):
-            if not any(entry['values'].values()):
-                continue
-            formatted = {}
-            for column in columns:
-                amount = entry['values'].get(column['id'], Decimal(0))
-                if amount is None:
-                    continue
-                formatted[column['id']] = cls._format_amount(
-                    amount, cls._raw(line.currency) if line.currency else None)
-            if formatted:
-                entry['values'] = formatted
-                rows.append(entry)
+                    'label': '%s - %s' % (
+                        code[:digits] if digits else code, name_account.name),
+                    'values': {},
+                    })
+                entry['values'][column['id']] = (
+                    entry['values'].get(column['id'], Decimal(0)) + amount)
+        rows = [entry for entry in by_account.values()
+            if any(entry['values'].values())]
+        rows.sort(key=lambda item: item['label'])
         return rows
-
-    @classmethod
-    def header(cls, action, data, records):
-        record, = records
-        header_node = header_tag(id='header')
-        with header_node:
-            with table(style='width:100%;'):
-                with tr():
-                    with td():
-                        raw('<h2><i>%s</i></h2>' % record.company.render.rec_name)
-                        raw('<h3>NIF: %s</h3>' % (
-                            record.company.party.tax_identifier
-                            and record.company.party.tax_identifier.render.code
-                            or '-'))
-                    with td():
-                        raw('<h1>%s</h1>' % record.render.rec_name)
-        return header_node
-
-    @classmethod
-    def title(cls, action, data, records):
-        record, = records
-        return record.render.rec_name
 
     @classmethod
     def _table_columns(cls, record):
@@ -177,44 +201,6 @@ class FinancialStatementBase(DominateReport):
                 'lookup': cls._period_line_lookup(period),
                 }
             for period in cls._comparison_periods(record)]
-
-    @classmethod
-    def _build_table(cls, record, include_details):
-        columns = cls._table_columns(record)
-        with table(style='page-break-inside: auto;') as table_node:
-            with thead(style='border-bottom: 1px solid black; border-top: 1px solid black'):
-                with tr(style='page-break-inside:avoid;'):
-                    th(_('Concept'), nowrap=True)
-                    for column in columns:
-                        th(column['label'], nowrap=True,
-                            style='text-align: right')
-            with tbody():
-                for line in cls._structural_lines(record):
-                    raw_line = cls._raw(line)
-                    if not raw_line.visible:
-                        continue
-                    line_style = 'page-break-inside:avoid;'
-                    if raw_line.page_break:
-                        line_style += ' page-break-after:always;'
-                    with tr(style=line_style):
-                        if not raw_line.parent:
-                            th(cls._display_value(line, 'name', fallback='rec_name'))
-                        else:
-                            td(cls._display_value(line, 'name', fallback='rec_name'))
-                        for column in columns:
-                            td(cls._line_column_value(line, column),
-                                style='text-align: right')
-                    if include_details:
-                        for detail in cls._detail_rows(line, record, columns):
-                            detail_style = 'page-break-inside:avoid; color: #A2A2A2;'
-                            if raw_line.page_break:
-                                detail_style += ' page-break-after:always;'
-                            with tr(style=detail_style):
-                                td(detail['label'])
-                                for column in columns:
-                                    td(detail['values'].get(column['id'], ''),
-                                        style='text-align: right')
-        return table_node
 
     @classmethod
     def _summary_lines(cls, record):
@@ -242,7 +228,7 @@ class FinancialStatementExport(FinancialStatementBase):
         workbook = Workbook()
         workbook.remove(workbook.active)
         for record in records:
-            cls._add_sheet(workbook, record)
+            cls._add_sheet(workbook, record, data)
         name = records[0].rec_name if len(records) == 1 else action.name
         return ('xlsx', save_virtual_workbook(workbook), False, name)
 
@@ -252,7 +238,8 @@ class FinancialStatementExport(FinancialStatementBase):
         return name.replace('/', '_').replace(':', '_')[:31]
 
     @classmethod
-    def _add_sheet(cls, workbook, record):
+    def _add_sheet(cls, workbook, record, data=None):
+        data = data or {}
         sheet = workbook.create_sheet(cls._sheet_title(record))
         columns = cls._table_columns(record)
         headers = [_('Name')] + [
@@ -297,6 +284,17 @@ class FinancialStatementExport(FinancialStatementBase):
                 if cell.value is not None:
                     cell.number_format = cls._number_format
 
+            if data.get('include_details'):
+                for detail in cls._detail_rows(
+                        line, record, columns, data.get('digits')):
+                    sheet.append([detail['label']] + [
+                        detail['values'].get(column['id'], Decimal(0))
+                        for column in columns])
+                    for cell in sheet[sheet.max_row]:
+                        cell.font = Font(color='A2A2A2')
+                        if cell.column > 1:
+                            cell.number_format = cls._number_format
+
         widths = {1: 42}
         for index in range(2, len(headers) + 1):
             widths[index] = 18
@@ -307,16 +305,55 @@ class FinancialStatementReport(FinancialStatementBase):
     'Financial Statement Report'
     __name__ = 'account.financial.statement.report'
 
-    @classmethod
-    def body(cls, action, data, records):
-        record, = records
-        return cls._build_table(record, include_details=False)
+    _include_details = False
 
-class FinancialStatementDetailReport(FinancialStatementBase):
+    @classmethod
+    def execute(cls, ids, data):
+        if not ids:
+            return
+        action, model = cls.get_action(data)
+        cls.check_access(action, model, ids)
+        records = cls._get_records(ids, model, data)
+        margin = action.html_side_margin
+        margin = (cls.side_margin if margin is None else margin) * 10
+        pdf = FinancialStatementPDF(margin)
+        for record in records:
+            columns = cls._table_columns(record)
+            orientation = ('L' if len(columns) > cls._landscape_threshold
+                else 'P')
+            identifier = record.company.party.tax_identifier
+            pdf.heading = '%s - %s' % (record.company.rec_name, record.rec_name)
+            pdf.tax_identifier = 'NIF: %s' % (identifier.code if identifier else '-')
+            pdf.columns = [_('Concept')] + [column['label'] for column in columns]
+            pdf.add_page(orientation=orientation)
+            lines = cls._summary_lines(record)
+            for index, line in enumerate(lines):
+                pdf.row([cls._display_value(line, 'name', fallback='rec_name')]
+                    + [cls._line_column_value(line, column) for column in columns],
+                    bold=not line.parent)
+                if data.get('include_details', cls._include_details):
+                    for detail in cls._detail_rows(
+                            line, record, columns, data.get('digits')):
+                        pdf.row([detail['label']] + [cls._format_amount(
+                            detail['values'].get(column['id'], Decimal(0)),
+                            cls._raw(line.currency)) for column in columns],
+                            detail=True)
+                if line.page_break and index < len(lines) - 1:
+                    pdf.add_page(orientation=orientation)
+        content = bytes(pdf.output())
+        if action.html_copies and action.html_copies > 1:
+            content = cls.merge_pdfs([content] * action.html_copies)
+        name = records[0].rec_name if len(records) == 1 else action.name
+        try:
+            Printer = Pool().get('printer')
+        except KeyError:
+            Printer = None
+        if Printer:
+            return Printer.send_report('pdf', content, name, action)
+        return 'pdf', content, cls.get_direct_print(action), name
+
+
+class FinancialStatementDetailReport(FinancialStatementReport):
     'Financial Statement Detail Report'
     __name__ = 'account.financial.statement.detail.report'
-
-    @classmethod
-    def body(cls, action, data, records):
-        record, = records
-        return cls._build_table(record, include_details=True)
+    _include_details = True

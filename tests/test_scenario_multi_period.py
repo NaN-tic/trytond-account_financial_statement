@@ -1,10 +1,12 @@
+import tempfile
 import unittest
 from datetime import date
 from decimal import Decimal
 from io import BytesIO
 
 from openpyxl import load_workbook
-from proteus import Model
+from pypdf import PdfReader
+from proteus import Model, Wizard
 from trytond.exceptions import UserError
 from trytond.modules.account.tests.tools import (
     create_chart,
@@ -142,6 +144,24 @@ class TestFinancialStatementMultiPeriod(unittest.TestCase):
                 period.end_period = first_fiscalyear_standard_periods[-1]
         report.save()
         report.click('calculate')
+
+        for details in (False, True):
+            for output_format in ('pdf', 'xlsx'):
+                wizard = Wizard('account.financial.statement.print', [report])
+                self.assertFalse(wizard.form.has_account_code_digits)
+                self.assertEqual(wizard.form.output_format, 'pdf')
+                wizard.form.include_details = details
+                wizard.form.output_format = output_format
+                wizard.execute('print_')
+                extension, content, _, _ = wizard.actions[0]
+                self.assertEqual(extension, output_format)
+                self.assertTrue(content.startswith(
+                    b'%PDF' if output_format == 'pdf' else b'PK'))
+                if output_format == 'xlsx':
+                    sheet = load_workbook(BytesIO(content)).active
+                    labels = [row[0].value for row in sheet]
+                    self.assertEqual(any(label and label.startswith(
+                        self.revenue.code + ' - ') for label in labels), details)
 
         ranged_standard_report = Report()
         ranged_standard_report.name = 'Ranged Standard Report'
@@ -296,23 +316,58 @@ class TestFinancialStatementMultiPeriod(unittest.TestCase):
                 rows['Revenue'],
                 [Decimal('100.00'), Decimal('200.00'), Decimal('300.00')])
             self.assertEqual(sheet.cell(4, 2).number_format, '#,##0.00')
-            body = str(FinancialStatementReport.body(
-                    None, None, [report_record]))
-            expected_header = FinancialStatementReport._period_range(
-                report_record.comparison_periods[1])
-            self.assertIn(
-                '<th nowrap="nowrap" style="text-align: right">%s</th>'
-                % expected_header,
-                body)
-            detail_body = str(FinancialStatementDetailReport.body(
-                    None, None, [report_record]))
-            self.assertIn(
-                '<th nowrap="nowrap" style="text-align: right">%s</th>'
-                % expected_header,
-                detail_body)
-            self.assertNotIn(
-                '@page { size: A4 landscape; }',
-                FinancialStatementReport.css(None, None, [report_record]))
-            self.assertIn(
-                '@page { size: A4 landscape; }',
-                FinancialStatementReport.css(None, None, [summary_report_record]))
+            for ReportClass in (FinancialStatementReport,
+                    FinancialStatementDetailReport):
+                extension, content, _, _ = ReportClass.execute(
+                    [report.id], {'model': 'account.financial.statement.report'})
+                self.assertEqual(extension, 'pdf')
+                reader = PdfReader(BytesIO(content))
+                page = reader.pages[0]
+                self.assertLess(page.mediabox.width, page.mediabox.height)
+                text = page.extract_text()
+                for expected in ['Three Year Report', 'Revenue',
+                        '100.00', '200.00', '300.00', '2023', '1 / 1']:
+                    self.assertIn(expected, text)
+                self.assertEqual(self.revenue.code + ' - ' in text,
+                    ReportClass == FinancialStatementDetailReport)
+
+            # A multi-selection may contain both portrait and landscape reports.
+            _, content, _, _ = FinancialStatementReport.execute(
+                [report.id, summary_report.id], {})
+            pages = PdfReader(BytesIO(content)).pages
+            self.assertEqual(len(pages), 2)
+            self.assertLess(pages[0].mediabox.width, pages[0].mediabox.height)
+            self.assertGreater(pages[1].mediabox.width, pages[1].mediabox.height)
+
+        # Recalculate with a long template to exercise automatic pagination,
+        # explicit section breaks, Unicode, and repeated table headings.
+        report.click('draft')
+        self.template.reload()
+        for index in range(85):
+            line = self.template.lines.new()
+            line.code = 'EXTRA-%03d' % index
+            line.name = 'Línia %03d - català € àéïòü' % index
+            line.current_value = '1234.56'
+            line.page_break = index == 40
+        self.template.save()
+        report.click('calculate')
+        summary_report.click('calculate')
+        for record in (report, summary_report):
+            wizard = Wizard('account.financial.statement.print', [record])
+            wizard.form.include_details = True
+            wizard.execute('print_')
+            content = wizard.actions[0][1]
+            reader = PdfReader(BytesIO(content))
+            self.assertGreater(len(reader.pages), 1)
+            text = '\n'.join(page.extract_text() for page in reader.pages)
+            for index in range(85):
+                self.assertIn('Línia %03d - català € àéïòü' % index, text)
+            for index, page in enumerate(reader.pages, 1):
+                text = page.extract_text()
+                self.assertIn(record.name, text)
+                self.assertIn('Concept', text)
+                self.assertIn('%s / %s' % (index, len(reader.pages)), text)
+            with tempfile.NamedTemporaryFile(prefix='financial-statement-',
+                    suffix='.pdf', delete=False) as output:
+                output.write(content)
+                print('PDF preview: %s' % output.name)

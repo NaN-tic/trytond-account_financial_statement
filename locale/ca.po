@@ -874,3 +874,35 @@ msgstr "Nom"
 msgctxt "xgettext:x:"
 msgid "Period"
 msgstr "Període"
+
+msgctxt "field:account.financial.statement.print.start,include_details:"
+msgid "Include Account Details"
+msgstr "Inclou el detall de comptes"
+
+msgctxt "field:account.financial.statement.print.start,output_format:"
+msgid "Output Format"
+msgstr "Format de sortida"
+
+msgctxt "field:account.financial.statement.print.start,digits:"
+msgid "Digits"
+msgstr "Dígits"
+
+msgctxt "wizard_button:account.financial.statement.print,start,end:"
+msgid "Cancel"
+msgstr "Cancel·la"
+
+msgctxt "wizard_button:account.financial.statement.print,start,print_:"
+msgid "Print"
+msgstr "Imprimeix"
+
+msgctxt "model:ir.action,name:print_financial_statement"
+msgid "Account Financial Statement"
+msgstr "Informe financer"
+
+msgctxt "model:account.financial.statement.print.start,string:"
+msgid "Print Financial Statement"
+msgstr "Imprimeix l’informe financer"
+
+msgctxt "help:account.financial.statement.print.start,digits:"
+msgid "Group accounts by this number of digits. Zero shows all digits."
+msgstr "Agrupa els comptes per aquest nombre de dígits. El valor zero mostra tots els dígits."
