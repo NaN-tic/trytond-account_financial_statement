@@ -8,3 +8,5 @@ include *.xml
 include view/*.xml
 include locale/*.po
 include doc/*
+
+recursive-include financial_statement_report *.py *.xml *.ttf LICENSE

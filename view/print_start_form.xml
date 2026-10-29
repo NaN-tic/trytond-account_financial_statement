@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<form>
+    <label name="include_details"/>
+    <field name="include_details"/>
+    <label name="digits"/>
+    <field name="digits"/>
+    <label name="output_format"/>
+    <field name="output_format"/>
+</form>
