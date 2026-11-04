@@ -1,0 +1,960 @@
+#
+msgid ""
+msgstr ""
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgctxt "field:account.financial.statement.report,calculation_date:"
+msgid "Calculation date"
+msgstr "计算日期"
+
+msgctxt "field:account.financial.statement.report,company:"
+msgid "Company"
+msgstr "公司"
+
+msgctxt "field:account.financial.statement.report,current_fiscalyear:"
+msgid "Fiscal year 1"
+msgstr "会计年度 1"
+
+msgctxt "field:account.financial.statement.report,current_periods:"
+msgid "Fiscal year 1 periods"
+msgstr "会计年度 1 的期间"
+
+msgctxt "field:account.financial.statement.report,current_periods_end_date:"
+msgid "Current Periods Dates"
+msgstr "本期日期"
+
+msgctxt "field:account.financial.statement.report,current_periods_list:"
+msgid "Current Periods List"
+msgstr "本期列表"
+
+msgctxt "field:account.financial.statement.report,current_periods_start_date:"
+msgid "Current Periods Dates"
+msgstr "本期日期"
+
+msgctxt "field:account.financial.statement.report,lines:"
+msgid "Lines"
+msgstr "明细"
+
+msgctxt "field:account.financial.statement.report,name:"
+msgid "Name"
+msgstr "名称"
+
+msgctxt "field:account.financial.statement.report,previous_fiscalyear:"
+msgid "Fiscal year 2"
+msgstr "会计年度 2"
+
+msgctxt "field:account.financial.statement.report,previous_periods:"
+msgid "Fiscal year 2 periods"
+msgstr "会计年度 2 的期间"
+
+msgctxt "field:account.financial.statement.report,previous_periods_end_date:"
+msgid "Previous Periods Dates"
+msgstr "上期日期"
+
+msgctxt "field:account.financial.statement.report,previous_periods_list:"
+msgid "Previous Periods List"
+msgstr "上期列表"
+
+msgctxt ""
+"field:account.financial.statement.report,previous_periods_start_date:"
+msgid "Previous Periods Dates"
+msgstr "上期日期"
+
+msgctxt "field:account.financial.statement.report,state:"
+msgid "State"
+msgstr "状态"
+
+msgctxt "field:account.financial.statement.report,template:"
+msgid "Template"
+msgstr "模板"
+
+msgctxt ""
+"field:account.financial.statement.report.accounts.start,unused_accounts:"
+msgid "Unused Accounts"
+msgstr "未使用科目"
+
+msgctxt ""
+"field:account.financial.statement.report.accounts.start,used_accounts:"
+msgid "Used Accounts"
+msgstr "已使用科目"
+
+msgctxt "field:account.financial.statement.report.line,calculation_date:"
+msgid "Calculation date"
+msgstr "计算日期"
+
+msgctxt "field:account.financial.statement.report.line,children:"
+msgid "Children"
+msgstr "子项"
+
+msgctxt "field:account.financial.statement.report.line,code:"
+msgid "Code"
+msgstr "代码"
+
+msgctxt "field:account.financial.statement.report.line,css_class:"
+msgid "CSS Class"
+msgstr "CSS 类"
+
+msgctxt "field:account.financial.statement.report.line,currency:"
+msgid "Currency"
+msgstr "货币"
+
+msgctxt "field:account.financial.statement.report.line,current_line_accounts:"
+msgid "Current Detail"
+msgstr "本期明细"
+
+msgctxt "field:account.financial.statement.report.line,current_value:"
+msgid "Current Value"
+msgstr "本期金额"
+
+msgctxt "field:account.financial.statement.report.line,line_accounts:"
+msgid "Line Accounts"
+msgstr "行项目科目"
+
+msgctxt "field:account.financial.statement.report.line,name:"
+msgid "Name"
+msgstr "名称"
+
+msgctxt "field:account.financial.statement.report.line,notes:"
+msgid "Notes"
+msgstr "注释"
+
+msgctxt "field:account.financial.statement.report.line,page_break:"
+msgid "Page Break"
+msgstr "分页"
+
+msgctxt "field:account.financial.statement.report.line,parent:"
+msgid "Parent"
+msgstr "上级"
+
+msgctxt ""
+"field:account.financial.statement.report.line,previous_line_accounts:"
+msgid "Previous Detail"
+msgstr "上期明细"
+
+msgctxt "field:account.financial.statement.report.line,previous_value:"
+msgid "Previous value"
+msgstr "上期金额"
+
+msgctxt "field:account.financial.statement.report.line,report:"
+msgid "Report"
+msgstr "报告"
+
+msgctxt "field:account.financial.statement.report.line,report_state:"
+msgid "Report State"
+msgstr "报表状态"
+
+msgctxt "field:account.financial.statement.report.line,sequence:"
+msgid "Sequence"
+msgstr "序列"
+
+msgctxt "field:account.financial.statement.report.line,template_line:"
+msgid "Line template"
+msgstr "行项目模板"
+
+msgctxt "field:account.financial.statement.report.line,visible:"
+msgid "Visible"
+msgstr "可见"
+
+msgctxt "field:account.financial.statement.report.line.account,account:"
+msgid "Account"
+msgstr "账户"
+
+msgctxt "field:account.financial.statement.report.line.account,balance:"
+msgid "Balance"
+msgstr "余额"
+
+msgctxt "field:account.financial.statement.report.line.account,company:"
+msgid "Company"
+msgstr "公司"
+
+msgctxt "field:account.financial.statement.report.line.account,credit:"
+msgid "Credit"
+msgstr "贷方"
+
+msgctxt "field:account.financial.statement.report.line.account,currency:"
+msgid "Currency"
+msgstr "货币"
+
+msgctxt "field:account.financial.statement.report.line.account,debit:"
+msgid "Debit"
+msgstr "借方"
+
+msgctxt "field:account.financial.statement.report.line.account,fiscal_year:"
+msgid "Fiscal Year"
+msgstr "会计年度"
+
+msgctxt "field:account.financial.statement.report.line.account,report_line:"
+msgid "Report Line"
+msgstr "报表行项目"
+
+msgctxt "field:account.financial.statement.report.line.detail.start,detail:"
+msgid "Detail Level"
+msgstr "明细级别"
+
+msgctxt ""
+"field:account.financial.statement.report.line.detail.start,fiscalyear:"
+msgid "Fiscal Year"
+msgstr "会计年度"
+
+msgctxt "field:account.financial.statement.template,cumulate:"
+msgid "Cumulate Balances"
+msgstr "累计余额"
+
+msgctxt "field:account.financial.statement.template,description:"
+msgid "Description"
+msgstr "描述"
+
+msgctxt "field:account.financial.statement.template,lines:"
+msgid "Lines"
+msgstr "明细"
+
+msgctxt "field:account.financial.statement.template,mode:"
+msgid "Mode"
+msgstr "模式"
+
+msgctxt "field:account.financial.statement.template,name:"
+msgid "Name"
+msgstr "名称"
+
+msgctxt "field:account.financial.statement.template,report_xml:"
+msgid "Report design"
+msgstr "报表设计"
+
+msgctxt "field:account.financial.statement.template,type:"
+msgid "Type"
+msgstr "科目"
+
+msgctxt "field:account.financial.statement.template.line,children:"
+msgid "Children"
+msgstr "子项"
+
+msgctxt "field:account.financial.statement.template.line,code:"
+msgid "Code"
+msgstr "代码"
+
+msgctxt "field:account.financial.statement.template.line,css_class:"
+msgid "CSS Class"
+msgstr "CSS 类"
+
+msgctxt "field:account.financial.statement.template.line,current_value:"
+msgid "Formula"
+msgstr "公式"
+
+msgctxt "field:account.financial.statement.template.line,name:"
+msgid "Name"
+msgstr "名称"
+
+msgctxt "field:account.financial.statement.template.line,negate:"
+msgid "Negate"
+msgstr "取负值"
+
+msgctxt "field:account.financial.statement.template.line,page_break:"
+msgid "Page Break"
+msgstr "分页"
+
+msgctxt "field:account.financial.statement.template.line,parent:"
+msgid "Parent"
+msgstr "上级"
+
+msgctxt "field:account.financial.statement.template.line,sequence:"
+msgid "Sequence"
+msgstr "序列"
+
+msgctxt "field:account.financial.statement.template.line,template:"
+msgid "Template"
+msgstr "模板"
+
+msgctxt "field:account.financial.statement.template.line,visible:"
+msgid "Visible"
+msgstr "可见"
+
+msgctxt "field:account_financial_statement-account_period_current,period:"
+msgid "Period"
+msgstr "分期"
+
+msgctxt "field:account_financial_statement-account_period_current,report:"
+msgid "Account Report"
+msgstr "会计报表"
+
+msgctxt "field:account_financial_statement-account_period_previous,period:"
+msgid "Period"
+msgstr "分期"
+
+msgctxt "field:account_financial_statement-account_period_previous,report:"
+msgid "Account Report"
+msgstr "会计报表"
+
+msgctxt "help:account.financial.statement.template,type:"
+msgid "System reports cannot be modified"
+msgstr "无法修改系统报表。"
+
+msgctxt "help:account.financial.statement.template.line,code:"
+msgid "Concept code, may be used in formulas to reference this line"
+msgstr "项目代码，可在公式中用于引用此行项目。"
+
+msgctxt "help:account.financial.statement.template.line,css_class:"
+msgid "Style-sheet class"
+msgstr "样式表类"
+
+msgctxt "help:account.financial.statement.template.line,current_value:"
+msgid ""
+"Value calculation formula: Depending on this formula the final value is calculated as follows:\n"
+"- Empy template value: sum of (this concept) children values.\n"
+"- Number with decimal point (\"10.2\"): that value (constant).\n"
+"- A matematic formula with following helpers:\n"
+"  * balance() with comma-separated account numbers. Sum of the accounts (the sign of the depends on the mode).\n"
+"  * invert() with comma-separated account numbers. Sum of the account (the sign is inverted if reversed modes are used).\n"
+"  * credit() with comma-separeted account numbers. Sum of the credit of the account if the total amount is negative. Zero otherwise.\n"
+"  * debit() with comma-separeted account numbers. Sum of the debit of the account if the total amount is positive. Zero otherwise.\n"
+"  * concept() with comma-separated concept codes in quotes of the report itself (column Code). Sum of the concept values.\n"
+"Examples:\n"
+"balance(430, 431) + invert(437)\n"
+"balance(5305, 5315) + invert(5325, 5335) + debit(551, 5525)\n"
+"balance(5103) + credit(5523)\n"
+"concept(\"11000\", \"12000\")\n"
+"balance(7) - 1.25 * balance(6)\n"
+"concept(\"101\") / 2"
+msgstr ""
+"数值计算公式：根据此公式，最终值按以下方式计算：\n"
+"- 模板值为空：此项目所有子项的值之和。\n"
+"- 带小数点的数字（“10.2”）：使用该常量值。\n"
+"- 使用以下辅助函数的数学公式：\n"
+"  * balance()：参数为逗号分隔的科目编号，返回科目余额之和（符号取决于模式）。\n"
+"  * invert()：参数为逗号分隔的科目编号，返回科目余额之和（使用反向模式时符号取反）。\n"
+"  * credit()：参数为逗号分隔的科目编号；总额为负时返回科目贷方金额之和，否则返回零。\n"
+"  * debit()：参数为逗号分隔的科目编号；总额为正时返回科目借方金额之和，否则返回零。\n"
+"  * concept()：参数为本报表中加引号并以逗号分隔的项目代码（“代码”列），返回项目值之和。\n"
+"示例：\n"
+"balance(430, 431) + invert(437)\n"
+"balance(5305, 5315) + invert(5325, 5335) + debit(551, 5525)\n"
+"balance(5103) + credit(5523)\n"
+"concept(\"11000\", \"12000\")\n"
+"balance(7) - 1.25 * balance(6)\n"
+"concept(\"101\") / 2"
+
+msgctxt "help:account.financial.statement.template.line,name:"
+msgid "Concept name/description"
+msgstr "项目名称/描述"
+
+msgctxt "help:account.financial.statement.template.line,negate:"
+msgid "Negate the value (change the sign of the )"
+msgstr "将数值取负（改变符号）。"
+
+msgctxt "help:account.financial.statement.template.line,sequence:"
+msgid "Lines will be sorted/grouped by this field"
+msgstr "行项目将按此字段排序/分组。"
+
+msgctxt "model:account.financial.statement.report,name:"
+msgid "Financial Statement Report"
+msgstr "财务报表"
+
+msgctxt "model:account.financial.statement.report.accounts.start,name:"
+msgid "View Used And Unused Accounts Start"
+msgstr "查看已使用和未使用科目：开始"
+
+msgctxt "model:account.financial.statement.report.line,name:"
+msgid "Financial Statement Report Line"
+msgstr "财务报表行项目"
+
+msgctxt "model:account.financial.statement.report.line.account,name:"
+msgid "Financial Statement Report Account"
+msgstr "财务报表科目"
+
+msgctxt "model:account.financial.statement.report.line.detail.start,name:"
+msgid "Financial Statement Report Account Line Detail Start"
+msgstr "财务报表科目明细：开始"
+
+msgctxt "model:account.financial.statement.template,name:"
+msgid "Financial Statement Template"
+msgstr "财务报表模板"
+
+msgctxt "model:account.financial.statement.template.line,name:"
+msgid "Financial Statement Template Line"
+msgstr "财务报表模板行项目"
+
+msgctxt "model:account_financial_statement-account_period_current,name:"
+msgid "Financial Statement Report - Current Periods"
+msgstr "财务报表 - 本期"
+
+msgctxt "model:account_financial_statement-account_period_previous,name:"
+msgid "Financial Statement Report - Previous Periods"
+msgstr "财务报表 - 上期"
+
+msgctxt "model:ir.action,name:act_account_financial_statement"
+msgid "Financial Statement Report"
+msgstr "财务报表"
+
+msgctxt "model:ir.action,name:act_account_financial_statement_template"
+msgid "Account report templates"
+msgstr "会计报表模板"
+
+msgctxt "model:ir.action,name:act_open_detail"
+msgid "Line Detail"
+msgstr "行项目明细"
+
+msgctxt "model:ir.action,name:act_report_line_account"
+msgid "Line Detail Per Account"
+msgstr "按科目显示行项目明细"
+
+msgctxt "model:ir.action,name:act_report_lines"
+msgid "Lines"
+msgstr "明细"
+
+msgctxt "model:ir.action,name:act_view_accounts"
+msgid "View Used and Unused Accounts"
+msgstr "查看已使用和未使用科目"
+
+msgctxt "model:ir.action,name:html_report_financial_statement"
+msgid "Account Financial Statement"
+msgstr "财务报表"
+
+msgctxt "model:ir.action,name:html_report_financial_statement_detail"
+msgid "Account Financial Statement Detail"
+msgstr "财务报表明细"
+
+msgctxt "model:ir.message,text:msg_code_unique_per_report"
+msgid "The code must be unique for this report."
+msgstr "此报表中的代码必须唯一。"
+
+msgctxt "model:ir.message,text:msg_code_unique_per_template"
+msgid "The code must be unique for this template."
+msgstr "此模板中的代码必须唯一。"
+
+#, python-format
+msgctxt "model:ir.message,text:msg_invalid_syntax"
+msgid "Invalid syntax in \"%(field)s\" of line code \"%(line)s\"."
+msgstr "代码为“%(line)s”的行项目中，“%(field)s”的语法无效。"
+
+#, python-format
+msgctxt "model:ir.message,text:msg_wrong_expression"
+msgid ""
+"The expression \"%(expression)s\" from \"%(template)s\" it not valid: "
+"\"%(traceback)s\"."
+msgstr "“%(template)s”中的表达式“%(expression)s”无效：“%(traceback)s”。"
+
+msgctxt "model:ir.model.button,string:financial_statement_calculate_button"
+msgid "Calculate"
+msgstr "计算"
+
+msgctxt "model:ir.model.button,string:financial_statement_draft_button"
+msgid "Draft"
+msgstr "草案"
+
+msgctxt "model:ir.model.button,string:financial_statement_open_details_button"
+msgid "Open Details"
+msgstr "打开明细"
+
+msgctxt "model:ir.rule.group,name:rule_group_report"
+msgid "Report Group"
+msgstr "报表组"
+
+msgctxt "model:ir.rule.group,name:rule_group_report_line_account"
+msgid "Report Line Account Group"
+msgstr "报表行项目科目组"
+
+msgctxt "model:ir.ui.menu,name:menu_account_financial_statement_reports"
+msgid "Financial Statement Reports"
+msgstr "财务报表"
+
+msgctxt "model:ir.ui.menu,name:menu_account_financial_statement_templates"
+msgid "Financial Statement Templates"
+msgstr "财务报表模板"
+
+msgctxt "report:account.financial.statement.report:"
+msgid "Concept"
+msgstr "项目"
+
+msgctxt "report:account.financial.statement.report:"
+msgid "Current Value"
+msgstr "本期金额"
+
+msgctxt "report:account.financial.statement.report:"
+msgid "Fiscal Year 1"
+msgstr "会计年度 1"
+
+msgctxt "report:account.financial.statement.report:"
+msgid "Fiscal Year 2"
+msgstr "会计年度 2"
+
+msgctxt "report:account.financial.statement.report:"
+msgid "Previous Value"
+msgstr "上期金额"
+
+msgctxt "report:account.financial.statement.report:"
+msgid "VAT"
+msgstr "增值税"
+
+msgctxt "xgettext:x:"
+msgid "Concept"
+msgstr "项目"
+
+msgctxt "selection:account.financial.statement.report,state:"
+msgid "Calculated"
+msgstr "已计算"
+
+msgctxt "selection:account.financial.statement.report,state:"
+msgid "Draft"
+msgstr "草案"
+
+msgctxt "selection:account.financial.statement.report.line,css_class:"
+msgid "Default"
+msgstr "默认"
+
+msgctxt "selection:account.financial.statement.report.line,css_class:"
+msgid "Level 1"
+msgstr "级别 1"
+
+msgctxt "selection:account.financial.statement.report.line,css_class:"
+msgid "Level 2"
+msgstr "级别 2"
+
+msgctxt "selection:account.financial.statement.report.line,css_class:"
+msgid "Level 3"
+msgstr "级别 3"
+
+msgctxt "selection:account.financial.statement.report.line,css_class:"
+msgid "Level 4"
+msgstr "级别 4"
+
+msgctxt "selection:account.financial.statement.report.line,css_class:"
+msgid "Level 5"
+msgstr "级别 5"
+
+msgctxt "selection:account.financial.statement.report.line,report_state:"
+msgid "Calculated"
+msgstr "已计算"
+
+msgctxt "selection:account.financial.statement.report.line,report_state:"
+msgid "Draft"
+msgstr "草案"
+
+msgctxt ""
+"selection:account.financial.statement.report.line.account,fiscal_year:"
+msgid "Current"
+msgstr "当前"
+
+msgctxt ""
+"selection:account.financial.statement.report.line.account,fiscal_year:"
+msgid "Previous"
+msgstr "上一项"
+
+msgctxt ""
+"selection:account.financial.statement.report.line.detail.start,detail:"
+msgid "Account"
+msgstr "账户"
+
+msgctxt ""
+"selection:account.financial.statement.report.line.detail.start,detail:"
+msgid "Move"
+msgstr "记账凭证"
+
+msgctxt "selection:account.financial.statement.template,mode:"
+msgid "Credit-Debit"
+msgstr "贷方减借方"
+
+msgctxt "selection:account.financial.statement.template,mode:"
+msgid "Credit-Debit, reversed with invert()"
+msgstr "贷方减借方，使用 invert() 反向"
+
+msgctxt "selection:account.financial.statement.template,mode:"
+msgid "Debit-Credit"
+msgstr "借方减贷方"
+
+msgctxt "selection:account.financial.statement.template,mode:"
+msgid "Debit-Credit, reversed with invert()"
+msgstr "借方减贷方，使用 invert() 反向"
+
+msgctxt "selection:account.financial.statement.template,type:"
+msgid "System"
+msgstr "系统"
+
+msgctxt "selection:account.financial.statement.template,type:"
+msgid "User"
+msgstr "用户"
+
+msgctxt "selection:account.financial.statement.template.line,css_class:"
+msgid "Default"
+msgstr "默认"
+
+msgctxt "selection:account.financial.statement.template.line,css_class:"
+msgid "Level 1"
+msgstr "级别 1"
+
+msgctxt "selection:account.financial.statement.template.line,css_class:"
+msgid "Level 2"
+msgstr "级别 2"
+
+msgctxt "selection:account.financial.statement.template.line,css_class:"
+msgid "Level 3"
+msgstr "级别 3"
+
+msgctxt "selection:account.financial.statement.template.line,css_class:"
+msgid "Level 4"
+msgstr "级别 4"
+
+msgctxt "selection:account.financial.statement.template.line,css_class:"
+msgid "Level 5"
+msgstr "级别 5"
+
+msgctxt "view:account.financial.statement.report.line.account:"
+msgid "Detail"
+msgstr "明细"
+
+msgctxt "view:account.financial.statement.report.line.account:"
+msgid "Fiscal Year Details"
+msgstr "会计年度明细"
+
+msgctxt "view:account.financial.statement.report.line.detail.start:"
+msgid "Open Line Detail"
+msgstr "打开行项目明细"
+
+msgctxt "view:account.financial.statement.report.line:"
+msgid "Style"
+msgstr "样式"
+
+msgctxt "view:account.financial.statement.report.line:"
+msgid "Values"
+msgstr "数值"
+
+msgctxt "view:account.financial.statement.report:"
+msgid "Configuration"
+msgstr "设置"
+
+msgctxt "view:account.financial.statement.template.line:"
+msgid "Style"
+msgstr "样式"
+
+msgctxt "view:account.financial.statement.template:"
+msgid "Information"
+msgstr "信息"
+
+msgctxt "view:account.financial.statement.template:"
+msgid "Lines"
+msgstr "明细"
+
+msgctxt "wizard_button:account.financial.statement.report.accounts,start,end:"
+msgid "Close"
+msgstr "结账"
+
+msgctxt ""
+"wizard_button:account.financial.statement.report.line.detail,start,end:"
+msgid "Cancel"
+msgstr "取消"
+
+msgctxt ""
+"wizard_button:account.financial.statement.report.line.detail,start,select:"
+msgid "Open"
+msgstr "打开"
+
+msgctxt "field:account.financial.statement.report,comparison_fiscalyears:"
+msgid "Fiscal Years"
+msgstr "会计年度"
+
+msgctxt "field:account.financial.statement.report,comparison_periods:"
+msgid "Comparison Periods"
+msgstr "比较期间"
+
+msgctxt ""
+"field:account.financial.statement.report.line.account.period,account:"
+msgid "Account"
+msgstr "账户"
+
+msgctxt ""
+"field:account.financial.statement.report.line.account.period,balance:"
+msgid "Balance"
+msgstr "余额"
+
+msgctxt ""
+"field:account.financial.statement.report.line.account.period,company:"
+msgid "Company"
+msgstr "公司"
+
+msgctxt "field:account.financial.statement.report.line.account.period,credit:"
+msgid "Credit"
+msgstr "贷方"
+
+msgctxt ""
+"field:account.financial.statement.report.line.account.period,currency:"
+msgid "Currency"
+msgstr "货币"
+
+msgctxt "field:account.financial.statement.report.line.account.period,debit:"
+msgid "Debit"
+msgstr "借方"
+
+msgctxt ""
+"field:account.financial.statement.report.line.account.period,report_line:"
+msgid "Report Line"
+msgstr "报表行项目"
+
+msgctxt "field:account.financial.statement.report.line.period,children:"
+msgid "Children"
+msgstr "子项"
+
+msgctxt "field:account.financial.statement.report.line.period,code:"
+msgid "Code"
+msgstr "代码"
+
+msgctxt "field:account.financial.statement.report.line.period,company:"
+msgid "Company"
+msgstr "公司"
+
+msgctxt "field:account.financial.statement.report.line.period,css_class:"
+msgid "CSS Class"
+msgstr "CSS 类"
+
+msgctxt "field:account.financial.statement.report.line.period,currency:"
+msgid "Currency"
+msgstr "货币"
+
+msgctxt "field:account.financial.statement.report.line.period,line_accounts:"
+msgid "Line Accounts"
+msgstr "行项目科目"
+
+msgctxt "field:account.financial.statement.report.line.period,name:"
+msgid "Name"
+msgstr "名称"
+
+msgctxt "field:account.financial.statement.report.line.period,notes:"
+msgid "Notes"
+msgstr "注释"
+
+msgctxt "field:account.financial.statement.report.line.period,page_break:"
+msgid "Page Break"
+msgstr "分页"
+
+msgctxt "field:account.financial.statement.report.line.period,parent:"
+msgid "Parent"
+msgstr "上级"
+
+msgctxt "field:account.financial.statement.report.line.period,report_period:"
+msgid "Comparison Period"
+msgstr "比较期间"
+
+msgctxt "field:account.financial.statement.report.line.period,sequence:"
+msgid "Sequence"
+msgstr "序列"
+
+msgctxt "field:account.financial.statement.report.line.period,template_line:"
+msgid "Line template"
+msgstr "行项目模板"
+
+msgctxt "field:account.financial.statement.report.line.period,value:"
+msgid "Value"
+msgstr "取值"
+
+msgctxt "field:account.financial.statement.report.line.period,visible:"
+msgid "Visible"
+msgstr "可见"
+
+msgctxt "field:account.financial.statement.report.period,company:"
+msgid "Company"
+msgstr "公司"
+
+msgctxt "field:account.financial.statement.report.period,end_period:"
+msgid "End Period"
+msgstr "期末"
+
+msgctxt "field:account.financial.statement.report.period,fiscalyear:"
+msgid "Fiscal Year"
+msgstr "会计年度"
+
+msgctxt "field:account.financial.statement.report.period,lines:"
+msgid "Lines"
+msgstr "明细"
+
+msgctxt "field:account.financial.statement.report.period,report:"
+msgid "Report"
+msgstr "报告"
+
+msgctxt "field:account.financial.statement.report.period,sequence:"
+msgid "Sequence"
+msgstr "序列"
+
+msgctxt "field:account.financial.statement.report.period,start_period:"
+msgid "Start Period"
+msgstr "期初"
+
+msgctxt "model:account.financial.statement.report.line.account.period,string:"
+msgid "Account Financial Statement Report Line Account Period"
+msgstr "财务报表行项目科目期间"
+
+msgctxt "model:account.financial.statement.report.line.period,string:"
+msgid "Account Financial Statement Report Line Period"
+msgstr "财务报表行项目期间"
+
+msgctxt "model:account.financial.statement.report.period,string:"
+msgid "Account Financial Statement Report Period"
+msgstr "财务报表期间"
+
+msgctxt "model:ir.message,text:msg_financial_statement_missing_periods"
+msgid ""
+"You must configure at least one fiscal year before calculating the financial"
+" statement."
+msgstr "计算财务报表前必须至少配置一个会计年度。"
+
+msgctxt "model:ir.message,text:msg_financial_statement_period_order"
+msgid "Start Period must be before or equal to End Period."
+msgstr "开始期间必须早于或等于结束期间。"
+
+msgctxt "model:ir.message,text:msg_financial_statement_period_pair"
+msgid "Start Period and End Period must both be set or both be empty."
+msgstr "开始期间和结束期间必须同时设置或同时留空。"
+
+msgctxt "report:account.financial.statement.detail.report:"
+msgid "Full fiscal year"
+msgstr "完整会计年度"
+
+msgctxt "report:account.financial.statement.report:"
+msgid "Full fiscal year"
+msgstr "完整会计年度"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Default"
+msgstr "默认"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Level 1"
+msgstr "级别 1"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Level 2"
+msgstr "级别 2"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Level 3"
+msgstr "级别 3"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Level 4"
+msgstr "级别 4"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Level 5"
+msgstr "级别 5"
+
+msgctxt "view:account.financial.statement.report.line.period:"
+msgid "Style"
+msgstr "样式"
+
+msgctxt "view:account.financial.statement.report.line.period:"
+msgid "Values"
+msgstr "数值"
+
+msgctxt ""
+"model:ir.rule.group,name:rule_group_account_financial_statement_report_companies"
+msgid "User in companies"
+msgstr "公司用户"
+
+msgctxt ""
+"model:ir.rule.group,name:rule_group_account_financial_statement_report_line_companies"
+msgid "User in companies"
+msgstr "公司用户"
+
+msgctxt ""
+"model:ir.rule.group,name:rule_group_account_financial_statement_report_line_account_companies"
+msgid "User in companies"
+msgstr "公司用户"
+
+msgctxt ""
+"model:ir.rule.group,name:rule_group_account_financial_statement_report_line_account_period_companies"
+msgid "User in companies"
+msgstr "公司用户"
+
+msgctxt ""
+"model:ir.rule.group,name:rule_group_account_financial_statement_report_line_period_companies"
+msgid "User in companies"
+msgstr "公司用户"
+
+msgctxt ""
+"model:ir.rule.group,name:rule_group_account_financial_statement_report_period_companies"
+msgid "User in companies"
+msgstr "公司用户"
+
+msgctxt "model:ir.action,name:report_xlsx_financial_statement"
+msgid "Financial Statement Spreadsheet"
+msgstr "财务报表电子表格"
+
+msgctxt "xgettext:x:"
+msgid "Full fiscal year"
+msgstr "完整会计年度"
+
+msgctxt "xgettext:x:"
+msgid "Name"
+msgstr "名称"
+
+msgctxt "xgettext:x:"
+msgid "Period"
+msgstr "分期"
+
+msgctxt "field:account.financial.statement.print.start,include_details:"
+msgid "Include Account Details"
+msgstr "包含科目明细"
+
+msgctxt "field:account.financial.statement.print.start,output_format:"
+msgid "Output Format"
+msgstr "输出格式"
+
+msgctxt "field:account.financial.statement.print.start,digits:"
+msgid "Digits"
+msgstr "数字"
+
+msgctxt "wizard_button:account.financial.statement.print,start,end:"
+msgid "Cancel"
+msgstr "取消"
+
+msgctxt "wizard_button:account.financial.statement.print,start,print_:"
+msgid "Print"
+msgstr "打印"
+
+msgctxt "model:ir.action,name:print_financial_statement"
+msgid "Account Financial Statement"
+msgstr "财务报表"
+
+msgctxt "model:account.financial.statement.print.start,string:"
+msgid "Print Financial Statement"
+msgstr "打印财务报表"
+
+msgctxt "help:account.financial.statement.print.start,digits:"
+msgid "Group accounts by this number of digits. Zero shows all digits."
+msgstr "按此位数对科目分组。零表示显示所有位数。"
+
+msgctxt "help:account.financial.statement.template.line,previous_value:"
+msgid ""
+"Value calculation formula: Depending on this formula the final value is calculated as follows:\n"
+"- Empy template value: sum of (this concept) children values.\n"
+"- Number with decimal point (\"10.2\"): that value (constant).\n"
+"- A matematic formula with following helpers:\n"
+"  * balance() with comma-separated account numbers. Sum of the accounts (the sign of the depends on the mode).\n"
+"  * invert() with comma-separated account numbers. Sum of the account (the sign is inverted if reversed modes are used).\n"
+"  * credit() with comma-separeted account numbers. Sum of the credit of the account if the total amount is negative. Zero otherwise.\n"
+"  * debit() with comma-separeted account numbers. Sum of the debit of the account if the total amount is positive. Zero otherwise.\n"
+"  * concept() with comma-separated concept codes in quotes of the report itself (column Code). Sum of the concept values.\n"
+"Examples:\n"
+"balance(430, 431) + invert(437)\n"
+"balance(5305, 5315) + invert(5325, 5335) + debit(551, 5525)\n"
+"balance(5103) + credit(5523)\n"
+"concept(\"11000\", \"12000\")\n"
+"balance(7) - 1.25 * balance(6)\n"
+"concept(\"101\") / 2"
+msgstr ""
+"数值计算公式：根据此公式，最终值按以下方式计算：\n"
+"- 模板值为空：此项目所有子项的值之和。\n"
+"- 带小数点的数字（“10.2”）：使用该常量值。\n"
+"- 使用以下辅助函数的数学公式：\n"
+"  * balance()：参数为逗号分隔的科目编号，返回科目余额之和（符号取决于模式）。\n"
+"  * invert()：参数为逗号分隔的科目编号，返回科目余额之和（使用反向模式时符号取反）。\n"
+"  * credit()：参数为逗号分隔的科目编号；总额为负时返回科目贷方金额之和，否则返回零。\n"
+"  * debit()：参数为逗号分隔的科目编号；总额为正时返回科目借方金额之和，否则返回零。\n"
+"  * concept()：参数为本报表中加引号并以逗号分隔的项目代码（“代码”列），返回项目值之和。\n"
+"示例：\n"
+"balance(430, 431) + invert(437)\n"
+"balance(5305, 5315) + invert(5325, 5335) + debit(551, 5525)\n"
+"balance(5103) + credit(5523)\n"
+"concept(\"11000\", \"12000\")\n"
+"balance(7) - 1.25 * balance(6)\n"
+"concept(\"101\") / 2"
