@@ -41,6 +41,9 @@ class PrintFinancialStatement(Wizard):
     'Print Financial Statement'
     __name__ = 'account.financial.statement.print'
 
+    _pdf_report_action = (
+        'account_financial_statement', 'html_report_financial_statement')
+
     start = StateView('account.financial.statement.print.start',
         'account_financial_statement.print_start_view_form', [
             Button('Cancel', 'end', 'tryton-cancel'),
@@ -61,13 +64,16 @@ class PrintFinancialStatement(Wizard):
         return defaults
 
     def do_print_(self, action):
+        pool = Pool()
+        ModelData = pool.get('ir.model.data')
+        ActionReport = pool.get('ir.action.report')
         if self.start.output_format == 'xlsx':
-            pool = Pool()
-            ModelData = pool.get('ir.model.data')
-            ActionReport = pool.get('ir.action.report')
-            report = ActionReport(ModelData.get_id(
-                'account_financial_statement', 'report_xlsx_financial_statement'))
-            action = report.action.get_action_value()
+            module = 'account_financial_statement'
+            fs_id = 'report_xlsx_financial_statement'
+        else:
+            module, fs_id = self._pdf_report_action
+        report = ActionReport(ModelData.get_id(module, fs_id))
+        action = report.action.get_action_value()
         available = hasattr(Pool().get('account.configuration'),
             'default_account_code_digits')
         return action, {
