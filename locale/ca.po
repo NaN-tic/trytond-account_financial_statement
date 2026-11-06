@@ -409,10 +409,6 @@ msgctxt "model:ir.action,name:html_report_financial_statement"
 msgid "Account Financial Statement"
 msgstr "Informe de balanç comptable"
 
-msgctxt "model:ir.action,name:html_report_financial_statement_detail"
-msgid "Account Financial Statement Detail"
-msgstr "Informe de balanç comptable detallat"
-
 msgctxt "model:ir.message,text:msg_code_unique_per_report"
 msgid "The code must be unique for this report."
 msgstr "El codi de la línia ha de ser únic en l'informe."
@@ -794,10 +790,6 @@ msgstr "El període inicial ha de ser anterior o igual al període final."
 msgctxt "model:ir.message,text:msg_financial_statement_period_pair"
 msgid "Start Period and End Period must both be set or both be empty."
 msgstr "El període inicial i el període final han d'estar tots dos informats o tots dos buits."
-
-msgctxt "report:account.financial.statement.detail.report:"
-msgid "Full fiscal year"
-msgstr "Exercici complet"
 
 msgctxt "report:account.financial.statement.report:"
 msgid "Full fiscal year"

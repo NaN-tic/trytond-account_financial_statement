@@ -234,8 +234,6 @@ class TestFinancialStatementMultiPeriod(unittest.TestCase):
             'account.financial.statement.export', type='report')
         FinancialStatementReport = pool.get(
             'account.financial.statement.report', type='report')
-        FinancialStatementDetailReport = pool.get(
-            'account.financial.statement.detail.report', type='report')
 
         with Transaction().start(
                 self.config.database_name, self.config.user,
@@ -316,20 +314,17 @@ class TestFinancialStatementMultiPeriod(unittest.TestCase):
                 rows['Revenue'],
                 [Decimal('100.00'), Decimal('200.00'), Decimal('300.00')])
             self.assertEqual(sheet.cell(4, 2).number_format, '#,##0.00')
-            for ReportClass in (FinancialStatementReport,
-                    FinancialStatementDetailReport):
-                extension, content, _, _ = ReportClass.execute(
-                    [report.id], {'model': 'account.financial.statement.report'})
-                self.assertEqual(extension, 'pdf')
-                reader = PdfReader(BytesIO(content))
-                page = reader.pages[0]
-                self.assertLess(page.mediabox.width, page.mediabox.height)
-                text = page.extract_text()
-                for expected in ['Three Year Report', 'Revenue',
-                        '100.00', '200.00', '300.00', '2023', '1 / 1']:
-                    self.assertIn(expected, text)
-                self.assertEqual(self.revenue.code + ' - ' in text,
-                    ReportClass == FinancialStatementDetailReport)
+            extension, content, _, _ = FinancialStatementReport.execute(
+                [report.id], {'model': 'account.financial.statement.report'})
+            self.assertEqual(extension, 'pdf')
+            reader = PdfReader(BytesIO(content))
+            page = reader.pages[0]
+            self.assertLess(page.mediabox.width, page.mediabox.height)
+            text = page.extract_text()
+            for expected in ['Three Year Report', 'Revenue',
+                    '100.00', '200.00', '300.00', '2023', '1 / 1']:
+                self.assertIn(expected, text)
+            self.assertNotIn(self.revenue.code + ' - ', text)
 
             # A multi-selection may contain both portrait and landscape reports.
             _, content, _, _ = FinancialStatementReport.execute(
