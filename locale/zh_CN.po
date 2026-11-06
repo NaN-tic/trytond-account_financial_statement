@@ -412,10 +412,6 @@ msgctxt "model:ir.action,name:html_report_financial_statement"
 msgid "Account Financial Statement"
 msgstr "财务报表"
 
-msgctxt "model:ir.action,name:html_report_financial_statement_detail"
-msgid "Account Financial Statement Detail"
-msgstr "财务报表明细"
-
 msgctxt "model:ir.message,text:msg_code_unique_per_report"
 msgid "The code must be unique for this report."
 msgstr "此报表中的代码必须唯一。"
@@ -804,10 +800,6 @@ msgstr "开始期间必须早于或等于结束期间。"
 msgctxt "model:ir.message,text:msg_financial_statement_period_pair"
 msgid "Start Period and End Period must both be set or both be empty."
 msgstr "开始期间和结束期间必须同时设置或同时留空。"
-
-msgctxt "report:account.financial.statement.detail.report:"
-msgid "Full fiscal year"
-msgstr "完整会计年度"
 
 msgctxt "report:account.financial.statement.report:"
 msgid "Full fiscal year"

@@ -357,9 +357,3 @@ class FinancialStatementReport(FinancialStatementBase):
         if Printer:
             return Printer.send_report('pdf', content, name, action)
         return 'pdf', content, cls.get_direct_print(action), name
-
-
-class FinancialStatementDetailReport(FinancialStatementReport):
-    'Financial Statement Detail Report'
-    __name__ = 'account.financial.statement.detail.report'
-    _include_details = True

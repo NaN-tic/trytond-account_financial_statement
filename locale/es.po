@@ -430,10 +430,6 @@ msgctxt "model:ir.action,name:html_report_financial_statement"
 msgid "Account Financial Statement"
 msgstr "Informe de balance contable"
 
-msgctxt "model:ir.action,name:html_report_financial_statement_detail"
-msgid "Account Financial Statement Detail"
-msgstr "Informe de balance contable detallado"
-
 msgctxt "model:ir.message,text:msg_code_unique_per_report"
 msgid "The code must be unique for this report."
 msgstr "El código de la línea debe ser único en el informe."
@@ -816,10 +812,6 @@ msgstr "El periodo inicial debe ser anterior o igual al periodo final."
 msgctxt "model:ir.message,text:msg_financial_statement_period_pair"
 msgid "Start Period and End Period must both be set or both be empty."
 msgstr "El periodo inicial y el periodo final deben estar ambos informados o ambos vacíos."
-
-msgctxt "report:account.financial.statement.detail.report:"
-msgid "Full fiscal year"
-msgstr "Ejercicio completo"
 
 msgctxt "report:account.financial.statement.report:"
 msgid "Full fiscal year"
