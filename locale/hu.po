@@ -1,0 +1,969 @@
+#
+msgid ""
+msgstr ""
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgctxt "field:account.financial.statement.report,calculation_date:"
+msgid "Calculation date"
+msgstr "Számítás dátuma"
+
+msgctxt "field:account.financial.statement.report,company:"
+msgid "Company"
+msgstr "Cég"
+
+msgctxt "field:account.financial.statement.report,current_fiscalyear:"
+msgid "Fiscal year 1"
+msgstr "1. üzleti év"
+
+msgctxt "field:account.financial.statement.report,current_periods:"
+msgid "Fiscal year 1 periods"
+msgstr "1. üzleti év időszakai"
+
+msgctxt "field:account.financial.statement.report,current_periods_end_date:"
+msgid "Current Periods Dates"
+msgstr "Aktuális időszakok dátumai"
+
+msgctxt "field:account.financial.statement.report,current_periods_list:"
+msgid "Current Periods List"
+msgstr "Aktuális időszakok listája"
+
+msgctxt "field:account.financial.statement.report,current_periods_start_date:"
+msgid "Current Periods Dates"
+msgstr "Aktuális időszakok dátumai"
+
+msgctxt "field:account.financial.statement.report,lines:"
+msgid "Lines"
+msgstr "Sorok"
+
+msgctxt "field:account.financial.statement.report,name:"
+msgid "Name"
+msgstr "Név"
+
+msgctxt "field:account.financial.statement.report,previous_fiscalyear:"
+msgid "Fiscal year 2"
+msgstr "2. üzleti év"
+
+msgctxt "field:account.financial.statement.report,previous_periods:"
+msgid "Fiscal year 2 periods"
+msgstr "2. üzleti év időszakai"
+
+msgctxt "field:account.financial.statement.report,previous_periods_end_date:"
+msgid "Previous Periods Dates"
+msgstr "Előző időszakok dátumai"
+
+msgctxt "field:account.financial.statement.report,previous_periods_list:"
+msgid "Previous Periods List"
+msgstr "Előző időszakok listája"
+
+msgctxt ""
+"field:account.financial.statement.report,previous_periods_start_date:"
+msgid "Previous Periods Dates"
+msgstr "Előző időszakok dátumai"
+
+msgctxt "field:account.financial.statement.report,state:"
+msgid "State"
+msgstr "Állapot"
+
+msgctxt "field:account.financial.statement.report,template:"
+msgid "Template"
+msgstr "Sablon"
+
+msgctxt ""
+"field:account.financial.statement.report.accounts.start,unused_accounts:"
+msgid "Unused Accounts"
+msgstr "Nem használt számlák"
+
+msgctxt ""
+"field:account.financial.statement.report.accounts.start,used_accounts:"
+msgid "Used Accounts"
+msgstr "Használt számlák"
+
+msgctxt "field:account.financial.statement.report.line,calculation_date:"
+msgid "Calculation date"
+msgstr "Számítás dátuma"
+
+msgctxt "field:account.financial.statement.report.line,children:"
+msgid "Children"
+msgstr "Alárendelt rekordok"
+
+msgctxt "field:account.financial.statement.report.line,code:"
+msgid "Code"
+msgstr "Kód"
+
+msgctxt "field:account.financial.statement.report.line,css_class:"
+msgid "CSS Class"
+msgstr "CSS-osztály"
+
+msgctxt "field:account.financial.statement.report.line,currency:"
+msgid "Currency"
+msgstr "Pénznem"
+
+msgctxt "field:account.financial.statement.report.line,current_line_accounts:"
+msgid "Current Detail"
+msgstr "Aktuális részletek"
+
+msgctxt "field:account.financial.statement.report.line,current_value:"
+msgid "Current Value"
+msgstr "Aktuális érték"
+
+msgctxt "field:account.financial.statement.report.line,line_accounts:"
+msgid "Line Accounts"
+msgstr "Sor számlái"
+
+msgctxt "field:account.financial.statement.report.line,name:"
+msgid "Name"
+msgstr "Név"
+
+msgctxt "field:account.financial.statement.report.line,notes:"
+msgid "Notes"
+msgstr "Jegyzetek"
+
+msgctxt "field:account.financial.statement.report.line,page_break:"
+msgid "Page Break"
+msgstr "Oldaltörés"
+
+msgctxt "field:account.financial.statement.report.line,parent:"
+msgid "Parent"
+msgstr "Fölérendelt"
+
+msgctxt ""
+"field:account.financial.statement.report.line,previous_line_accounts:"
+msgid "Previous Detail"
+msgstr "Előző részletek"
+
+msgctxt "field:account.financial.statement.report.line,previous_value:"
+msgid "Previous value"
+msgstr "Előző érték"
+
+msgctxt "field:account.financial.statement.report.line,report:"
+msgid "Report"
+msgstr "Nyomtatvány"
+
+msgctxt "field:account.financial.statement.report.line,report_state:"
+msgid "Report State"
+msgstr "Jelentés állapota"
+
+msgctxt "field:account.financial.statement.report.line,sequence:"
+msgid "Sequence"
+msgstr "Sorszám"
+
+msgctxt "field:account.financial.statement.report.line,template_line:"
+msgid "Line template"
+msgstr "Sorsablon"
+
+msgctxt "field:account.financial.statement.report.line,visible:"
+msgid "Visible"
+msgstr "Látható"
+
+msgctxt "field:account.financial.statement.report.line.account,account:"
+msgid "Account"
+msgstr "Számla"
+
+msgctxt "field:account.financial.statement.report.line.account,balance:"
+msgid "Balance"
+msgstr "Egyenleg"
+
+msgctxt "field:account.financial.statement.report.line.account,company:"
+msgid "Company"
+msgstr "Cég"
+
+msgctxt "field:account.financial.statement.report.line.account,credit:"
+msgid "Credit"
+msgstr "Követel"
+
+msgctxt "field:account.financial.statement.report.line.account,currency:"
+msgid "Currency"
+msgstr "Pénznem"
+
+msgctxt "field:account.financial.statement.report.line.account,debit:"
+msgid "Debit"
+msgstr "Tartozik"
+
+msgctxt "field:account.financial.statement.report.line.account,fiscal_year:"
+msgid "Fiscal Year"
+msgstr "Üzleti év"
+
+msgctxt "field:account.financial.statement.report.line.account,report_line:"
+msgid "Report Line"
+msgstr "Jelentéssor"
+
+msgctxt "field:account.financial.statement.report.line.detail.start,detail:"
+msgid "Detail Level"
+msgstr "Részletezés szintje"
+
+msgctxt ""
+"field:account.financial.statement.report.line.detail.start,fiscalyear:"
+msgid "Fiscal Year"
+msgstr "Üzleti év"
+
+msgctxt "field:account.financial.statement.template,cumulate:"
+msgid "Cumulate Balances"
+msgstr "Egyenlegek halmozása"
+
+msgctxt "field:account.financial.statement.template,description:"
+msgid "Description"
+msgstr "Leírás"
+
+msgctxt "field:account.financial.statement.template,lines:"
+msgid "Lines"
+msgstr "Sorok"
+
+msgctxt "field:account.financial.statement.template,mode:"
+msgid "Mode"
+msgstr "Mód"
+
+msgctxt "field:account.financial.statement.template,name:"
+msgid "Name"
+msgstr "Név"
+
+msgctxt "field:account.financial.statement.template,report_xml:"
+msgid "Report design"
+msgstr "Jelentésterv"
+
+msgctxt "field:account.financial.statement.template,type:"
+msgid "Type"
+msgstr "Típus"
+
+msgctxt "field:account.financial.statement.template.line,children:"
+msgid "Children"
+msgstr "Alárendelt rekordok"
+
+msgctxt "field:account.financial.statement.template.line,code:"
+msgid "Code"
+msgstr "Kód"
+
+msgctxt "field:account.financial.statement.template.line,css_class:"
+msgid "CSS Class"
+msgstr "CSS-osztály"
+
+msgctxt "field:account.financial.statement.template.line,current_value:"
+msgid "Formula"
+msgstr "Képlet"
+
+msgctxt "field:account.financial.statement.template.line,name:"
+msgid "Name"
+msgstr "Név"
+
+msgctxt "field:account.financial.statement.template.line,negate:"
+msgid "Negate"
+msgstr "Előjelváltás"
+
+msgctxt "field:account.financial.statement.template.line,page_break:"
+msgid "Page Break"
+msgstr "Oldaltörés"
+
+msgctxt "field:account.financial.statement.template.line,parent:"
+msgid "Parent"
+msgstr "Fölérendelt"
+
+msgctxt "field:account.financial.statement.template.line,sequence:"
+msgid "Sequence"
+msgstr "Sorszám"
+
+msgctxt "field:account.financial.statement.template.line,template:"
+msgid "Template"
+msgstr "Sablon"
+
+msgctxt "field:account.financial.statement.template.line,visible:"
+msgid "Visible"
+msgstr "Látható"
+
+msgctxt "field:account_financial_statement-account_period_current,period:"
+msgid "Period"
+msgstr "Periódus"
+
+msgctxt "field:account_financial_statement-account_period_current,report:"
+msgid "Account Report"
+msgstr "Számviteli jelentés"
+
+msgctxt "field:account_financial_statement-account_period_previous,period:"
+msgid "Period"
+msgstr "Periódus"
+
+msgctxt "field:account_financial_statement-account_period_previous,report:"
+msgid "Account Report"
+msgstr "Számviteli jelentés"
+
+msgctxt "help:account.financial.statement.template,type:"
+msgid "System reports cannot be modified"
+msgstr "A rendszerjelentések nem módosíthatók."
+
+msgctxt "help:account.financial.statement.template.line,code:"
+msgid "Concept code, may be used in formulas to reference this line"
+msgstr "A sor képletekben való hivatkozására használható tételkód."
+
+msgctxt "help:account.financial.statement.template.line,css_class:"
+msgid "Style-sheet class"
+msgstr "Stíluslaposztály"
+
+msgctxt "help:account.financial.statement.template.line,current_value:"
+msgid ""
+"Value calculation formula: Depending on this formula the final value is calculated as follows:\n"
+"- Empy template value: sum of (this concept) children values.\n"
+"- Number with decimal point (\"10.2\"): that value (constant).\n"
+"- A matematic formula with following helpers:\n"
+"  * balance() with comma-separated account numbers. Sum of the accounts (the sign of the depends on the mode).\n"
+"  * invert() with comma-separated account numbers. Sum of the account (the sign is inverted if reversed modes are used).\n"
+"  * credit() with comma-separeted account numbers. Sum of the credit of the account if the total amount is negative. Zero otherwise.\n"
+"  * debit() with comma-separeted account numbers. Sum of the debit of the account if the total amount is positive. Zero otherwise.\n"
+"  * concept() with comma-separated concept codes in quotes of the report itself (column Code). Sum of the concept values.\n"
+"Examples:\n"
+"balance(430, 431) + invert(437)\n"
+"balance(5305, 5315) + invert(5325, 5335) + debit(551, 5525)\n"
+"balance(5103) + credit(5523)\n"
+"concept(\"11000\", \"12000\")\n"
+"balance(7) - 1.25 * balance(6)\n"
+"concept(\"101\") / 2"
+msgstr ""
+"Értékszámítási képlet: a végső érték kiszámítása az alábbiak szerint történik:\n"
+"- Üres sablonérték: a tétel alárendelt értékeinek összege.\n"
+"- Tizedespontot tartalmazó szám (\"10.2\"): az adott állandó érték.\n"
+"- Matematikai képlet az alábbi segédfüggvényekkel:\n"
+"  * balance(): vesszővel elválasztott számlaszámok egyenlegének összege (az előjel a módtól függ).\n"
+"  * invert(): vesszővel elválasztott számlaszámok egyenlegének összege (fordított módban az előjel megfordul).\n"
+"  * credit(): vesszővel elválasztott számlaszámok követel összege, ha a teljes összeg negatív; egyébként nulla.\n"
+"  * debit(): vesszővel elválasztott számlaszámok tartozik összege, ha a teljes összeg pozitív; egyébként nulla.\n"
+"  * concept(): a jelentés idézőjelbe tett, vesszővel elválasztott tételkódjaihoz (Kód oszlop) tartozó értékek összege.\n"
+"Példák:\n"
+"balance(430, 431) + invert(437)\n"
+"balance(5305, 5315) + invert(5325, 5335) + debit(551, 5525)\n"
+"balance(5103) + credit(5523)\n"
+"concept(\"11000\", \"12000\")\n"
+"balance(7) - 1.25 * balance(6)\n"
+"concept(\"101\") / 2"
+
+msgctxt "help:account.financial.statement.template.line,name:"
+msgid "Concept name/description"
+msgstr "Tétel neve/leírása"
+
+msgctxt "help:account.financial.statement.template.line,negate:"
+msgid "Negate the value (change the sign of the )"
+msgstr "Az érték negálása (előjelének megfordítása)."
+
+msgctxt "help:account.financial.statement.template.line,sequence:"
+msgid "Lines will be sorted/grouped by this field"
+msgstr "A sorok rendezése/csoportosítása e mező szerint történik."
+
+msgctxt "model:account.financial.statement.report,name:"
+msgid "Financial Statement Report"
+msgstr "Pénzügyi kimutatás"
+
+msgctxt "model:account.financial.statement.report.accounts.start,name:"
+msgid "View Used And Unused Accounts Start"
+msgstr "Használt és nem használt számlák megtekintése: indítás"
+
+msgctxt "model:account.financial.statement.report.line,name:"
+msgid "Financial Statement Report Line"
+msgstr "Pénzügyi kimutatás sora"
+
+msgctxt "model:account.financial.statement.report.line.account,name:"
+msgid "Financial Statement Report Account"
+msgstr "Pénzügyi kimutatás számlája"
+
+msgctxt "model:account.financial.statement.report.line.detail.start,name:"
+msgid "Financial Statement Report Account Line Detail Start"
+msgstr "Pénzügyi kimutatás számlarészletei: indítás"
+
+msgctxt "model:account.financial.statement.template,name:"
+msgid "Financial Statement Template"
+msgstr "Pénzügyi kimutatás sablonja"
+
+msgctxt "model:account.financial.statement.template.line,name:"
+msgid "Financial Statement Template Line"
+msgstr "Pénzügyi kimutatás sablonsora"
+
+msgctxt "model:account_financial_statement-account_period_current,name:"
+msgid "Financial Statement Report - Current Periods"
+msgstr "Pénzügyi kimutatás - Aktuális időszakok"
+
+msgctxt "model:account_financial_statement-account_period_previous,name:"
+msgid "Financial Statement Report - Previous Periods"
+msgstr "Pénzügyi kimutatás - Előző időszakok"
+
+msgctxt "model:ir.action,name:act_account_financial_statement"
+msgid "Financial Statement Report"
+msgstr "Pénzügyi kimutatás"
+
+msgctxt "model:ir.action,name:act_account_financial_statement_template"
+msgid "Account report templates"
+msgstr "Számviteli jelentéssablonok"
+
+msgctxt "model:ir.action,name:act_open_detail"
+msgid "Line Detail"
+msgstr "Sor részletei"
+
+msgctxt "model:ir.action,name:act_report_line_account"
+msgid "Line Detail Per Account"
+msgstr "Sor részletei számlánként"
+
+msgctxt "model:ir.action,name:act_report_lines"
+msgid "Lines"
+msgstr "Sorok"
+
+msgctxt "model:ir.action,name:act_view_accounts"
+msgid "View Used and Unused Accounts"
+msgstr "Használt és nem használt számlák megtekintése"
+
+msgctxt "model:ir.action,name:html_report_financial_statement"
+msgid "Account Financial Statement"
+msgstr "Pénzügyi kimutatás"
+
+msgctxt "model:ir.action,name:html_report_financial_statement_detail"
+msgid "Account Financial Statement Detail"
+msgstr "Pénzügyi kimutatás részletei"
+
+msgctxt "model:ir.message,text:msg_code_unique_per_report"
+msgid "The code must be unique for this report."
+msgstr "A kódnak a jelentésen belül egyedinek kell lennie."
+
+msgctxt "model:ir.message,text:msg_code_unique_per_template"
+msgid "The code must be unique for this template."
+msgstr "A kódnak a sablonon belül egyedinek kell lennie."
+
+#, python-format
+msgctxt "model:ir.message,text:msg_invalid_syntax"
+msgid "Invalid syntax in \"%(field)s\" of line code \"%(line)s\"."
+msgstr "Érvénytelen szintaxis a(z) „%(line)s” kódú sor „%(field)s” mezőjében."
+
+#, python-format
+msgctxt "model:ir.message,text:msg_wrong_expression"
+msgid ""
+"The expression \"%(expression)s\" from \"%(template)s\" it not valid: "
+"\"%(traceback)s\"."
+msgstr ""
+"A(z) „%(template)s” sablon „%(expression)s” kifejezése érvénytelen: "
+"„%(traceback)s”."
+
+msgctxt "model:ir.model.button,string:financial_statement_calculate_button"
+msgid "Calculate"
+msgstr "Számítás"
+
+msgctxt "model:ir.model.button,string:financial_statement_draft_button"
+msgid "Draft"
+msgstr "vázlat"
+
+msgctxt "model:ir.model.button,string:financial_statement_open_details_button"
+msgid "Open Details"
+msgstr "Részletek megnyitása"
+
+msgctxt "model:ir.rule.group,name:rule_group_report"
+msgid "Report Group"
+msgstr "Jelentéscsoport"
+
+msgctxt "model:ir.rule.group,name:rule_group_report_line_account"
+msgid "Report Line Account Group"
+msgstr "Jelentéssor számlacsoportja"
+
+msgctxt "model:ir.ui.menu,name:menu_account_financial_statement_reports"
+msgid "Financial Statement Reports"
+msgstr "Pénzügyi kimutatások"
+
+msgctxt "model:ir.ui.menu,name:menu_account_financial_statement_templates"
+msgid "Financial Statement Templates"
+msgstr "Pénzügyi kimutatások sablonjai"
+
+msgctxt "report:account.financial.statement.report:"
+msgid "Concept"
+msgstr "Tétel"
+
+msgctxt "report:account.financial.statement.report:"
+msgid "Current Value"
+msgstr "Aktuális érték"
+
+msgctxt "report:account.financial.statement.report:"
+msgid "Fiscal Year 1"
+msgstr "1. üzleti év"
+
+msgctxt "report:account.financial.statement.report:"
+msgid "Fiscal Year 2"
+msgstr "2. üzleti év"
+
+msgctxt "report:account.financial.statement.report:"
+msgid "Previous Value"
+msgstr "Előző érték"
+
+msgctxt "report:account.financial.statement.report:"
+msgid "VAT"
+msgstr "Áfa"
+
+msgctxt "xgettext:x:"
+msgid "Concept"
+msgstr "Tétel"
+
+msgctxt "selection:account.financial.statement.report,state:"
+msgid "Calculated"
+msgstr "Kiszámítva"
+
+msgctxt "selection:account.financial.statement.report,state:"
+msgid "Draft"
+msgstr "vázlat"
+
+msgctxt "selection:account.financial.statement.report.line,css_class:"
+msgid "Default"
+msgstr "Alapértelmezett"
+
+msgctxt "selection:account.financial.statement.report.line,css_class:"
+msgid "Level 1"
+msgstr "1. szint"
+
+msgctxt "selection:account.financial.statement.report.line,css_class:"
+msgid "Level 2"
+msgstr "2. szint"
+
+msgctxt "selection:account.financial.statement.report.line,css_class:"
+msgid "Level 3"
+msgstr "3. szint"
+
+msgctxt "selection:account.financial.statement.report.line,css_class:"
+msgid "Level 4"
+msgstr "4. szint"
+
+msgctxt "selection:account.financial.statement.report.line,css_class:"
+msgid "Level 5"
+msgstr "5. szint"
+
+msgctxt "selection:account.financial.statement.report.line,report_state:"
+msgid "Calculated"
+msgstr "Kiszámítva"
+
+msgctxt "selection:account.financial.statement.report.line,report_state:"
+msgid "Draft"
+msgstr "vázlat"
+
+msgctxt ""
+"selection:account.financial.statement.report.line.account,fiscal_year:"
+msgid "Current"
+msgstr "Aktuális"
+
+msgctxt ""
+"selection:account.financial.statement.report.line.account,fiscal_year:"
+msgid "Previous"
+msgstr "Előző"
+
+msgctxt ""
+"selection:account.financial.statement.report.line.detail.start,detail:"
+msgid "Account"
+msgstr "Számla"
+
+msgctxt ""
+"selection:account.financial.statement.report.line.detail.start,detail:"
+msgid "Move"
+msgstr "Bizonylat"
+
+msgctxt "selection:account.financial.statement.template,mode:"
+msgid "Credit-Debit"
+msgstr "Követel–tartozik"
+
+msgctxt "selection:account.financial.statement.template,mode:"
+msgid "Credit-Debit, reversed with invert()"
+msgstr "Követel–tartozik, az invert() megfordítja"
+
+msgctxt "selection:account.financial.statement.template,mode:"
+msgid "Debit-Credit"
+msgstr "Tartozik–követel"
+
+msgctxt "selection:account.financial.statement.template,mode:"
+msgid "Debit-Credit, reversed with invert()"
+msgstr "Tartozik–követel, az invert() megfordítja"
+
+msgctxt "selection:account.financial.statement.template,type:"
+msgid "System"
+msgstr "Rendszer"
+
+msgctxt "selection:account.financial.statement.template,type:"
+msgid "User"
+msgstr "Felhasználó"
+
+msgctxt "selection:account.financial.statement.template.line,css_class:"
+msgid "Default"
+msgstr "Alapértelmezett"
+
+msgctxt "selection:account.financial.statement.template.line,css_class:"
+msgid "Level 1"
+msgstr "1. szint"
+
+msgctxt "selection:account.financial.statement.template.line,css_class:"
+msgid "Level 2"
+msgstr "2. szint"
+
+msgctxt "selection:account.financial.statement.template.line,css_class:"
+msgid "Level 3"
+msgstr "3. szint"
+
+msgctxt "selection:account.financial.statement.template.line,css_class:"
+msgid "Level 4"
+msgstr "4. szint"
+
+msgctxt "selection:account.financial.statement.template.line,css_class:"
+msgid "Level 5"
+msgstr "5. szint"
+
+msgctxt "view:account.financial.statement.report.line.account:"
+msgid "Detail"
+msgstr "Részlet"
+
+msgctxt "view:account.financial.statement.report.line.account:"
+msgid "Fiscal Year Details"
+msgstr "Üzleti év részletei"
+
+msgctxt "view:account.financial.statement.report.line.detail.start:"
+msgid "Open Line Detail"
+msgstr "Sor részleteinek megnyitása"
+
+msgctxt "view:account.financial.statement.report.line:"
+msgid "Style"
+msgstr "Stílus"
+
+msgctxt "view:account.financial.statement.report.line:"
+msgid "Values"
+msgstr "Értékek"
+
+msgctxt "view:account.financial.statement.report:"
+msgid "Configuration"
+msgstr "Beállítások"
+
+msgctxt "view:account.financial.statement.template.line:"
+msgid "Style"
+msgstr "Stílus"
+
+msgctxt "view:account.financial.statement.template:"
+msgid "Information"
+msgstr "Információk"
+
+msgctxt "view:account.financial.statement.template:"
+msgid "Lines"
+msgstr "Sorok"
+
+msgctxt "wizard_button:account.financial.statement.report.accounts,start,end:"
+msgid "Close"
+msgstr "Bezárás"
+
+msgctxt ""
+"wizard_button:account.financial.statement.report.line.detail,start,end:"
+msgid "Cancel"
+msgstr "Mégse"
+
+msgctxt ""
+"wizard_button:account.financial.statement.report.line.detail,start,select:"
+msgid "Open"
+msgstr "nyitott"
+
+msgctxt "field:account.financial.statement.report,comparison_fiscalyears:"
+msgid "Fiscal Years"
+msgstr "Üzleti évek"
+
+msgctxt "field:account.financial.statement.report,comparison_periods:"
+msgid "Comparison Periods"
+msgstr "Összehasonlítási időszakok"
+
+msgctxt ""
+"field:account.financial.statement.report.line.account.period,account:"
+msgid "Account"
+msgstr "Számla"
+
+msgctxt ""
+"field:account.financial.statement.report.line.account.period,balance:"
+msgid "Balance"
+msgstr "Egyenleg"
+
+msgctxt ""
+"field:account.financial.statement.report.line.account.period,company:"
+msgid "Company"
+msgstr "Cég"
+
+msgctxt "field:account.financial.statement.report.line.account.period,credit:"
+msgid "Credit"
+msgstr "Követel"
+
+msgctxt ""
+"field:account.financial.statement.report.line.account.period,currency:"
+msgid "Currency"
+msgstr "Pénznem"
+
+msgctxt "field:account.financial.statement.report.line.account.period,debit:"
+msgid "Debit"
+msgstr "Tartozik"
+
+msgctxt ""
+"field:account.financial.statement.report.line.account.period,report_line:"
+msgid "Report Line"
+msgstr "Jelentéssor"
+
+msgctxt "field:account.financial.statement.report.line.period,children:"
+msgid "Children"
+msgstr "Alárendelt rekordok"
+
+msgctxt "field:account.financial.statement.report.line.period,code:"
+msgid "Code"
+msgstr "Kód"
+
+msgctxt "field:account.financial.statement.report.line.period,company:"
+msgid "Company"
+msgstr "Cég"
+
+msgctxt "field:account.financial.statement.report.line.period,css_class:"
+msgid "CSS Class"
+msgstr "CSS-osztály"
+
+msgctxt "field:account.financial.statement.report.line.period,currency:"
+msgid "Currency"
+msgstr "Pénznem"
+
+msgctxt "field:account.financial.statement.report.line.period,line_accounts:"
+msgid "Line Accounts"
+msgstr "Sor számlái"
+
+msgctxt "field:account.financial.statement.report.line.period,name:"
+msgid "Name"
+msgstr "Név"
+
+msgctxt "field:account.financial.statement.report.line.period,notes:"
+msgid "Notes"
+msgstr "Jegyzetek"
+
+msgctxt "field:account.financial.statement.report.line.period,page_break:"
+msgid "Page Break"
+msgstr "Oldaltörés"
+
+msgctxt "field:account.financial.statement.report.line.period,parent:"
+msgid "Parent"
+msgstr "Fölérendelt"
+
+msgctxt "field:account.financial.statement.report.line.period,report_period:"
+msgid "Comparison Period"
+msgstr "Összehasonlítási időszak"
+
+msgctxt "field:account.financial.statement.report.line.period,sequence:"
+msgid "Sequence"
+msgstr "Sorszám"
+
+msgctxt "field:account.financial.statement.report.line.period,template_line:"
+msgid "Line template"
+msgstr "Sorsablon"
+
+msgctxt "field:account.financial.statement.report.line.period,value:"
+msgid "Value"
+msgstr "Érték"
+
+msgctxt "field:account.financial.statement.report.line.period,visible:"
+msgid "Visible"
+msgstr "Látható"
+
+msgctxt "field:account.financial.statement.report.period,company:"
+msgid "Company"
+msgstr "Cég"
+
+msgctxt "field:account.financial.statement.report.period,end_period:"
+msgid "End Period"
+msgstr "Záróperiódus"
+
+msgctxt "field:account.financial.statement.report.period,fiscalyear:"
+msgid "Fiscal Year"
+msgstr "Üzleti év"
+
+msgctxt "field:account.financial.statement.report.period,lines:"
+msgid "Lines"
+msgstr "Sorok"
+
+msgctxt "field:account.financial.statement.report.period,report:"
+msgid "Report"
+msgstr "Nyomtatvány"
+
+msgctxt "field:account.financial.statement.report.period,sequence:"
+msgid "Sequence"
+msgstr "Sorszám"
+
+msgctxt "field:account.financial.statement.report.period,start_period:"
+msgid "Start Period"
+msgstr "Kezdőperiódus"
+
+msgctxt "model:account.financial.statement.report.line.account.period,string:"
+msgid "Account Financial Statement Report Line Account Period"
+msgstr "Pénzügyi kimutatás sorának számlaidőszaka"
+
+msgctxt "model:account.financial.statement.report.line.period,string:"
+msgid "Account Financial Statement Report Line Period"
+msgstr "Pénzügyi kimutatás sorának időszaka"
+
+msgctxt "model:account.financial.statement.report.period,string:"
+msgid "Account Financial Statement Report Period"
+msgstr "Pénzügyi kimutatás időszaka"
+
+msgctxt "model:ir.message,text:msg_financial_statement_missing_periods"
+msgid ""
+"You must configure at least one fiscal year before calculating the financial"
+" statement."
+msgstr ""
+"A pénzügyi kimutatás kiszámítása előtt legalább egy üzleti évet be kell "
+"állítani."
+
+msgctxt "model:ir.message,text:msg_financial_statement_period_order"
+msgid "Start Period must be before or equal to End Period."
+msgstr ""
+"A kezdő időszaknak a záró időszak előtt vagy azzal azonosnak kell lennie."
+
+msgctxt "model:ir.message,text:msg_financial_statement_period_pair"
+msgid "Start Period and End Period must both be set or both be empty."
+msgstr ""
+"A kezdő és a záró időszakot együtt kell megadni, vagy mindkettőt üresen kell"
+" hagyni."
+
+msgctxt "report:account.financial.statement.detail.report:"
+msgid "Full fiscal year"
+msgstr "Teljes üzleti év"
+
+msgctxt "report:account.financial.statement.report:"
+msgid "Full fiscal year"
+msgstr "Teljes üzleti év"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Default"
+msgstr "Alapértelmezett"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Level 1"
+msgstr "1. szint"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Level 2"
+msgstr "2. szint"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Level 3"
+msgstr "3. szint"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Level 4"
+msgstr "4. szint"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Level 5"
+msgstr "5. szint"
+
+msgctxt "view:account.financial.statement.report.line.period:"
+msgid "Style"
+msgstr "Stílus"
+
+msgctxt "view:account.financial.statement.report.line.period:"
+msgid "Values"
+msgstr "Értékek"
+
+msgctxt ""
+"model:ir.rule.group,name:rule_group_account_financial_statement_report_companies"
+msgid "User in companies"
+msgstr "Felhasználó vállalatai"
+
+msgctxt ""
+"model:ir.rule.group,name:rule_group_account_financial_statement_report_line_companies"
+msgid "User in companies"
+msgstr "Felhasználó vállalatai"
+
+msgctxt ""
+"model:ir.rule.group,name:rule_group_account_financial_statement_report_line_account_companies"
+msgid "User in companies"
+msgstr "Felhasználó vállalatai"
+
+msgctxt ""
+"model:ir.rule.group,name:rule_group_account_financial_statement_report_line_account_period_companies"
+msgid "User in companies"
+msgstr "Felhasználó vállalatai"
+
+msgctxt ""
+"model:ir.rule.group,name:rule_group_account_financial_statement_report_line_period_companies"
+msgid "User in companies"
+msgstr "Felhasználó vállalatai"
+
+msgctxt ""
+"model:ir.rule.group,name:rule_group_account_financial_statement_report_period_companies"
+msgid "User in companies"
+msgstr "Felhasználó vállalatai"
+
+msgctxt "model:ir.action,name:report_xlsx_financial_statement"
+msgid "Financial Statement Spreadsheet"
+msgstr "Pénzügyi kimutatás táblázata"
+
+msgctxt "xgettext:x:"
+msgid "Full fiscal year"
+msgstr "Teljes üzleti év"
+
+msgctxt "xgettext:x:"
+msgid "Name"
+msgstr "Név"
+
+msgctxt "xgettext:x:"
+msgid "Period"
+msgstr "Periódus"
+
+msgctxt "field:account.financial.statement.print.start,include_details:"
+msgid "Include Account Details"
+msgstr "Számlarészletek hozzáadása"
+
+msgctxt "field:account.financial.statement.print.start,output_format:"
+msgid "Output Format"
+msgstr "Kimeneti formátum"
+
+msgctxt "field:account.financial.statement.print.start,digits:"
+msgid "Digits"
+msgstr "Tizedesjegyek"
+
+msgctxt "wizard_button:account.financial.statement.print,start,end:"
+msgid "Cancel"
+msgstr "Mégse"
+
+msgctxt "wizard_button:account.financial.statement.print,start,print_:"
+msgid "Print"
+msgstr "Nyomtatás"
+
+msgctxt "model:ir.action,name:print_financial_statement"
+msgid "Account Financial Statement"
+msgstr "Pénzügyi kimutatás"
+
+msgctxt "model:account.financial.statement.print.start,string:"
+msgid "Print Financial Statement"
+msgstr "Pénzügyi kimutatás nyomtatása"
+
+msgctxt "help:account.financial.statement.print.start,digits:"
+msgid "Group accounts by this number of digits. Zero shows all digits."
+msgstr ""
+"A számlák csoportosítása ennyi számjegy szerint. Nulla esetén az összes "
+"számjegy megjelenik."
+
+msgctxt "help:account.financial.statement.template.line,previous_value:"
+msgid ""
+"Value calculation formula: Depending on this formula the final value is calculated as follows:\n"
+"- Empy template value: sum of (this concept) children values.\n"
+"- Number with decimal point (\"10.2\"): that value (constant).\n"
+"- A matematic formula with following helpers:\n"
+"  * balance() with comma-separated account numbers. Sum of the accounts (the sign of the depends on the mode).\n"
+"  * invert() with comma-separated account numbers. Sum of the account (the sign is inverted if reversed modes are used).\n"
+"  * credit() with comma-separeted account numbers. Sum of the credit of the account if the total amount is negative. Zero otherwise.\n"
+"  * debit() with comma-separeted account numbers. Sum of the debit of the account if the total amount is positive. Zero otherwise.\n"
+"  * concept() with comma-separated concept codes in quotes of the report itself (column Code). Sum of the concept values.\n"
+"Examples:\n"
+"balance(430, 431) + invert(437)\n"
+"balance(5305, 5315) + invert(5325, 5335) + debit(551, 5525)\n"
+"balance(5103) + credit(5523)\n"
+"concept(\"11000\", \"12000\")\n"
+"balance(7) - 1.25 * balance(6)\n"
+"concept(\"101\") / 2"
+msgstr ""
+"Értékszámítási képlet: a végső érték kiszámítása az alábbiak szerint történik:\n"
+"- Üres sablonérték: a tétel alárendelt értékeinek összege.\n"
+"- Tizedespontot tartalmazó szám (\"10.2\"): az adott állandó érték.\n"
+"- Matematikai képlet az alábbi segédfüggvényekkel:\n"
+"  * balance(): vesszővel elválasztott számlaszámok egyenlegének összege (az előjel a módtól függ).\n"
+"  * invert(): vesszővel elválasztott számlaszámok egyenlegének összege (fordított módban az előjel megfordul).\n"
+"  * credit(): vesszővel elválasztott számlaszámok követel összege, ha a teljes összeg negatív; egyébként nulla.\n"
+"  * debit(): vesszővel elválasztott számlaszámok tartozik összege, ha a teljes összeg pozitív; egyébként nulla.\n"
+"  * concept(): a jelentés idézőjelbe tett, vesszővel elválasztott tételkódjaihoz (Kód oszlop) tartozó értékek összege.\n"
+"Példák:\n"
+"balance(430, 431) + invert(437)\n"
+"balance(5305, 5315) + invert(5325, 5335) + debit(551, 5525)\n"
+"balance(5103) + credit(5523)\n"
+"concept(\"11000\", \"12000\")\n"
+"balance(7) - 1.25 * balance(6)\n"
+"concept(\"101\") / 2"
