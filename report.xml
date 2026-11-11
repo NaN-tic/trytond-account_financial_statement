@@ -321,4 +321,14 @@ copyright notices and license terms. -->
             <field name="rule_group" ref="rule_group_account_financial_statement_report_line_account_period_companies"/>
         </record>
     </data>
+    <data>
+        <record model="ir.action-res.group" id="view_accounts_group_account">
+            <field name="action" ref="act_view_accounts"/>
+            <field name="group" ref="account.group_account"/>
+        </record>
+        <record model="ir.action-res.group" id="view_accounts_group_account_admin">
+            <field name="action" ref="act_view_accounts"/>
+            <field name="group" ref="account.group_account_admin"/>
+        </record>
+    </data>
 </tryton>
