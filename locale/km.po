@@ -1,0 +1,957 @@
+#
+msgid ""
+msgstr ""
+"Language: km\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgctxt "field:account.financial.statement.report,calculation_date:"
+msgid "Calculation date"
+msgstr "កាលបរិច្ឆេទគណនា"
+
+msgctxt "field:account.financial.statement.report,company:"
+msgid "Company"
+msgstr "ក្រុមហ៊ុន"
+
+msgctxt "field:account.financial.statement.report,current_fiscalyear:"
+msgid "Fiscal year 1"
+msgstr "ឆ្នាំសារពើពន្ធទី ១"
+
+msgctxt "field:account.financial.statement.report,current_periods:"
+msgid "Fiscal year 1 periods"
+msgstr "គ្រានៃឆ្នាំសារពើពន្ធទី ១"
+
+msgctxt "field:account.financial.statement.report,current_periods_end_date:"
+msgid "Current Periods Dates"
+msgstr "កាលបរិច្ឆេទនៃគ្រាបច្ចុប្បន្ន"
+
+msgctxt "field:account.financial.statement.report,current_periods_list:"
+msgid "Current Periods List"
+msgstr "បញ្ជីគ្រាបច្ចុប្បន្ន"
+
+msgctxt "field:account.financial.statement.report,current_periods_start_date:"
+msgid "Current Periods Dates"
+msgstr "កាលបរិច្ឆេទនៃគ្រាបច្ចុប្បន្ន"
+
+msgctxt "field:account.financial.statement.report,lines:"
+msgid "Lines"
+msgstr "បន្ទាត់"
+
+msgctxt "field:account.financial.statement.report,name:"
+msgid "Name"
+msgstr "ឈ្មោះ"
+
+msgctxt "field:account.financial.statement.report,previous_fiscalyear:"
+msgid "Fiscal year 2"
+msgstr "ឆ្នាំសារពើពន្ធទី ២"
+
+msgctxt "field:account.financial.statement.report,previous_periods:"
+msgid "Fiscal year 2 periods"
+msgstr "គ្រានៃឆ្នាំសារពើពន្ធទី ២"
+
+msgctxt "field:account.financial.statement.report,previous_periods_end_date:"
+msgid "Previous Periods Dates"
+msgstr "កាលបរិច្ឆេទនៃគ្រាមុន"
+
+msgctxt "field:account.financial.statement.report,previous_periods_list:"
+msgid "Previous Periods List"
+msgstr "បញ្ជីគ្រាមុន"
+
+msgctxt "field:account.financial.statement.report,previous_periods_start_date:"
+msgid "Previous Periods Dates"
+msgstr "កាលបរិច្ឆេទនៃគ្រាមុន"
+
+msgctxt "field:account.financial.statement.report,state:"
+msgid "State"
+msgstr "ស្ថានភាព"
+
+msgctxt "field:account.financial.statement.report,template:"
+msgid "Template"
+msgstr "គំរូ"
+
+msgctxt ""
+"field:account.financial.statement.report.accounts.start,unused_accounts:"
+msgid "Unused Accounts"
+msgstr "គណនីដែលមិនបានប្រើ"
+
+msgctxt ""
+"field:account.financial.statement.report.accounts.start,used_accounts:"
+msgid "Used Accounts"
+msgstr "គណនីដែលបានប្រើ"
+
+msgctxt "field:account.financial.statement.report.line,calculation_date:"
+msgid "Calculation date"
+msgstr "កាលបរិច្ឆេទគណនា"
+
+msgctxt "field:account.financial.statement.report.line,children:"
+msgid "Children"
+msgstr "កូន"
+
+msgctxt "field:account.financial.statement.report.line,code:"
+msgid "Code"
+msgstr "កូដ"
+
+msgctxt "field:account.financial.statement.report.line,css_class:"
+msgid "CSS Class"
+msgstr "ថ្នាក់ CSS"
+
+msgctxt "field:account.financial.statement.report.line,currency:"
+msgid "Currency"
+msgstr "រូបិយប័ណ្ណ"
+
+msgctxt "field:account.financial.statement.report.line,current_line_accounts:"
+msgid "Current Detail"
+msgstr "ព័ត៌មានលម្អិតគ្រាបច្ចុប្បន្ន"
+
+msgctxt "field:account.financial.statement.report.line,current_value:"
+msgid "Current Value"
+msgstr "តម្លៃបច្ចុប្បន្ន"
+
+msgctxt "field:account.financial.statement.report.line,line_accounts:"
+msgid "Line Accounts"
+msgstr "គណនីក្នុងបន្ទាត់"
+
+msgctxt "field:account.financial.statement.report.line,name:"
+msgid "Name"
+msgstr "ឈ្មោះ"
+
+msgctxt "field:account.financial.statement.report.line,notes:"
+msgid "Notes"
+msgstr "កំណត់ចំណាំ"
+
+msgctxt "field:account.financial.statement.report.line,page_break:"
+msgid "Page Break"
+msgstr "ការផ្តាច់ទំព័រ"
+
+msgctxt "field:account.financial.statement.report.line,parent:"
+msgid "Parent"
+msgstr "គំរូមេ"
+
+msgctxt "field:account.financial.statement.report.line,previous_line_accounts:"
+msgid "Previous Detail"
+msgstr "ព័ត៌មានលម្អិតគ្រាមុន"
+
+msgctxt "field:account.financial.statement.report.line,previous_value:"
+msgid "Previous value"
+msgstr "តម្លៃមុន"
+
+msgctxt "field:account.financial.statement.report.line,report:"
+msgid "Report"
+msgstr "របាយការណ៍"
+
+msgctxt "field:account.financial.statement.report.line,report_state:"
+msgid "Report State"
+msgstr "ស្ថានភាពរបាយការណ៍"
+
+msgctxt "field:account.financial.statement.report.line,sequence:"
+msgid "Sequence"
+msgstr "លំដាប់"
+
+msgctxt "field:account.financial.statement.report.line,template_line:"
+msgid "Line template"
+msgstr "គំរូបន្ទាត់"
+
+msgctxt "field:account.financial.statement.report.line,visible:"
+msgid "Visible"
+msgstr "អាចមើលឃើញ"
+
+msgctxt "field:account.financial.statement.report.line.account,account:"
+msgid "Account"
+msgstr "គណនី"
+
+msgctxt "field:account.financial.statement.report.line.account,balance:"
+msgid "Balance"
+msgstr "សមតុល្យ"
+
+msgctxt "field:account.financial.statement.report.line.account,company:"
+msgid "Company"
+msgstr "ក្រុមហ៊ុន"
+
+msgctxt "field:account.financial.statement.report.line.account,credit:"
+msgid "Credit"
+msgstr "ឥណទាន"
+
+msgctxt "field:account.financial.statement.report.line.account,currency:"
+msgid "Currency"
+msgstr "រូបិយប័ណ្ណ"
+
+msgctxt "field:account.financial.statement.report.line.account,debit:"
+msgid "Debit"
+msgstr "ឥណពន្ធ"
+
+msgctxt "field:account.financial.statement.report.line.account,fiscal_year:"
+msgid "Fiscal Year"
+msgstr "ឆ្នាំសារពើពន្ធ"
+
+msgctxt "field:account.financial.statement.report.line.account,report_line:"
+msgid "Report Line"
+msgstr "បន្ទាត់របាយការណ៍"
+
+msgctxt "field:account.financial.statement.report.line.detail.start,detail:"
+msgid "Detail Level"
+msgstr "កម្រិតព័ត៌មានលម្អិត"
+
+msgctxt ""
+"field:account.financial.statement.report.line.detail.start,fiscalyear:"
+msgid "Fiscal Year"
+msgstr "ឆ្នាំសារពើពន្ធ"
+
+msgctxt "field:account.financial.statement.template,cumulate:"
+msgid "Cumulate Balances"
+msgstr "បង្គរសមតុល្យ"
+
+msgctxt "field:account.financial.statement.template,description:"
+msgid "Description"
+msgstr "សេចក្តីពិពណ៌នា"
+
+msgctxt "field:account.financial.statement.template,lines:"
+msgid "Lines"
+msgstr "បន្ទាត់"
+
+msgctxt "field:account.financial.statement.template,mode:"
+msgid "Mode"
+msgstr "របៀប"
+
+msgctxt "field:account.financial.statement.template,name:"
+msgid "Name"
+msgstr "ឈ្មោះ"
+
+msgctxt "field:account.financial.statement.template,report_xml:"
+msgid "Report design"
+msgstr "ការរចនារបាយការណ៍"
+
+msgctxt "field:account.financial.statement.template,type:"
+msgid "Type"
+msgstr "ប្រភេទ"
+
+msgctxt "field:account.financial.statement.template.line,children:"
+msgid "Children"
+msgstr "កូន"
+
+msgctxt "field:account.financial.statement.template.line,code:"
+msgid "Code"
+msgstr "កូដ"
+
+msgctxt "field:account.financial.statement.template.line,css_class:"
+msgid "CSS Class"
+msgstr "ថ្នាក់ CSS"
+
+msgctxt "field:account.financial.statement.template.line,current_value:"
+msgid "Formula"
+msgstr "រូបមន្ត"
+
+msgctxt "field:account.financial.statement.template.line,name:"
+msgid "Name"
+msgstr "ឈ្មោះ"
+
+msgctxt "field:account.financial.statement.template.line,negate:"
+msgid "Negate"
+msgstr "ប្ដូរសញ្ញាតម្លៃ"
+
+msgctxt "field:account.financial.statement.template.line,page_break:"
+msgid "Page Break"
+msgstr "ការផ្តាច់ទំព័រ"
+
+msgctxt "field:account.financial.statement.template.line,parent:"
+msgid "Parent"
+msgstr "គំរូមេ"
+
+msgctxt "field:account.financial.statement.template.line,sequence:"
+msgid "Sequence"
+msgstr "លំដាប់"
+
+msgctxt "field:account.financial.statement.template.line,template:"
+msgid "Template"
+msgstr "គំរូ"
+
+msgctxt "field:account.financial.statement.template.line,visible:"
+msgid "Visible"
+msgstr "អាចមើលឃើញ"
+
+msgctxt "field:account_financial_statement-account_period_current,period:"
+msgid "Period"
+msgstr "គ្រា"
+
+msgctxt "field:account_financial_statement-account_period_current,report:"
+msgid "Account Report"
+msgstr "របាយការណ៍គណនេយ្យ"
+
+msgctxt "field:account_financial_statement-account_period_previous,period:"
+msgid "Period"
+msgstr "គ្រា"
+
+msgctxt "field:account_financial_statement-account_period_previous,report:"
+msgid "Account Report"
+msgstr "របាយការណ៍គណនេយ្យ"
+
+msgctxt "help:account.financial.statement.template,type:"
+msgid "System reports cannot be modified"
+msgstr "មិនអាចកែប្រែរបាយការណ៍ប្រព័ន្ធបានទេ។"
+
+msgctxt "help:account.financial.statement.template.line,code:"
+msgid "Concept code, may be used in formulas to reference this line"
+msgstr "កូដធាតុដែលអាចប្រើក្នុងរូបមន្តដើម្បីយោងទៅបន្ទាត់នេះ។"
+
+msgctxt "help:account.financial.statement.template.line,css_class:"
+msgid "Style-sheet class"
+msgstr "ថ្នាក់សន្លឹករចនាប័ទ្ម"
+
+msgctxt "help:account.financial.statement.template.line,current_value:"
+msgid ""
+"Value calculation formula: Depending on this formula the final value is calculated as follows:\n"
+"- Empy template value: sum of (this concept) children values.\n"
+"- Number with decimal point (\"10.2\"): that value (constant).\n"
+"- A matematic formula with following helpers:\n"
+"  * balance() with comma-separated account numbers. Sum of the accounts (the sign of the depends on the mode).\n"
+"  * invert() with comma-separated account numbers. Sum of the account (the sign is inverted if reversed modes are used).\n"
+"  * credit() with comma-separeted account numbers. Sum of the credit of the account if the total amount is negative. Zero otherwise.\n"
+"  * debit() with comma-separeted account numbers. Sum of the debit of the account if the total amount is positive. Zero otherwise.\n"
+"  * concept() with comma-separated concept codes in quotes of the report itself (column Code). Sum of the concept values.\n"
+"Examples:\n"
+"balance(430, 431) + invert(437)\n"
+"balance(5305, 5315) + invert(5325, 5335) + debit(551, 5525)\n"
+"balance(5103) + credit(5523)\n"
+"concept(\"11000\", \"12000\")\n"
+"balance(7) - 1.25 * balance(6)\n"
+"concept(\"101\") / 2"
+msgstr ""
+"រូបមន្តគណនាតម្លៃ៖ តម្លៃចុងក្រោយត្រូវបានគណនាតាមរូបមន្តនេះដូចខាងក្រោម៖\n"
+"- ទុកតម្លៃគំរូឱ្យទទេ៖ បូកតម្លៃនៃធាតុរងរបស់ធាតុនេះ។\n"
+"- លេខមានសញ្ញាចុចទសភាគ (\"10.2\")៖ ប្រើលេខនោះជាតម្លៃថេរ។\n"
+"- រូបមន្តគណិតវិទ្យាដែលមានអនុគមន៍ជំនួយដូចខាងក្រោម៖\n"
+"  * balance() ប្រើលេខគណនីបំបែកដោយសញ្ញាក្បៀស។ បូកសមតុល្យគណនីទាំងនោះ (សញ្ញាអាស្រ័យលើរបៀបគណនា)។\n"
+"  * invert() ប្រើលេខគណនីបំបែកដោយសញ្ញាក្បៀស។ បូកសមតុល្យគណនីទាំងនោះ (ប្ដូរសញ្ញាប្រសិនបើប្រើរបៀបបញ្ច្រាស)។\n"
+"  * credit() ប្រើលេខគណនីបំបែកដោយសញ្ញាក្បៀស។ បូកឥណទានប្រសិនបើចំនួនសរុបអវិជ្ជមាន។ បើមិនដូច្នោះទេ យកសូន្យ។\n"
+"  * debit() ប្រើលេខគណនីបំបែកដោយសញ្ញាក្បៀស។ បូកឥណពន្ធប្រសិនបើចំនួនសរុបវិជ្ជមាន។ បើមិនដូច្នោះទេ យកសូន្យ។\n"
+"  * concept() ប្រើកូដធាតុក្នុងសញ្ញាដកស្រង់ បំបែកដោយសញ្ញាក្បៀស នៅក្នុងរបាយការណ៍នេះ (ជួរឈរ «កូដ»)។ បូកតម្លៃធាតុទាំងនោះ។\n"
+"ឧទាហរណ៍៖\n"
+"balance(430, 431) + invert(437)\n"
+"balance(5305, 5315) + invert(5325, 5335) + debit(551, 5525)\n"
+"balance(5103) + credit(5523)\n"
+"concept(\"11000\", \"12000\")\n"
+"balance(7) - 1.25 * balance(6)\n"
+"concept(\"101\") / 2"
+
+msgctxt "help:account.financial.statement.template.line,name:"
+msgid "Concept name/description"
+msgstr "ឈ្មោះ/សេចក្តីពិពណ៌នាធាតុ"
+
+msgctxt "help:account.financial.statement.template.line,negate:"
+msgid "Negate the value (change the sign of the )"
+msgstr "ប្ដូរតម្លៃទៅសញ្ញាផ្ទុយ។"
+
+msgctxt "help:account.financial.statement.template.line,sequence:"
+msgid "Lines will be sorted/grouped by this field"
+msgstr "បន្ទាត់នឹងត្រូវបានតម្រៀប ឬដាក់ជាក្រុមតាមវាលនេះ។"
+
+msgctxt "model:account.financial.statement.report,name:"
+msgid "Financial Statement Report"
+msgstr "របាយការណ៍ហិរញ្ញវត្ថុ"
+
+msgctxt "model:account.financial.statement.report.accounts.start,name:"
+msgid "View Used And Unused Accounts Start"
+msgstr "ចាប់ផ្ដើមបង្ហាញគណនីដែលបានប្រើ និងមិនបានប្រើ"
+
+msgctxt "model:account.financial.statement.report.line,name:"
+msgid "Financial Statement Report Line"
+msgstr "បន្ទាត់របាយការណ៍ហិរញ្ញវត្ថុ"
+
+msgctxt "model:account.financial.statement.report.line.account,name:"
+msgid "Financial Statement Report Account"
+msgstr "គណនីក្នុងរបាយការណ៍ហិរញ្ញវត្ថុ"
+
+msgctxt "model:account.financial.statement.report.line.detail.start,name:"
+msgid "Financial Statement Report Account Line Detail Start"
+msgstr "ចាប់ផ្ដើមបង្ហាញព័ត៌មានលម្អិតបន្ទាត់គណនីក្នុងរបាយការណ៍ហិរញ្ញវត្ថុ"
+
+msgctxt "model:account.financial.statement.template,name:"
+msgid "Financial Statement Template"
+msgstr "គំរូរបាយការណ៍ហិរញ្ញវត្ថុ"
+
+msgctxt "model:account.financial.statement.template.line,name:"
+msgid "Financial Statement Template Line"
+msgstr "បន្ទាត់គំរូរបាយការណ៍ហិរញ្ញវត្ថុ"
+
+msgctxt "model:account_financial_statement-account_period_current,name:"
+msgid "Financial Statement Report - Current Periods"
+msgstr "របាយការណ៍ហិរញ្ញវត្ថុ - គ្រាបច្ចុប្បន្ន"
+
+msgctxt "model:account_financial_statement-account_period_previous,name:"
+msgid "Financial Statement Report - Previous Periods"
+msgstr "របាយការណ៍ហិរញ្ញវត្ថុ - គ្រាមុន"
+
+msgctxt "model:ir.action,name:act_account_financial_statement"
+msgid "Financial Statement Report"
+msgstr "របាយការណ៍ហិរញ្ញវត្ថុ"
+
+msgctxt "model:ir.action,name:act_account_financial_statement_template"
+msgid "Account report templates"
+msgstr "គំរូរបាយការណ៍គណនេយ្យ"
+
+msgctxt "model:ir.action,name:act_open_detail"
+msgid "Line Detail"
+msgstr "ព័ត៌មានលម្អិតបន្ទាត់"
+
+msgctxt "model:ir.action,name:act_report_line_account"
+msgid "Line Detail Per Account"
+msgstr "ព័ត៌មានលម្អិតបន្ទាត់តាមគណនី"
+
+msgctxt "model:ir.action,name:act_report_lines"
+msgid "Lines"
+msgstr "បន្ទាត់"
+
+msgctxt "model:ir.action,name:act_view_accounts"
+msgid "View Used and Unused Accounts"
+msgstr "បង្ហាញគណនីដែលបានប្រើ និងមិនបានប្រើ"
+
+msgctxt "model:ir.action,name:html_report_financial_statement"
+msgid "Account Financial Statement"
+msgstr "របាយការណ៍ហិរញ្ញវត្ថុគណនេយ្យ"
+
+msgctxt "model:ir.action,name:html_report_financial_statement_detail"
+msgid "Account Financial Statement Detail"
+msgstr "ព័ត៌មានលម្អិតរបាយការណ៍ហិរញ្ញវត្ថុគណនេយ្យ"
+
+msgctxt "model:ir.message,text:msg_code_unique_per_report"
+msgid "The code must be unique for this report."
+msgstr "កូដក្នុងរបាយការណ៍នេះត្រូវតែមានតែមួយគត់។"
+
+msgctxt "model:ir.message,text:msg_code_unique_per_template"
+msgid "The code must be unique for this template."
+msgstr "កូដក្នុងគំរូនេះត្រូវតែមានតែមួយគត់។"
+
+#, python-format
+msgctxt "model:ir.message,text:msg_invalid_syntax"
+msgid "Invalid syntax in \"%(field)s\" of line code \"%(line)s\"."
+msgstr "វាក្យសម្ពន្ធមិនត្រឹមត្រូវក្នុង «%(field)s» នៃបន្ទាត់មានកូដ «%(line)s»។"
+
+#, python-format
+msgctxt "model:ir.message,text:msg_wrong_expression"
+msgid ""
+"The expression \"%(expression)s\" from \"%(template)s\" it not valid: "
+"\"%(traceback)s\"."
+msgstr ""
+"កន្សោម «%(expression)s» ពី «%(template)s» មិនត្រឹមត្រូវទេ៖ «%(traceback)s»។"
+
+msgctxt "model:ir.model.button,string:financial_statement_calculate_button"
+msgid "Calculate"
+msgstr "គណនា"
+
+msgctxt "model:ir.model.button,string:financial_statement_draft_button"
+msgid "Draft"
+msgstr "សេចក្តីព្រាង"
+
+msgctxt "model:ir.model.button,string:financial_statement_open_details_button"
+msgid "Open Details"
+msgstr "បើកព័ត៌មានលម្អិត"
+
+msgctxt "model:ir.rule.group,name:rule_group_report"
+msgid "Report Group"
+msgstr "ក្រុមរបាយការណ៍"
+
+msgctxt "model:ir.rule.group,name:rule_group_report_line_account"
+msgid "Report Line Account Group"
+msgstr "ក្រុមគណនីក្នុងបន្ទាត់របាយការណ៍"
+
+msgctxt "model:ir.ui.menu,name:menu_account_financial_statement_reports"
+msgid "Financial Statement Reports"
+msgstr "របាយការណ៍ហិរញ្ញវត្ថុ"
+
+msgctxt "model:ir.ui.menu,name:menu_account_financial_statement_templates"
+msgid "Financial Statement Templates"
+msgstr "គំរូរបាយការណ៍ហិរញ្ញវត្ថុ"
+
+msgctxt "report:account.financial.statement.report:"
+msgid "Concept"
+msgstr "ធាតុ"
+
+msgctxt "report:account.financial.statement.report:"
+msgid "Current Value"
+msgstr "តម្លៃបច្ចុប្បន្ន"
+
+msgctxt "report:account.financial.statement.report:"
+msgid "Fiscal Year 1"
+msgstr "ឆ្នាំសារពើពន្ធទី ១"
+
+msgctxt "report:account.financial.statement.report:"
+msgid "Fiscal Year 2"
+msgstr "ឆ្នាំសារពើពន្ធទី ២"
+
+msgctxt "report:account.financial.statement.report:"
+msgid "Previous Value"
+msgstr "តម្លៃមុន"
+
+msgctxt "report:account.financial.statement.report:"
+msgid "VAT"
+msgstr "អាករលើតម្លៃបន្ថែម (VAT)"
+
+msgctxt "xgettext:x:"
+msgid "Concept"
+msgstr "ធាតុ"
+
+msgctxt "selection:account.financial.statement.report,state:"
+msgid "Calculated"
+msgstr "បានគណនា"
+
+msgctxt "selection:account.financial.statement.report,state:"
+msgid "Draft"
+msgstr "សេចក្តីព្រាង"
+
+msgctxt "selection:account.financial.statement.report.line,css_class:"
+msgid "Default"
+msgstr "លំនាំដើម"
+
+msgctxt "selection:account.financial.statement.report.line,css_class:"
+msgid "Level 1"
+msgstr "កម្រិតទី ១"
+
+msgctxt "selection:account.financial.statement.report.line,css_class:"
+msgid "Level 2"
+msgstr "កម្រិតទី ២"
+
+msgctxt "selection:account.financial.statement.report.line,css_class:"
+msgid "Level 3"
+msgstr "កម្រិតទី ៣"
+
+msgctxt "selection:account.financial.statement.report.line,css_class:"
+msgid "Level 4"
+msgstr "កម្រិតទី ៤"
+
+msgctxt "selection:account.financial.statement.report.line,css_class:"
+msgid "Level 5"
+msgstr "កម្រិតទី ៥"
+
+msgctxt "selection:account.financial.statement.report.line,report_state:"
+msgid "Calculated"
+msgstr "បានគណនា"
+
+msgctxt "selection:account.financial.statement.report.line,report_state:"
+msgid "Draft"
+msgstr "សេចក្តីព្រាង"
+
+msgctxt ""
+"selection:account.financial.statement.report.line.account,fiscal_year:"
+msgid "Current"
+msgstr "បច្ចុប្បន្ន"
+
+msgctxt ""
+"selection:account.financial.statement.report.line.account,fiscal_year:"
+msgid "Previous"
+msgstr "មុន"
+
+msgctxt ""
+"selection:account.financial.statement.report.line.detail.start,detail:"
+msgid "Account"
+msgstr "គណនី"
+
+msgctxt ""
+"selection:account.financial.statement.report.line.detail.start,detail:"
+msgid "Move"
+msgstr "កំណត់ត្រាគណនេយ្យ"
+
+msgctxt "selection:account.financial.statement.template,mode:"
+msgid "Credit-Debit"
+msgstr "ឥណទាន-ឥណពន្ធ"
+
+msgctxt "selection:account.financial.statement.template,mode:"
+msgid "Credit-Debit, reversed with invert()"
+msgstr "ឥណទាន-ឥណពន្ធ ប្ដូរសញ្ញាដោយ invert()"
+
+msgctxt "selection:account.financial.statement.template,mode:"
+msgid "Debit-Credit"
+msgstr "ឥណពន្ធ-ឥណទាន"
+
+msgctxt "selection:account.financial.statement.template,mode:"
+msgid "Debit-Credit, reversed with invert()"
+msgstr "ឥណពន្ធ-ឥណទាន ប្ដូរសញ្ញាដោយ invert()"
+
+msgctxt "selection:account.financial.statement.template,type:"
+msgid "System"
+msgstr "ប្រព័ន្ធ"
+
+msgctxt "selection:account.financial.statement.template,type:"
+msgid "User"
+msgstr "អ្នកប្រើប្រាស់"
+
+msgctxt "selection:account.financial.statement.template.line,css_class:"
+msgid "Default"
+msgstr "លំនាំដើម"
+
+msgctxt "selection:account.financial.statement.template.line,css_class:"
+msgid "Level 1"
+msgstr "កម្រិតទី ១"
+
+msgctxt "selection:account.financial.statement.template.line,css_class:"
+msgid "Level 2"
+msgstr "កម្រិតទី ២"
+
+msgctxt "selection:account.financial.statement.template.line,css_class:"
+msgid "Level 3"
+msgstr "កម្រិតទី ៣"
+
+msgctxt "selection:account.financial.statement.template.line,css_class:"
+msgid "Level 4"
+msgstr "កម្រិតទី ៤"
+
+msgctxt "selection:account.financial.statement.template.line,css_class:"
+msgid "Level 5"
+msgstr "កម្រិតទី ៥"
+
+msgctxt "view:account.financial.statement.report.line.account:"
+msgid "Detail"
+msgstr "ព័ត៌មានលម្អិត"
+
+msgctxt "view:account.financial.statement.report.line.account:"
+msgid "Fiscal Year Details"
+msgstr "ព័ត៌មានលម្អិតឆ្នាំសារពើពន្ធ"
+
+msgctxt "view:account.financial.statement.report.line.detail.start:"
+msgid "Open Line Detail"
+msgstr "បើកព័ត៌មានលម្អិតបន្ទាត់"
+
+msgctxt "view:account.financial.statement.report.line:"
+msgid "Style"
+msgstr "រចនាប័ទ្ម"
+
+msgctxt "view:account.financial.statement.report.line:"
+msgid "Values"
+msgstr "តម្លៃ"
+
+msgctxt "view:account.financial.statement.report:"
+msgid "Configuration"
+msgstr "ការកំណត់រចនាសម្ព័ន្ធ"
+
+msgctxt "view:account.financial.statement.template.line:"
+msgid "Style"
+msgstr "រចនាប័ទ្ម"
+
+msgctxt "view:account.financial.statement.template:"
+msgid "Information"
+msgstr "ព័ត៌មាន"
+
+msgctxt "view:account.financial.statement.template:"
+msgid "Lines"
+msgstr "បន្ទាត់"
+
+msgctxt "wizard_button:account.financial.statement.report.accounts,start,end:"
+msgid "Close"
+msgstr "បិទ"
+
+msgctxt ""
+"wizard_button:account.financial.statement.report.line.detail,start,end:"
+msgid "Cancel"
+msgstr "បោះបង់"
+
+msgctxt ""
+"wizard_button:account.financial.statement.report.line.detail,start,select:"
+msgid "Open"
+msgstr "បើក"
+
+msgctxt "field:account.financial.statement.report,comparison_fiscalyears:"
+msgid "Fiscal Years"
+msgstr "ឆ្នាំសារពើពន្ធ"
+
+msgctxt "field:account.financial.statement.report,comparison_periods:"
+msgid "Comparison Periods"
+msgstr "គ្រាសម្រាប់ប្រៀបធៀប"
+
+msgctxt "field:account.financial.statement.report.line.account.period,account:"
+msgid "Account"
+msgstr "គណនី"
+
+msgctxt "field:account.financial.statement.report.line.account.period,balance:"
+msgid "Balance"
+msgstr "សមតុល្យ"
+
+msgctxt "field:account.financial.statement.report.line.account.period,company:"
+msgid "Company"
+msgstr "ក្រុមហ៊ុន"
+
+msgctxt "field:account.financial.statement.report.line.account.period,credit:"
+msgid "Credit"
+msgstr "ឥណទាន"
+
+msgctxt ""
+"field:account.financial.statement.report.line.account.period,currency:"
+msgid "Currency"
+msgstr "រូបិយប័ណ្ណ"
+
+msgctxt "field:account.financial.statement.report.line.account.period,debit:"
+msgid "Debit"
+msgstr "ឥណពន្ធ"
+
+msgctxt ""
+"field:account.financial.statement.report.line.account.period,report_line:"
+msgid "Report Line"
+msgstr "បន្ទាត់របាយការណ៍"
+
+msgctxt "field:account.financial.statement.report.line.period,children:"
+msgid "Children"
+msgstr "កូន"
+
+msgctxt "field:account.financial.statement.report.line.period,code:"
+msgid "Code"
+msgstr "កូដ"
+
+msgctxt "field:account.financial.statement.report.line.period,company:"
+msgid "Company"
+msgstr "ក្រុមហ៊ុន"
+
+msgctxt "field:account.financial.statement.report.line.period,css_class:"
+msgid "CSS Class"
+msgstr "ថ្នាក់ CSS"
+
+msgctxt "field:account.financial.statement.report.line.period,currency:"
+msgid "Currency"
+msgstr "រូបិយប័ណ្ណ"
+
+msgctxt "field:account.financial.statement.report.line.period,line_accounts:"
+msgid "Line Accounts"
+msgstr "គណនីក្នុងបន្ទាត់"
+
+msgctxt "field:account.financial.statement.report.line.period,name:"
+msgid "Name"
+msgstr "ឈ្មោះ"
+
+msgctxt "field:account.financial.statement.report.line.period,notes:"
+msgid "Notes"
+msgstr "កំណត់ចំណាំ"
+
+msgctxt "field:account.financial.statement.report.line.period,page_break:"
+msgid "Page Break"
+msgstr "ការផ្តាច់ទំព័រ"
+
+msgctxt "field:account.financial.statement.report.line.period,parent:"
+msgid "Parent"
+msgstr "គំរូមេ"
+
+msgctxt "field:account.financial.statement.report.line.period,report_period:"
+msgid "Comparison Period"
+msgstr "គ្រាសម្រាប់ប្រៀបធៀប"
+
+msgctxt "field:account.financial.statement.report.line.period,sequence:"
+msgid "Sequence"
+msgstr "លំដាប់"
+
+msgctxt "field:account.financial.statement.report.line.period,template_line:"
+msgid "Line template"
+msgstr "គំរូបន្ទាត់"
+
+msgctxt "field:account.financial.statement.report.line.period,value:"
+msgid "Value"
+msgstr "តម្លៃ"
+
+msgctxt "field:account.financial.statement.report.line.period,visible:"
+msgid "Visible"
+msgstr "អាចមើលឃើញ"
+
+msgctxt "field:account.financial.statement.report.period,company:"
+msgid "Company"
+msgstr "ក្រុមហ៊ុន"
+
+msgctxt "field:account.financial.statement.report.period,end_period:"
+msgid "End Period"
+msgstr "គ្រាបញ្ចប់"
+
+msgctxt "field:account.financial.statement.report.period,fiscalyear:"
+msgid "Fiscal Year"
+msgstr "ឆ្នាំសារពើពន្ធ"
+
+msgctxt "field:account.financial.statement.report.period,lines:"
+msgid "Lines"
+msgstr "បន្ទាត់"
+
+msgctxt "field:account.financial.statement.report.period,report:"
+msgid "Report"
+msgstr "របាយការណ៍"
+
+msgctxt "field:account.financial.statement.report.period,sequence:"
+msgid "Sequence"
+msgstr "លំដាប់"
+
+msgctxt "field:account.financial.statement.report.period,start_period:"
+msgid "Start Period"
+msgstr "គ្រាចាប់ផ្តើម"
+
+msgctxt "model:account.financial.statement.report.line.account.period,string:"
+msgid "Account Financial Statement Report Line Account Period"
+msgstr "គ្រាគណនីក្នុងបន្ទាត់របាយការណ៍ហិរញ្ញវត្ថុ"
+
+msgctxt "model:account.financial.statement.report.line.period,string:"
+msgid "Account Financial Statement Report Line Period"
+msgstr "គ្រានៃបន្ទាត់របាយការណ៍ហិរញ្ញវត្ថុ"
+
+msgctxt "model:account.financial.statement.report.period,string:"
+msgid "Account Financial Statement Report Period"
+msgstr "គ្រានៃរបាយការណ៍ហិរញ្ញវត្ថុ"
+
+msgctxt "model:ir.message,text:msg_financial_statement_missing_periods"
+msgid ""
+"You must configure at least one fiscal year before calculating the financial "
+"statement."
+msgstr ""
+"អ្នកត្រូវកំណត់យ៉ាងហោចណាស់មួយឆ្នាំសារពើពន្ធ មុននឹងគណនារបាយការណ៍ហិរញ្ញវត្ថុ។"
+
+msgctxt "model:ir.message,text:msg_financial_statement_period_order"
+msgid "Start Period must be before or equal to End Period."
+msgstr "គ្រាចាប់ផ្ដើមត្រូវនៅមុន ឬស្មើគ្រាបញ្ចប់។"
+
+msgctxt "model:ir.message,text:msg_financial_statement_period_pair"
+msgid "Start Period and End Period must both be set or both be empty."
+msgstr "ត្រូវកំណត់ទាំងគ្រាចាប់ផ្ដើម និងគ្រាបញ្ចប់ ឬទុកឱ្យទទេទាំងពីរ។"
+
+msgctxt "report:account.financial.statement.detail.report:"
+msgid "Full fiscal year"
+msgstr "ឆ្នាំសារពើពន្ធពេញ"
+
+msgctxt "report:account.financial.statement.report:"
+msgid "Full fiscal year"
+msgstr "ឆ្នាំសារពើពន្ធពេញ"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Default"
+msgstr "លំនាំដើម"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Level 1"
+msgstr "កម្រិតទី ១"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Level 2"
+msgstr "កម្រិតទី ២"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Level 3"
+msgstr "កម្រិតទី ៣"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Level 4"
+msgstr "កម្រិតទី ៤"
+
+msgctxt "selection:account.financial.statement.report.line.period,css_class:"
+msgid "Level 5"
+msgstr "កម្រិតទី ៥"
+
+msgctxt "view:account.financial.statement.report.line.period:"
+msgid "Style"
+msgstr "រចនាប័ទ្ម"
+
+msgctxt "view:account.financial.statement.report.line.period:"
+msgid "Values"
+msgstr "តម្លៃ"
+
+msgctxt ""
+"model:ir.rule.group,name:rule_group_account_financial_statement_report_companies"
+msgid "User in companies"
+msgstr "អ្នកប្រើប្រាស់ក្នុងក្រុមហ៊ុន"
+
+msgctxt ""
+"model:ir.rule.group,name:rule_group_account_financial_statement_report_line_companies"
+msgid "User in companies"
+msgstr "អ្នកប្រើប្រាស់ក្នុងក្រុមហ៊ុន"
+
+msgctxt ""
+"model:ir.rule.group,name:rule_group_account_financial_statement_report_line_account_companies"
+msgid "User in companies"
+msgstr "អ្នកប្រើប្រាស់ក្នុងក្រុមហ៊ុន"
+
+msgctxt ""
+"model:ir.rule.group,name:rule_group_account_financial_statement_report_line_account_period_companies"
+msgid "User in companies"
+msgstr "អ្នកប្រើប្រាស់ក្នុងក្រុមហ៊ុន"
+
+msgctxt ""
+"model:ir.rule.group,name:rule_group_account_financial_statement_report_line_period_companies"
+msgid "User in companies"
+msgstr "អ្នកប្រើប្រាស់ក្នុងក្រុមហ៊ុន"
+
+msgctxt ""
+"model:ir.rule.group,name:rule_group_account_financial_statement_report_period_companies"
+msgid "User in companies"
+msgstr "អ្នកប្រើប្រាស់ក្នុងក្រុមហ៊ុន"
+
+msgctxt "model:ir.action,name:report_xlsx_financial_statement"
+msgid "Financial Statement Spreadsheet"
+msgstr "សៀវភៅបញ្ជីរបាយការណ៍ហិរញ្ញវត្ថុ"
+
+msgctxt "xgettext:x:"
+msgid "Full fiscal year"
+msgstr "ឆ្នាំសារពើពន្ធពេញ"
+
+msgctxt "xgettext:x:"
+msgid "Name"
+msgstr "ឈ្មោះ"
+
+msgctxt "xgettext:x:"
+msgid "Period"
+msgstr "គ្រា"
+
+msgctxt "field:account.financial.statement.print.start,include_details:"
+msgid "Include Account Details"
+msgstr "រួមបញ្ចូលព័ត៌មានលម្អិតគណនី"
+
+msgctxt "field:account.financial.statement.print.start,output_format:"
+msgid "Output Format"
+msgstr "ទ្រង់ទ្រាយលទ្ធផល"
+
+msgctxt "field:account.financial.statement.print.start,digits:"
+msgid "Digits"
+msgstr "ខ្ទង់"
+
+msgctxt "wizard_button:account.financial.statement.print,start,end:"
+msgid "Cancel"
+msgstr "បោះបង់"
+
+msgctxt "wizard_button:account.financial.statement.print,start,print_:"
+msgid "Print"
+msgstr "បោះពុម្ព"
+
+msgctxt "model:ir.action,name:print_financial_statement"
+msgid "Account Financial Statement"
+msgstr "របាយការណ៍ហិរញ្ញវត្ថុគណនេយ្យ"
+
+msgctxt "model:account.financial.statement.print.start,string:"
+msgid "Print Financial Statement"
+msgstr "បោះពុម្ពរបាយការណ៍ហិរញ្ញវត្ថុ"
+
+msgctxt "help:account.financial.statement.print.start,digits:"
+msgid "Group accounts by this number of digits. Zero shows all digits."
+msgstr "ដាក់គណនីជាក្រុមតាមចំនួនខ្ទង់នេះ។ បញ្ចូលសូន្យដើម្បីបង្ហាញគ្រប់ខ្ទង់។"
+
+msgctxt "help:account.financial.statement.template.line,previous_value:"
+msgid ""
+"Value calculation formula: Depending on this formula the final value is calculated as follows:\n"
+"- Empy template value: sum of (this concept) children values.\n"
+"- Number with decimal point (\"10.2\"): that value (constant).\n"
+"- A matematic formula with following helpers:\n"
+"  * balance() with comma-separated account numbers. Sum of the accounts (the sign of the depends on the mode).\n"
+"  * invert() with comma-separated account numbers. Sum of the account (the sign is inverted if reversed modes are used).\n"
+"  * credit() with comma-separeted account numbers. Sum of the credit of the account if the total amount is negative. Zero otherwise.\n"
+"  * debit() with comma-separeted account numbers. Sum of the debit of the account if the total amount is positive. Zero otherwise.\n"
+"  * concept() with comma-separated concept codes in quotes of the report itself (column Code). Sum of the concept values.\n"
+"Examples:\n"
+"balance(430, 431) + invert(437)\n"
+"balance(5305, 5315) + invert(5325, 5335) + debit(551, 5525)\n"
+"balance(5103) + credit(5523)\n"
+"concept(\"11000\", \"12000\")\n"
+"balance(7) - 1.25 * balance(6)\n"
+"concept(\"101\") / 2"
+msgstr ""
+"រូបមន្តគណនាតម្លៃ៖ តម្លៃចុងក្រោយត្រូវបានគណនាតាមរូបមន្តនេះដូចខាងក្រោម៖\n"
+"- ទុកតម្លៃគំរូឱ្យទទេ៖ បូកតម្លៃនៃធាតុរងរបស់ធាតុនេះ។\n"
+"- លេខមានសញ្ញាចុចទសភាគ (\"10.2\")៖ ប្រើលេខនោះជាតម្លៃថេរ។\n"
+"- រូបមន្តគណិតវិទ្យាដែលមានអនុគមន៍ជំនួយដូចខាងក្រោម៖\n"
+"  * balance() ប្រើលេខគណនីបំបែកដោយសញ្ញាក្បៀស។ បូកសមតុល្យគណនីទាំងនោះ (សញ្ញាអាស្រ័យលើរបៀបគណនា)។\n"
+"  * invert() ប្រើលេខគណនីបំបែកដោយសញ្ញាក្បៀស។ បូកសមតុល្យគណនីទាំងនោះ (ប្ដូរសញ្ញាប្រសិនបើប្រើរបៀបបញ្ច្រាស)។\n"
+"  * credit() ប្រើលេខគណនីបំបែកដោយសញ្ញាក្បៀស។ បូកឥណទានប្រសិនបើចំនួនសរុបអវិជ្ជមាន។ បើមិនដូច្នោះទេ យកសូន្យ។\n"
+"  * debit() ប្រើលេខគណនីបំបែកដោយសញ្ញាក្បៀស។ បូកឥណពន្ធប្រសិនបើចំនួនសរុបវិជ្ជមាន។ បើមិនដូច្នោះទេ យកសូន្យ។\n"
+"  * concept() ប្រើកូដធាតុក្នុងសញ្ញាដកស្រង់ បំបែកដោយសញ្ញាក្បៀស នៅក្នុងរបាយការណ៍នេះ (ជួរឈរ «កូដ»)។ បូកតម្លៃធាតុទាំងនោះ។\n"
+"ឧទាហរណ៍៖\n"
+"balance(430, 431) + invert(437)\n"
+"balance(5305, 5315) + invert(5325, 5335) + debit(551, 5525)\n"
+"balance(5103) + credit(5523)\n"
+"concept(\"11000\", \"12000\")\n"
+"balance(7) - 1.25 * balance(6)\n"
+"concept(\"101\") / 2"
